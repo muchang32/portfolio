@@ -167,6 +167,52 @@
     });
   }
 
+  // ---- 平面作品燈箱 ----
+  function initLightbox() {
+    const box = document.getElementById('lb');
+    const imgs = window.LB_FULL || [];
+    if (!box || !imgs.length) return;
+    const el = { img: $('#lb-img'), count: $('#lb-count'), prev: $('#lb-prev'), next: $('#lb-next'), close: $('#lb-close') };
+    let idx = 0, opener = null;
+    const show = i => {
+      idx = (i + imgs.length) % imgs.length;
+      el.img.src = imgs[idx];
+      el.img.alt = '平面設計作品 ' + (idx + 1);
+      el.count.textContent = (idx + 1) + ' / ' + imgs.length;
+    };
+    const open = i => {
+      opener = document.activeElement;
+      show(i); box.hidden = false;
+      document.body.style.overflow = 'hidden';
+      el.close.focus();
+    };
+    const close = () => {
+      box.hidden = true; document.body.style.overflow = '';
+      if (opener) opener.focus();
+    };
+    $$('[data-lb]').forEach(b => b.addEventListener('click', () => open(+b.dataset.lb)));
+    el.prev.addEventListener('click', () => show(idx - 1));
+    el.next.addEventListener('click', () => show(idx + 1));
+    el.close.addEventListener('click', close);
+    box.addEventListener('click', e => { if (e.target === box) close(); });
+    addEventListener('keydown', e => {
+      if (box.hidden) return;
+      if (e.key === 'Escape') { e.stopPropagation(); close(); }
+      else if (e.key === 'ArrowLeft') show(idx - 1);
+      else if (e.key === 'ArrowRight') show(idx + 1);
+    });
+    // 手機左右滑動切換
+    let x0 = null;
+    box.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+    box.addEventListener('touchend', e => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 44) show(idx + (dx < 0 ? 1 : -1));
+      x0 = null;
+    }, { passive: true });
+  }
+
+  initLightbox();
   collapseTagGroups();
   measure(); render(); countUp(); markActive();
 })();

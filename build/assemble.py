@@ -86,6 +86,57 @@ body = _lab_ph.sub(
 body = body.replace('《聯8達》', '企業內部刊物').replace('「聯8達」', '企業內部刊物')
 body = body.replace('企業內部刊物企業內部刊物', '企業內部刊物')
 
+# ---- AI Lab 首張卡改用新截圖 ----
+body = body.replace('./assets/ai-lab/01-udn-order.jpg', './assets/ai-lab/01-udn-order-2.jpg')
+
+# ---- Design Background 右欄：接上 19 張平面作品 ----
+# 設計已排好 7 個 2:1 寬格與 12 個 1:1 方格；依比例對應填入，保留原本的排列節奏
+WIDE   = ['01', '03', '08', '09', '10', '18', '19']
+SQUARE = ['02', '04', '05', '06', '07', '11', '12', '13', '14', '15', '16', '17']
+_w, _sq = iter(WIDE), iter(SQUARE)
+_order = []
+
+def _tile(m):
+    span, ratio = m.group(1) or '', m.group(2)
+    if ratio == '2/1':
+        n = next(_w, None)
+    elif ratio == '1/1':
+        n = next(_sq, None)
+    else:
+        return m.group(0)          # 4/5 是左欄 UI/UX 佔位，不動
+    if n is None:
+        return m.group(0)
+    idx = len(_order); _order.append(n)
+    return (f'<button type="button" data-lb="{idx}" aria-label="放大檢視平面設計作品 {idx+1}" '
+            f'style="{span}aspect-ratio:{ratio};padding:0;border:0;background:none;cursor:zoom-in;'
+            f'border-radius:12px;overflow:hidden;display:block">'
+            f'<img src="./assets/design/graphic/_selected/thumb/{n}.jpg" alt="平面設計作品 {idx+1}" '
+            f'loading="lazy" decoding="async" '
+            f'style="width:100%;height:100%;object-fit:cover;display:block" /></button>')
+
+_grid_tile = re.compile(
+    r'<div style="(grid-column:span 2;)?aspect-ratio:(\d/\d);border-radius:12px;background:#F1ECE1;[^"]*">.*?</div>',
+    re.S)
+body = _grid_tile.sub(_tile, body)
+LB_ORDER = _order
+
+# ---- 燈箱 ----
+_full = ','.join(f"'./assets/design/graphic/_selected/full/{n}.jpg'" for n in LB_ORDER)
+lightbox = """
+<div id="lb" hidden role="dialog" aria-modal="true" aria-label="作品放大檢視"
+     style="position:fixed;inset:0;z-index:200;background:rgba(20,17,15,.92);display:flex;align-items:center;justify-content:center;padding:clamp(12px,4vw,48px)">
+  <img id="lb-img" alt="" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;display:block" />
+  <div style="position:absolute;left:0;right:0;bottom:clamp(10px,2vw,20px);text-align:center;color:#FAF7F0;font-family:'IBM Plex Mono',monospace;font-size:13px">
+    <span id="lb-count"></span>
+  </div>
+  <button id="lb-prev" type="button" aria-label="上一張" style="position:absolute;left:clamp(6px,2vw,20px);top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:999px;border:2px solid #FAF7F0;background:rgba(20,17,15,.5);color:#FAF7F0;font-size:20px;cursor:pointer">‹</button>
+  <button id="lb-next" type="button" aria-label="下一張" style="position:absolute;right:clamp(6px,2vw,20px);top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:999px;border:2px solid #FAF7F0;background:rgba(20,17,15,.5);color:#FAF7F0;font-size:20px;cursor:pointer">›</button>
+  <button id="lb-close" type="button" aria-label="關閉" style="position:absolute;top:clamp(8px,2vw,18px);right:clamp(8px,2vw,18px);width:44px;height:44px;border-radius:999px;border:2px solid #FAF7F0;background:rgba(20,17,15,.5);color:#FAF7F0;font-size:22px;cursor:pointer">×</button>
+</div>
+<script>window.LB_FULL=[""" + _full + """];</script>
+"""
+body = body + lightbox
+
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
 <meta name="description" content="10 年設計積累 × PM 實戰 × AI 工具應用。2025 iF 設計獎、iPAS AI 應用規劃師。從需求分析到原型實作，都能自己動手。" />
