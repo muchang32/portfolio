@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>安否通　弱勢機構災情即時回報平台｜張詩沂</title>
+<meta name="description" content="數位發展部「115 年全國公民科技試驗場域推廣案」，新北市政府議題四。" />
+<meta property="og:title" content="安否通　弱勢機構災情即時回報平台｜張詩沂" />
+<meta property="og:type" content="article" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FFD34E' stroke='%2314110F' stroke-width='8'/><text y='.9em' x='50' text-anchor='middle' font-size='58' font-family='sans-serif' font-weight='700'>詩</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#FAF7F0;color:#14110F;font-family:"Noto Sans TC","Space Grotesk",sans-serif;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:#6D4AFF}
+header.bar{position:sticky;top:0;z-index:20;background:rgba(250,247,240,.94);backdrop-filter:blur(10px)}
+header.bar div{max-width:1240px;margin:0 auto;padding:14px clamp(16px,4vw,40px);display:flex;align-items:center;gap:12px;justify-content:space-between}
+.home{display:flex;align-items:center;gap:9px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:#14110F;text-decoration:none}
+.home i{width:24px;height:24px;border-radius:8px;background:#FFD34E;border:2px solid #14110F;display:inline-block}
+main{max-width:1240px;margin:0 auto;padding:clamp(28px,5vw,64px) clamp(16px,4vw,40px) 96px}
+.wrap{max-width:720px}
+.kicker{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#6E6A85;margin-bottom:14px}
+h1{font-size:clamp(28px,4.6vw,44px);line-height:1.25;letter-spacing:-.02em;margin:0 0 18px}
+h2{font-size:clamp(20px,2.6vw,27px);margin:56px 0 14px;line-height:1.35}
+h3{font-size:clamp(17px,2vw,20px);margin:36px 0 10px}
+p,li{font-size:16.5px}
+blockquote{margin:26px 0;padding:16px 22px;background:#FFF6D9;border:2px solid #14110F;border-radius:14px}
+blockquote p{margin:6px 0}
+figure{margin:32px 0}
+figure img{width:100%;height:auto;border-radius:14px;display:block}
+figure+p em{display:block;text-align:center;color:#6E6A85;font-size:14px;margin-top:-22px}
+code{font-family:'IBM Plex Mono',monospace;font-size:14px;background:#FFF6D9;padding:2px 6px;border-radius:5px}
+pre{background:#14110F;color:#FAF7F0;padding:18px 20px;border-radius:14px;overflow-x:auto}
+pre code{background:none;color:inherit;font-size:13.5px;line-height:1.7}
+.tw{overflow-x:auto;margin:24px 0}
+table{border-collapse:collapse;width:100%;min-width:420px}
+th,td{border-bottom:1px solid #E3DEF2;padding:10px 12px;text-align:left;font-size:15px;vertical-align:top}
+th{background:#FFF6D9;font-weight:700}
+hr{border:0;border-top:1px solid #E3DEF2;margin:44px 0}
+.foot{max-width:720px;margin:64px auto 0;padding-top:26px;border-top:2px solid #14110F;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:15px}
+.foot a{font-weight:700;text-decoration:none;color:#14110F}
+.foot a:hover{color:#6D4AFF}
+:focus-visible{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}
+@media (max-width:640px){p,li{font-size:16px}main{padding-bottom:64px}}
+</style>
+</head>
+<body>
+<header class="bar"><div>
+  <a class="home" href="../index.html"><i></i>張詩沂 / Shi-Yi</a>
+  <a class="home" style="font-size:15px" href="../index.html#case">← 回到案例</a>
+</div></header>
+<main><div class="wrap">
+<p class="kicker">精選案例</p>
+<p><strong>角色</strong>　組長／提案人（2026/8，公民科技協力場提案） <strong>類型</strong>　公民科技 ・ 政府徵案提案 <strong>團隊</strong>　兩人（產品與專案管理 ＋ 需求分析與系統測試） <strong>負責</strong>　問題定義 ・ 流程設計 ・ 介面設計 ・ 範圍切分 ・ 期程與風險規劃 ・ 決選簡報</p>
+<blockquote><p>數位發展部「115 年全國公民科技試驗場域推廣案」，新北市政府議題四。</p></blockquote>
+<hr />
+<h2>問題</h2>
+<p>新北市轄內的醫院、護理機構、長照與身心障礙福利機構數量繁多。依市府現行作業，地震發生後由災害應變中心人員取得名單，人工逐一撥打電話確認人員安全、建物受損與收容狀況，未接通者反覆重撥並人工記錄——<strong>全數清查預估要數小時。</strong></p>
+<p>災後最初 30 分鐘到數小時，是建立災情全貌與配置應變資源的關鍵階段。而在這段時間裡，市府最該用來做決策的人力，正忙於撥號。</p>
+<p>把現況拆開來看，五個現象其實是同一個結構問題：</p>
+<div class="tw"><table><thead><tr><th>問題</th><th>影響</th></tr></thead><tbody><tr><td>清查方向由市府「逐一詢問全部機構」，而非機構「主動回報異常」</td><td>工作量與機構總數成正比，無法隨災害規模調整</td></tr><tr><td>應變中心人員在最需要決策的時段執行撥號與記錄</td><td>決策品質下降</td></tr><tr><td>完整圖像須等全數清查完成才成立</td><td>延後資源配置決策</td></tr><tr><td>流程完全依賴電話</td><td>通訊中斷時最需要資訊，卻最拿不到</td></tr><tr><td>人工紀錄難以留存與比對</td><td>每次災害都從零開始</td></tr></tbody></table></div>
+<p>市府把有限人力<strong>平均花在「全部機構」上，而不是優先處理「尚未確認者」。</strong></p>
+<hr />
+<h2>解法：把清查方向反轉</h2>
+<p>這是整個提案的主軸，其餘所有設計都服務於它。</p>
+<p><strong>過去</strong>：市府 → 全部機構逐一撥號。連完全沒事的那些，也要問一次。 <strong>改為</strong>：系統點名 → 機構主動回報 → 市府只把人力投在未回報的那幾家。</p>
+<p>收斂成五個步驟：</p>
+<div class="tw"><table><thead><tr><th>步驟</th><th>內容</th></tr></thead><tbody><tr><td>①</td><td>權責人員發起點名</td></tr><tr><td>②</td><td>系統批次送出一次性回報連結</td></tr><tr><td>③</td><td>機構三選一，免登入回報</td></tr><tr><td>④</td><td>未回報自動升級（重送、換通道、通知第二聯絡人）</td></tr><tr><td>⑤</td><td>市府處理未回報佇列</td></tr></tbody></table></div>
+<p>反轉之後，市府的工作量從「機構總數」變成「異常數」。這不是功能設計，是作業模型的改變。</p>
+<h3>核心產品是那份清單，不是那張表單</h3>
+<p>市府端主畫面<strong>刻意不呈現全部機構列表</strong>，只呈現未回報者優先佇列，依「機構脆弱度 × 所在地災害規模 × 未回報累積時間」排序。</p>
+<p>市府拿到的不是一份全部機構的名單，而是一份<strong>排好優先順序、可以直接派工的未回報清單</strong>。</p>
+<p>前面四個步驟存在的意義，就是為了讓這份清單成立。</p>
+<p>整份提案我反覆強調的一句話是：</p>
+<blockquote><p><strong>未回報不等於沒事，也不等於有事。它只代表「尚未確認」。</strong></p></blockquote>
+<p>正因為只代表尚未確認，需要的就是自動升級與人力投入判斷，而不是等待。已回報正常的機構不會出現在這份清單上，市府人力完全不投入。</p>
+<hr />
+<h2>判斷與取捨</h2>
+<h3>免登入，因為災時沒人記得密碼</h3>
+<p>避難弱勢機構人員流動率高，災時的值班者未必記得帳號密碼。如果以個人帳號密碼作為唯一入口，系統會在最需要的時候把人鎖在門外。</p>
+<p>所以回報連結是一次性、限時、限該機構範圍，點開即可回報，無須登入；權責單位是機構帳號而非個人帳號，只有查看歷史紀錄或修改機構資料時才要求正式登入。</p>
+<h3>必填只有一個動作</h3>
+<p>災後最初 30 分鐘，機構值班人員正在安置住民、確認設備、聯繫家屬。任何需要登入、需要填多欄位的設計都會失敗。</p>
+<p>必填因此壓縮到三選一——一切正常／需要支援／嚴重受損。其餘欄位（傷亡人數、是否需疏散、水電與氧氣供應、可收容餘裕、照片）全部選填、可事後補。</p>
+<p>設計目標是必填回報比接一通電話更快。</p>
+<h3>不做「等機構自己來填」的通報平台</h3>
+<p>災時不會有人主動開啟系統。所以是系統去點名，不是平台等人上門。</p>
+<h3>自動觸發不做，因為那不是我能決定的事</h3>
+<p>「震度多少觸發」「哪些行政區」「誰有權決定啟動」——這些是災害應變的政策判斷與權責劃分，不是技術參數。提案人無權自訂。</p>
+<p>所以 P0 一律是權責人員手動發起；自動觸發列為 P1，且必須先經合作機關核定規則。系統只提供可設定機制並保留完整發起軌跡。</p>
+<hr />
+<h2>執行：先當自己的評審</h2>
+<p>送件前，我把提案當成初審委員的角度重審了一次，逐項打分（12 項共 120 分），並列出評審最可能追問的問題。</p>
+<p>結果是 86 分，入選邊緣偏正面。而兩個最低分的項目都在意料之外：</p>
+<ul><li><strong>使用者需求理解 5／10</strong> — 徵件階段一場第一手訪談都沒做，所有使用者洞察都是從市府需求說明與公開文件推論出來的。</li><li><strong>技術可行性 6／10</strong> — 兩人團隊卻列了六層回報降級通道，其中語音外撥、鄰近機構代報、現地登錄、紙本補登各自都是獨立子系統。<strong>這是過度承諾。</strong></li></ul>
+<p>依這份審查，送件版做了幾個實質修改：</p>
+<ol><li><strong>功能分級 P0／P1／P2，示範期只承諾 P0 七項</strong>，期程交付內容也只綁定 P0。分級是依團隊產能反推，不是依技術可行性排列。</li><li><strong>量化數字全部改為設計目標</strong>。原本寫「5 秒完成回報」「15 分鐘取得多數回報」，但那些數字沒有依據，改成「設計目標，待示範期實測建立基線」。</li><li><strong>不再使用「黃金 72 小時」</strong>，改為「災後最初 30 分鐘至數小時」——後者才是這個系統真正作用的區間。</li><li><strong>資安改為三段式標示</strong>：設計原則（已確立）／預計執行（尚未開始）／<strong>已完成：無</strong>。</li><li><strong>在計畫書開頭主動聲明兩項限制</strong>：尚未進行第一手使用者訪談，以及政策權責、法規依據、系統介接權限均未與合作機關確認，一律標示為待確認，不自行預設答案。</li></ol>
+<p>第 5 點是最難下的決定。把最大的弱點寫在文件第一頁，等於主動把扣分項送到評審眼前。但我判斷，這個弱點評審一定看得出來——<strong>被抓到跟自己承認，是兩種完全不同的印象</strong>，而且承認之後，我才能把「使用者研究列為合作啟動後第一項工作、且為系統架構定案的前置條件」寫成一個可信的承諾。</p>
+<hr />
+<h2>結果</h2>
+<p>通過文件初審，進入 8/25 的決選現場簡報。</p>
+<p>新北市議題四最終錄取兩組：正取是睿鍇科技，備取是我們——兩人團隊「羊肉會飛」。</p>
+<p>沒有拿到正取。以結果論，這是一次沒有成功的提案。</p>
+<hr />
+<h2>反思</h2>
+<p><strong>我把「誠實」當成策略，但誠實不能替代證據。</strong></p>
+<p>自我審查抓到了過度承諾，也讓文件變得可信。但它沒辦法解決真正的問題：那 5 分的使用者需求理解，缺的不是更好的寫法，是<strong>兩場訪談</strong>。</p>
+<p>我在計畫書裡寫「使用者研究已列為合作啟動後之第一項工作」——這是誠實的，也是對的順序，卻同時暴露了一件事：所有關於機構人員災時行為的判斷，包含「值班者不記得密碼」「三選一比打電話快」這些我最有信心的洞察，全部都還是推論。而競爭對手是一家科技公司。</p>
+<p>如果重來一次，我會在送件前就去找一家機構、聊 30 分鐘。哪怕只有一場、哪怕不具代表性，那也是第一手的。用兩週的準備時間換一份完全建立在推論上的問題模型，是我判斷失誤。</p>
+<p><strong>另一件學到的事是，收斂範圍會讓提案變好看，但不會讓它變強。</strong></p>
+<p>砍掉四層通道之後，文件的可信度確實上升了。但可信度是門檻，不是優勢——它讓提案不被扣分，不會讓提案被選上。真正該補的，還是那些我沒去問的問題。</p>
+<p>這個判斷後來直接影響了我做產品的順序：<strong>先去問，再開始寫。</strong></p>
+</div>
+<nav class="foot">
+  <a href="../index.html#case">← 回到案例</a>
+  <a href="../index.html#case">回到案例</a>
+  <a href="../case/aicast.html">Aicast →</a>
+</nav>
+</main>
+</body>
+</html>

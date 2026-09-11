@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>大 AI 時代來了：不會寫程式，也能在 5 分鐘內做出網站！｜張詩沂</title>
+<meta name="description" content="同一個網站用 v0、bolt.new、Google AI Studio、Lovable 各做一版，四款工具的實測比較。" />
+<meta property="og:title" content="大 AI 時代來了：不會寫程式，也能在 5 分鐘內做出網站！｜張詩沂" />
+<meta property="og:type" content="article" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FFD34E' stroke='%2314110F' stroke-width='8'/><text y='.9em' x='50' text-anchor='middle' font-size='58' font-family='sans-serif' font-weight='700'>詩</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#FAF7F0;color:#14110F;font-family:"Noto Sans TC","Space Grotesk",sans-serif;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:#6D4AFF}
+header.bar{position:sticky;top:0;z-index:20;background:rgba(250,247,240,.94);backdrop-filter:blur(10px)}
+header.bar div{max-width:1240px;margin:0 auto;padding:14px clamp(16px,4vw,40px);display:flex;align-items:center;gap:12px;justify-content:space-between}
+.home{display:flex;align-items:center;gap:9px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:#14110F;text-decoration:none}
+.home i{width:24px;height:24px;border-radius:8px;background:#FFD34E;border:2px solid #14110F;display:inline-block}
+main{max-width:1240px;margin:0 auto;padding:clamp(28px,5vw,64px) clamp(16px,4vw,40px) 96px}
+.wrap{max-width:720px}
+.kicker{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#6E6A85;margin-bottom:14px}
+h1{font-size:clamp(28px,4.6vw,44px);line-height:1.25;letter-spacing:-.02em;margin:0 0 18px}
+h2{font-size:clamp(20px,2.6vw,27px);margin:56px 0 14px;line-height:1.35}
+h3{font-size:clamp(17px,2vw,20px);margin:36px 0 10px}
+p,li{font-size:16.5px}
+blockquote{margin:26px 0;padding:16px 22px;background:#FFF6D9;border:2px solid #14110F;border-radius:14px}
+blockquote p{margin:6px 0}
+figure{margin:32px 0}
+figure img{width:100%;height:auto;border-radius:14px;display:block}
+figure+p em{display:block;text-align:center;color:#6E6A85;font-size:14px;margin-top:-22px}
+code{font-family:'IBM Plex Mono',monospace;font-size:14px;background:#FFF6D9;padding:2px 6px;border-radius:5px}
+pre{background:#14110F;color:#FAF7F0;padding:18px 20px;border-radius:14px;overflow-x:auto}
+pre code{background:none;color:inherit;font-size:13.5px;line-height:1.7}
+.tw{overflow-x:auto;margin:24px 0}
+table{border-collapse:collapse;width:100%;min-width:420px}
+th,td{border-bottom:1px solid #E3DEF2;padding:10px 12px;text-align:left;font-size:15px;vertical-align:top}
+th{background:#FFF6D9;font-weight:700}
+hr{border:0;border-top:1px solid #E3DEF2;margin:44px 0}
+.foot{max-width:720px;margin:64px auto 0;padding-top:26px;border-top:2px solid #14110F;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:15px}
+.foot a{font-weight:700;text-decoration:none;color:#14110F}
+.foot a:hover{color:#6D4AFF}
+:focus-visible{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}
+@media (max-width:640px){p,li{font-size:16px}main{padding-bottom:64px}}
+</style>
+</head>
+<body>
+<header class="bar"><div>
+  <a class="home" href="../index.html"><i></i>張詩沂 / Shi-Yi</a>
+  <a class="home" style="font-size:15px" href="../index.html#writing">← 回到專欄</a>
+</div></header>
+<main><div class="wrap">
+<p class="kicker">《聯8達》專欄</p>
+<p><strong>專欄</strong>　《聯8達》企業內部刊物　·　篇序 ③ <strong>主題</strong>　四款 AI 網頁生成工具實測比較</p>
+<blockquote><p>同一個網站用 v0、bolt.new、Google AI Studio、Lovable 各做一版，四款工具的實測比較。</p></blockquote>
+<figure><img src="../assets/writing/03-ai-era/cover.jpg" alt="" loading="lazy" /></figure>
+<hr />
+<p>還記得以前做一個網頁原型，要先畫設計稿、切版、寫語法、Debug…現在，AI 讓這一切變得像泡咖啡一樣簡單：幾句話、幾個提示詞，網頁就完成了。</p>
+<h2>我們的角色正在改變</h2>
+<p>AI 浪潮下，我們不再是埋頭苦幹的執行者，而是掌控全局的指揮官。AI 不是來搶工作，而是變成一個不會抱怨、隨時待命的超強夥伴。</p>
+<p>有時候會抓到 AI 在偷懶？當然，它還是會偶爾亂講話、給你奇怪的結果，但隨著技術迭代，這些問題就像 90 年代的網頁跑馬燈——只是過渡時期的笑話。</p>
+<h2>Vibe Coding：用感覺寫程式的魔法</h2>
+<p>最近爆紅的概念 <strong>Vibe Coding</strong> 就是「先跟著感覺做，不被細節卡住」。</p>
+<p>對不會寫程式的人來說，就像魔法：</p>
+<ul><li>從想法到互動原型，只要 1 分鐘</li><li>省下大量驗證和修改時間</li></ul>
+<p>AI 幫你處理最麻煩的技術細節，讓你專注在「創意」本身。</p>
+<h2>4 款 AI 網頁生成工具實測</h2>
+<p>我用同一個網站需求，在四款工具上各做了一版，真實感受如下。</p>
+<h3>1. v0.dev</h3>
+<figure><img src="../assets/writing/03-ai-era/02.jpg" alt="" loading="lazy" /></figure>
+<p>v0 是我最早接觸的工具。剛開始因為不熟悉操作，浪費了幾次免費額度。熟悉後發現，它的彈性很高：可以依提示詞生成互動原型、直接編輯程式碼、針對單一物件做數值調整，也能與 Github 整合，一鍵建置專案並分享給工程師，檔案協作很方便。</p>
+<p>最近 v0 還推出 Agent 功能，理論上能更主動幫忙修改，實測起來反而比以前不穩定，經常出現「自作主張修改」或「過度修改版面」的情況，我多半需要直接指定要刪改的程式碼才比較準確。期待後續更新能改善穩定性。</p>
+<h3>2. Google AI Studio</h3>
+<figure><img src="../assets/writing/03-ai-era/03.jpg" alt="" loading="lazy" /></figure>
+<p>速度有時讓人等到出戲，咖啡都快喝完了還沒做完，修改結果常與預期不符，甚至左側交談區顯示已修改但右側預覽區卻沒有實際同步反應，需要反覆提醒才會正確更新。</p>
+<p>另外麻煩的點是它為了推銷自家 firebase 沒有跟 Github 整合，網站完成後要手動下載再上傳整個專案到自己的程式庫，流程相對麻煩。但因為免費且沒有修改次數的限制，最後反而變成我的保底版本——先出了 Google AI Studio 版本實作的網頁後，才開始研究其他工具。</p>
+<h3>3. bolt.new</h3>
+<figure><img src="../assets/writing/03-ai-era/04.jpg" alt="" loading="lazy" /></figure>
+<p>bolt 功能也很齊全，一樣是用提示詞生成網頁、支援對單一物件用提示詞修改，也有提示詞最佳化，甚至有提示詞範例庫，提供常用的提示詞直接使用，也能連結 Github，自動同步更新修改。</p>
+<p>不過後期遇到一些 bug，重複修復也無法正常顯示，加上每天有 token 上限，限制了更深入的測試。</p>
+<h3>4. Lovable</h3>
+<figure><img src="../assets/writing/03-ai-era/05.jpg" alt="" loading="lazy" /></figure>
+<p>全球使用者最多、最熱門，速度快，設計上也有巧思。功能上也都很齊全，包括單一物件修改、提示詞最佳化、Github 連結等，修改時也會自動同步更新。雖然後期偶爾會出現修改顯示延遲，但再次執行通常能成功。在這四款中，Lovable 的穩定性表現算是相對較好的一個。</p>
+<h2>總結</h2>
+<p>雖然功能與介面大同小異，四款工具各有亮點：</p>
+<div class="tw"><table><thead><tr><th>工具</th><th>亮點</th><th>限制</th></tr></thead><tbody><tr><td><strong>v0.dev</strong></td><td>生成速度快、操作靈活</td><td>新推出的 Agent 功能仍在磨合期</td></tr><tr><td><strong>Google AI Studio</strong></td><td>免費且不限次數</td><td>速度偏慢、無 Github 整合</td></tr><tr><td><strong>bolt.new</strong></td><td>功能全面、有提示詞範例庫</td><td>每日 token 上限較低</td></tr><tr><td><strong>Lovable</strong></td><td>整體最穩定</td><td>偶有修改顯示延遲</td></tr></tbody></table></div>
+<h2>AI 生成程式碼的限制</h2>
+<p>在 AI 網頁原型的時代，還沒有一款完美的工具出現，但它們已經讓「不會寫程式也能做網站」成為日常。AI 能在短短三天內產出 v0.1 甚至 v0.9，非常適合用於 PoC（概念驗證）。</p>
+<p>只是，每次修改都有點像拆驚喜包——不知道跑出來的是驚喜還是驚嚇。<strong>生成的程式碼結構往往像雜物間——能用但混亂。若要正式上線，仍需工程師重構，否則後續維護將成惡夢。</strong></p>
+<p>總體而言，這些工具能明顯地縮短原型開發時間，但距離直接用於生產環境還有一段距離。</p>
+<h2>未來：AI 讓創意直達螢幕</h2>
+<figure><img src="../assets/writing/03-ai-era/06.jpg" alt="" loading="lazy" /></figure>
+<p>AI 工具短期內不會取代資深設計師與工程師，但它們已經成為加速創意實現的神兵利器。</p>
+<p>想像一下未來的場景：你一邊喝咖啡，一邊對 AI 說：「幫我做一個像 Netflix 一樣的網站，主色調改成湖水綠。」幾分鐘後，它就幫你跑起來了。</p>
+<p>到那時，問題不再是「你會不會寫程式」，而是「你想創造什麼」。</p>
+<p>AI 不會奪走你的飯碗，但會讓善用它的人，成為下一波浪潮的領航者。</p>
+</div>
+<nav class="foot">
+  <a href="./02-50lan.html">← 上一篇</a>
+  <a href="../index.html#writing">回到專欄</a>
+  <a href="./04-lovable.html">下一篇 →</a>
+</nav>
+</main>
+</body>
+</html>

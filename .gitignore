@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+
+# 未壓縮原檔（僅供日後重新輸出，不需上線）
+**/_original/
+assets/design/graphic/折扣_活動/
+assets/design/graphic/服飾_鞋包/
+assets/design/graphic/網路_通信/
+assets/design/graphic/電商_商品/
+
+# 大型素材與原始資料（不隨網站部署）
+Aicast相關檔案/
+ai lab/
+*.pdf
+!assets/resume.pdf
+履歷2026大頭照.png
+avatar
+作品集參考.webp
+b73440137b940fe38b4ab4729b98597c.jpg
+
+# 規劃文件（含公司內部資訊，不公開）
+website-spec.md
+design-brief.md
+ai-lab-copy.md
+00-README.md
+AGENTS.md
+CLAUDE.md
+.claude/
+.github/instructions/
+
+# 建置中間檔
+build/_parts.txt
+張詩沂個人網站首頁/.thumbnail
