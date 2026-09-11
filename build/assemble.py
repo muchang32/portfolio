@@ -91,8 +91,8 @@ body = body.replace('./assets/ai-lab/01-udn-order.jpg', './assets/ai-lab/01-udn-
 
 # ---- Design Background 右欄：接上 19 張平面作品 ----
 # 設計已排好 7 個 2:1 寬格與 12 個 1:1 方格；依比例對應填入，保留原本的排列節奏
-WIDE   = ['01', '03', '10', '18', '19']
-SQUARE = ['02', '04', '07', '11', '13', '14', '15', '16', '17']
+WIDE   = ['01', '03', '10', '18', '19', '21']
+SQUARE = ['02', '04', '07', '11', '13', '14', '15', '16', '17', '20']
 _w, _sq = iter(WIDE), iter(SQUARE)
 _order = []
 
@@ -142,7 +142,7 @@ _m = _more.search(body)
 if _m:
     body = body.replace(_m.group(0), '', 1)
     tile = ('<a href="https://www.cakeresume.com/me/sandy06032/portfolios" target="_blank" rel="noopener" '
-            'style="grid-column:3;aspect-ratio:1/1;border-radius:12px;border:2px dashed #14110F;'
+            'style="grid-column:-2/-1;aspect-ratio:1/1;border-radius:12px;border:2px dashed #14110F;'
             'display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;'
             'color:#14110F;font-weight:700;font-size:clamp(11px,1.05vw,13px);background:#FFF6D9;'
             'text-align:center;padding:6px;line-height:1.5">'
@@ -210,7 +210,7 @@ doc = f"""<!DOCTYPE html>
 {hover_css}
 [hidden]{{display:none !important}}
 /* 平面作品網格：桌機 3 欄、手機 2 欄（覆寫 inline style） */
-[data-grid="works"]{{grid-template-columns:repeat(3,minmax(0,1fr)) !important}}
+[data-grid="works"]{{grid-template-columns:repeat(5,minmax(0,1fr)) !important}}
 @media (max-width:640px){{[data-grid="works"]{{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}}}
 :focus-visible{{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}}
 .sr-only{{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}}
