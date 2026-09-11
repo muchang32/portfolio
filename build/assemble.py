@@ -189,7 +189,12 @@ head_extra = """
 <meta property="og:title" content="張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人" />
 <meta property="og:description" content="10 年設計積累 × PM 實戰 × AI 工具應用。從需求分析到原型實作，都能自己動手。" />
 <meta property="og:locale" content="zh_TW" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:url" content="https://muchang32.github.io/portfolio/" />
+<meta property="og:image" content="https://muchang32.github.io/portfolio/assets/og-cover.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="張詩沂 — 設計出身的 AI 產品人" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="theme-color" content="#FAF7F0" />
 <script>
 // 帶 #anchor 進站時直接定位到該區塊，不播放捲動動畫
