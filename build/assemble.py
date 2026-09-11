@@ -142,7 +142,7 @@ _m = _more.search(body)
 if _m:
     body = body.replace(_m.group(0), '', 1)
     tile = ('<a href="https://www.cakeresume.com/me/sandy06032/portfolios" target="_blank" rel="noopener" '
-            'style="grid-column:-2/-1;aspect-ratio:1/1;border-radius:12px;border:2px dashed #14110F;'
+            'style="aspect-ratio:auto;min-height:100%;border-radius:12px;border:2px dashed #14110F;'
             'display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;'
             'color:#14110F;font-weight:700;font-size:clamp(11px,1.05vw,13px);background:#FFF6D9;'
             'text-align:center;padding:6px;line-height:1.5">'

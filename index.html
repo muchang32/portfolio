@@ -599,7 +599,7 @@ a:hover{color:#6D4AFF}
             <button type="button" data-lb="14" aria-label="放大檢視平面設計作品 15" style="grid-column:span 2;aspect-ratio:2/1;padding:0;border:0;background:none;cursor:zoom-in;border-radius:12px;overflow:hidden;display:block"><img src="./assets/design/graphic/_selected/thumb/19.jpg" alt="平面設計作品 15" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block" /></button>
             
             
-            <button type="button" data-lb="15" aria-label="放大檢視平面設計作品 16" style="grid-column:span 2;aspect-ratio:2/1;padding:0;border:0;background:none;cursor:zoom-in;border-radius:12px;overflow:hidden;display:block"><img src="./assets/design/graphic/_selected/thumb/21.jpg" alt="平面設計作品 16" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block" /></button><a href="https://www.cakeresume.com/me/sandy06032/portfolios" target="_blank" rel="noopener" style="grid-column:-2/-1;aspect-ratio:1/1;border-radius:12px;border:2px dashed #14110F;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;color:#14110F;font-weight:700;font-size:clamp(11px,1.05vw,13px);background:#FFF6D9;text-align:center;padding:6px;line-height:1.5">更多<br/>作品 →</a>
+            <button type="button" data-lb="15" aria-label="放大檢視平面設計作品 16" style="grid-column:span 2;aspect-ratio:2/1;padding:0;border:0;background:none;cursor:zoom-in;border-radius:12px;overflow:hidden;display:block"><img src="./assets/design/graphic/_selected/thumb/21.jpg" alt="平面設計作品 16" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block" /></button><a href="https://www.cakeresume.com/me/sandy06032/portfolios" target="_blank" rel="noopener" style="aspect-ratio:auto;min-height:100%;border-radius:12px;border:2px dashed #14110F;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;color:#14110F;font-weight:700;font-size:clamp(11px,1.05vw,13px);background:#FFF6D9;text-align:center;padding:6px;line-height:1.5">更多<br/>作品 →</a>
             
           </div>
           <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:flex-end">
@@ -963,7 +963,23 @@ a:hover{color:#6D4AFF}
     }, { passive: true });
   }
 
+  // 「更多作品」自動填滿最後一列剩下的格子：CSS Grid 算不出剩幾格，這裡用 JS 補
+  function fitMoreTile() {
+    const grid = $('[data-grid="works"]');
+    if (!grid) return;
+    const more = $('a[href*="cakeresume"]', grid);
+    if (!more) return;
+    const cols = getComputedStyle(grid).gridTemplateColumns.split(' ').filter(Boolean).length;
+    if (!cols) return;
+    const used = $$('[data-lb]', grid)
+      .reduce((n, t) => n + (/span 2/.test(t.getAttribute('style') || '') ? 2 : 1), 0);
+    const left = (cols - (used % cols)) % cols;
+    more.style.gridColumn = 'span ' + (left || cols);
+  }
+
+  addEventListener('resize', fitMoreTile, { passive: true });
   initLightbox();
+  fitMoreTile();
   collapseTagGroups();
   measure(); render(); countUp(); markActive();
 })();

@@ -212,7 +212,23 @@
     }, { passive: true });
   }
 
+  // 「更多作品」自動填滿最後一列剩下的格子：CSS Grid 算不出剩幾格，這裡用 JS 補
+  function fitMoreTile() {
+    const grid = $('[data-grid="works"]');
+    if (!grid) return;
+    const more = $('a[href*="cakeresume"]', grid);
+    if (!more) return;
+    const cols = getComputedStyle(grid).gridTemplateColumns.split(' ').filter(Boolean).length;
+    if (!cols) return;
+    const used = $$('[data-lb]', grid)
+      .reduce((n, t) => n + (/span 2/.test(t.getAttribute('style') || '') ? 2 : 1), 0);
+    const left = (cols - (used % cols)) % cols;
+    more.style.gridColumn = 'span ' + (left || cols);
+  }
+
+  addEventListener('resize', fitMoreTile, { passive: true });
   initLightbox();
+  fitMoreTile();
   collapseTagGroups();
   measure(); render(); countUp(); markActive();
 })();
