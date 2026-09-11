@@ -91,8 +91,8 @@ body = body.replace('./assets/ai-lab/01-udn-order.jpg', './assets/ai-lab/01-udn-
 
 # ---- Design Background 右欄：接上 19 張平面作品 ----
 # 設計已排好 7 個 2:1 寬格與 12 個 1:1 方格；依比例對應填入，保留原本的排列節奏
-WIDE   = ['01', '03', '08', '09', '10', '18', '19']
-SQUARE = ['02', '04', '05', '06', '07', '11', '12', '13', '14', '15', '16', '17']
+WIDE   = ['01', '03', '10', '18', '19']
+SQUARE = ['02', '04', '05', '07', '11', '13', '14', '15', '16', '17']
 _w, _sq = iter(WIDE), iter(SQUARE)
 _order = []
 
@@ -105,7 +105,7 @@ def _tile(m):
     else:
         return m.group(0)          # 4/5 是左欄 UI/UX 佔位，不動
     if n is None:
-        return m.group(0)
+        return ''          # 圖不夠時直接移除該格，不要留下灰色佔位框
     idx = len(_order); _order.append(n)
     return (f'<button type="button" data-lb="{idx}" aria-label="放大檢視平面設計作品 {idx+1}" '
             f'style="{span}aspect-ratio:{ratio};padding:0;border:0;background:none;cursor:zoom-in;'
