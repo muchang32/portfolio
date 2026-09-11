@@ -173,6 +173,13 @@ body = body + lightbox
 body = body.replace('aspect-ratio:4/5;border-radius:14px;background:#FFE9A8;',
                     'flex:1;min-height:300px;border-radius:14px;background:#FFE9A8;', 1)
 
+# ---- 導覽列 logo 換成星芒圖 ----
+body = body.replace(
+    '<span style="width:26px;height:26px;border-radius:8px;background:#FFD34E;'
+    'border:2px solid #14110F;display:inline-block"></span>',
+    '<img src="./assets/logo.png" alt="" width="28" height="28" '
+    'style="width:28px;height:28px;display:inline-block;flex:0 0 auto" />', 1)
+
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
 <meta name="description" content="10 年設計積累 × PM 實戰 × AI 工具應用。2025 iF 設計獎、iPAS AI 應用規劃師。從需求分析到原型實作，都能自己動手。" />
@@ -196,7 +203,8 @@ if (location.hash) {
   });
 }
 </script>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FFD34E' stroke='%2314110F' stroke-width='8'/><text y='.9em' x='50' text-anchor='middle' font-size='58' font-family='sans-serif' font-weight='700'>詩</text></svg>" />
+<link rel="icon" type="image/png" sizes="64x64" href="./assets/favicon.png" />
+<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
 """
 
 doc = f"""<!DOCTYPE html>
