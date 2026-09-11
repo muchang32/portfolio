@@ -72,17 +72,18 @@ SHELL = """<!DOCTYPE html>
 body{{margin:0;background:{bg};color:{ink};font-family:"Noto Sans TC","Space Grotesk",sans-serif;line-height:1.85;-webkit-font-smoothing:antialiased}}
 a{{color:{violet}}}
 header.bar{{position:sticky;top:0;z-index:20;background:rgba(250,247,240,.94);backdrop-filter:blur(10px)}}
-header.bar div{{max-width:1240px;margin:0 auto;padding:14px clamp(16px,4vw,40px);display:flex;align-items:center;gap:12px;justify-content:space-between}}
-.home{{display:flex;align-items:center;gap:9px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:{ink};text-decoration:none}}
-.home i{{width:24px;height:24px;border-radius:8px;background:{accent};border:2px solid {ink};display:inline-block}}
-main{{max-width:1240px;margin:0 auto;padding:clamp(28px,5vw,64px) clamp(16px,4vw,40px) 96px}}
-.wrap{{max-width:720px}}
+header.bar div{{max-width:760px;margin:0 auto;padding:14px clamp(16px,4vw,28px);display:flex;align-items:center}}
+.back{{font-weight:700;font-size:15px;color:{ink};text-decoration:none}}
+.back:hover{{color:{violet}}}
+main{{max-width:760px;margin:0 auto;padding:clamp(24px,4vw,48px) clamp(16px,4vw,28px) 88px}}
+.wrap{{max-width:100%;text-align:left}}
 .kicker{{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#6E6A85;margin-bottom:14px}}
 h1{{font-size:clamp(28px,4.6vw,44px);line-height:1.25;letter-spacing:-.02em;margin:0 0 18px}}
-h2{{font-size:clamp(20px,2.6vw,27px);margin:56px 0 14px;line-height:1.35}}
+h2{{font-size:clamp(20px,2.6vw,27px);margin:52px 0 14px;line-height:1.35}}
+h1+p+h2,h1+h2{{margin-top:34px}}
 h3{{font-size:clamp(17px,2vw,20px);margin:36px 0 10px}}
 p,li{{font-size:16.5px}}
-blockquote{{margin:26px 0;padding:16px 22px;background:{soft};border:2px solid {ink};border-radius:14px}}
+blockquote{{margin:26px 0;padding:2px 0 2px 20px;border-left:3px solid {accent};color:#3E3932}}
 blockquote p{{margin:6px 0}}
 figure{{margin:32px 0}}
 figure img{{width:100%;height:auto;border-radius:14px;display:block}}
@@ -95,7 +96,7 @@ table{{border-collapse:collapse;width:100%;min-width:420px}}
 th,td{{border-bottom:1px solid #E3DEF2;padding:10px 12px;text-align:left;font-size:15px;vertical-align:top}}
 th{{background:{soft};font-weight:700}}
 hr{{border:0;border-top:1px solid #E3DEF2;margin:44px 0}}
-.foot{{max-width:720px;margin:64px auto 0;padding-top:26px;border-top:2px solid {ink};display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:15px}}
+.foot{{max-width:760px;margin:64px auto 0;padding-top:26px;border-top:1px solid #E3DEF2;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:15px}}
 .foot a{{font-weight:700;text-decoration:none;color:{ink}}}
 .foot a:hover{{color:{violet}}}
 :focus-visible{{outline:3px solid {violet};outline-offset:3px;border-radius:4px}}
@@ -104,16 +105,14 @@ hr{{border:0;border-top:1px solid #E3DEF2;margin:44px 0}}
 </head>
 <body>
 <header class="bar"><div>
-  <a class="home" href="{up}index.html"><i></i>張詩沂 / Shi-Yi</a>
-  <a class="home" style="font-size:15px" href="{up}index.html#{back_anchor}">← {back_label}</a>
+  <a class="back" href="{up}index.html#{back_anchor}">← {back_label}</a>
 </div></header>
 <main><div class="wrap">
-<p class="kicker">{kicker}</p>
+<h1>{h1}</h1>
 {content}
 </div>
 <nav class="foot">
   <a href="{prev_href}">{prev_label}</a>
-  <a href="{up}index.html#{back_anchor}">{back_label}</a>
   <a href="{next_href}">{next_label}</a>
 </nav>
 </main>
@@ -131,7 +130,7 @@ def build(md_path, out_path, kicker, back_anchor, back_label, prev, nxt, depth):
         if ln.startswith('> '): desc = ln[2:].strip(); break
     content = md2html(body_md, depth)
     out = pathlib.Path(out_path); out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(SHELL.format(title=html.escape(title), desc=html.escape(desc or title),
+    out.write_text(SHELL.format(title=html.escape(title), h1=html.escape(title), desc=html.escape(desc or title),
                                 content=content, up='../' * depth, kicker=kicker,
                                 back_anchor=back_anchor, back_label=back_label,
                                 prev_href=prev[0], prev_label=prev[1],
@@ -140,9 +139,9 @@ def build(md_path, out_path, kicker, back_anchor, back_label, prev, nxt, depth):
 
 ARTS = ['01-auto-image','02-50lan','03-ai-era','04-lovable','05-travel-app']
 for i, a in enumerate(ARTS):
-    prev = (f'./{ARTS[i-1]}.html', '← 上一篇') if i > 0 else ('../index.html#writing', '← 回到專欄')
-    nxt  = (f'./{ARTS[i+1]}.html', '下一篇 →') if i < len(ARTS)-1 else ('../index.html#writing', '回到專欄 →')
-    t = build(f'writing/{a}.md', f'writing/{a}.html', '《聯8達》專欄', 'writing', '回到專欄', prev, nxt, 1)
+    prev = (f'./{ARTS[i-1]}.html' if i > 0 else f'./{ARTS[-1]}.html', '← 上一篇')
+    nxt  = (f'./{ARTS[i+1]}.html' if i < len(ARTS)-1 else f'./{ARTS[0]}.html', '下一篇 →')
+    t = build(f'writing/{a}.md', f'writing/{a}.html', '企業內部刊物專欄', 'writing', '回到專欄', prev, nxt, 1)
     print('writing/', a, '→', t)
 
 CASES = [('aicast-case-study.md','case/aicast.html','Aicast'), ('anfu-case-study.md','case/anfu.html','安否通')]

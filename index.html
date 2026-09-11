@@ -14,6 +14,18 @@
 <meta property="og:locale" content="zh_TW" />
 <meta name="twitter:card" content="summary" />
 <meta name="theme-color" content="#FAF7F0" />
+<script>
+// 帶 #anchor 進站時直接定位到該區塊，不播放捲動動畫
+if (location.hash) {
+  var de = document.documentElement;
+  de.style.scrollBehavior = 'auto';
+  addEventListener('load', function () {
+    var t = document.querySelector(location.hash);
+    if (t) t.scrollIntoView({ block: 'start', behavior: 'auto' });
+    setTimeout(function () { de.style.scrollBehavior = ''; }, 60);
+  });
+}
+</script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FFD34E' stroke='%2314110F' stroke-width='8'/><text y='.9em' x='50' text-anchor='middle' font-size='58' font-family='sans-serif' font-weight='700'>詩</text></svg>" />
 
 
@@ -260,7 +272,7 @@ a:hover{color:#6D4AFF}
             </div>
             <h3 style="margin:0 0 4px;font-size:clamp(19px,2.2vw,26px);font-weight:900;line-height:1.5">資訊管理師</h3>
             <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">聯經數位</p>
-            <ul style="margin:0 0 20px;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:clamp(14px,1.15vw,15.5px);line-height:1.8;color:#2C2620"><li>主導內部「自動配圖」功能改版：功能上線後使用率不如預期，依使用量數據訪談記者與編輯，將回饋歸納為圖像相關度、圖庫廣度、標籤精準度與使用習慣四類，排定優化順序並重新定義圖片排序邏輯（新聞相關度＋時效性＋可用性），改版後使用率回升</li><li>導入 AI 工具至實際工作流程並優化 Prompt 設計，讓非工程同仁能真正用於日常業務</li><li>推動 AI coding 與 AI 工具的內部分享與實作培訓，降低使用門檻</li><li>於企業內部刊物《聯8達》撰寫 AI 專欄共 5 篇，實測比較四款 AI 網頁生成工具並產出可跟做的實作教學</li><li>跨部門專案溝通，將各單位需求轉化為工程與系統可執行的內容</li></ul>
+            <ul style="margin:0 0 20px;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:clamp(14px,1.15vw,15.5px);line-height:1.8;color:#2C2620"><li>主導內部「自動配圖」功能改版：功能上線後使用率不如預期，依使用量數據訪談記者與編輯，將回饋歸納為圖像相關度、圖庫廣度、標籤精準度與使用習慣四類，排定優化順序並重新定義圖片排序邏輯（新聞相關度＋時效性＋可用性），改版後使用率回升</li><li>導入 AI 工具至實際工作流程並優化 Prompt 設計，讓非工程同仁能真正用於日常業務</li><li>推動 AI coding 與 AI 工具的內部分享與實作培訓，降低使用門檻</li><li>於企業內部刊物撰寫 AI 專欄共 5 篇，實測比較四款 AI 網頁生成工具並產出可跟做的實作教學</li><li>跨部門專案溝通，將各單位需求轉化為工程與系統可執行的內容</li></ul>
             <div data-tags-group hidden style="display:flex;flex-wrap:wrap;gap:8px"><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">使用者研究</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">Vibe Coding</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">n8n</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">內部培訓</span></div>
           </div>
         </article>
@@ -413,11 +425,7 @@ a:hover{color:#6D4AFF}
 
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:clamp(18px,2.4vw,32px) clamp(16px,2vw,26px)">
         <div data-href="https://muchang32.github.io/udn-order/" data-title="要不要來一杯" data-desc="部門團購飲料的線上訂餐系統，起於一場會議上的玩笑挑戰。同事實際試用後回報問題，補上同名重複點餐的驗證。" data-tags="團購|使用者測試|唯一有真實其他使用者的產品" data-link="開啟網頁 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
-          <div style="position:relative;aspect-ratio:16/10;border-radius:16px;background:#FFF1C2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center;padding:14px;transition:transform .16s ease"data-hv="h12">
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;background:#14110F;color:#FAF7F0;padding:4px 9px;border-radius:999px">素材待補</span>
-            <span style="font-size:12.5px;font-weight:700;line-height:1.6">產品截圖 16:10</span>
-            
-          </div>
+          <img src="./assets/ai-lab/01-udn-order.jpg" alt="要不要來一杯 點餐系統畫面" loading="lazy" decoding="async" style="aspect-ratio:16/10;width:100%;object-fit:cover;border-radius:16px;display:block" />
           <h3 style="margin:0;font-size:17px;font-weight:900;line-height:1.5">要不要來一杯</h3>
           <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">部門團購飲料的線上訂餐系統，起於一場會議上的玩笑挑戰。同事實際試用後回報問題，補上同名重複點餐的驗證。</p>
         </div>

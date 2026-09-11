@@ -72,6 +72,20 @@ def _cover(m, _i=[0]):
             f'style="aspect-ratio:16/9;width:100%;object-fit:cover;border-radius:12px;display:block" />')
 body = _ph.sub(_cover, body)
 
+# ---- AI Lab 第一張卡：接上實際截圖 ----
+_lab_ph = re.compile(
+    r'(<div data-href="https://muchang32\.github\.io/udn-order/"[^>]*>\s*)'
+    r'<div style="position:relative;aspect-ratio:16/10;[^"]*"[^>]*>.*?</div>', re.S)
+body = _lab_ph.sub(
+    r'\1<img src="./assets/ai-lab/01-udn-order.jpg" alt="要不要來一杯 點餐系統畫面" '
+    r'loading="lazy" decoding="async" '
+    r'style="aspect-ratio:16/10;width:100%;object-fit:cover;border-radius:16px;display:block" />',
+    body, count=1)
+
+# ---- 首頁也不出現刊物名稱 ----
+body = body.replace('《聯8達》', '企業內部刊物').replace('「聯8達」', '企業內部刊物')
+body = body.replace('企業內部刊物企業內部刊物', '企業內部刊物')
+
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
 <meta name="description" content="10 年設計積累 × PM 實戰 × AI 工具應用。2025 iF 設計獎、iPAS AI 應用規劃師。從需求分析到原型實作，都能自己動手。" />
@@ -83,6 +97,18 @@ head_extra = """
 <meta property="og:locale" content="zh_TW" />
 <meta name="twitter:card" content="summary" />
 <meta name="theme-color" content="#FAF7F0" />
+<script>
+// 帶 #anchor 進站時直接定位到該區塊，不播放捲動動畫
+if (location.hash) {
+  var de = document.documentElement;
+  de.style.scrollBehavior = 'auto';
+  addEventListener('load', function () {
+    var t = document.querySelector(location.hash);
+    if (t) t.scrollIntoView({ block: 'start', behavior: 'auto' });
+    setTimeout(function () { de.style.scrollBehavior = ''; }, 60);
+  });
+}
+</script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FFD34E' stroke='%2314110F' stroke-width='8'/><text y='.9em' x='50' text-anchor='middle' font-size='58' font-family='sans-serif' font-weight='700'>詩</text></svg>" />
 """
 
