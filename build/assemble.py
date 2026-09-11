@@ -92,7 +92,7 @@ body = body.replace('./assets/ai-lab/01-udn-order.jpg', './assets/ai-lab/01-udn-
 # ---- Design Background 右欄：接上 19 張平面作品 ----
 # 設計已排好 7 個 2:1 寬格與 12 個 1:1 方格；依比例對應填入，保留原本的排列節奏
 WIDE   = ['01', '03', '10', '18', '19']
-SQUARE = ['02', '04', '05', '07', '11', '13', '14', '15', '16', '17']
+SQUARE = ['02', '04', '07', '11', '13', '14', '15', '16', '17']
 _w, _sq = iter(WIDE), iter(SQUARE)
 _order = []
 
@@ -119,6 +119,38 @@ _grid_tile = re.compile(
     re.S)
 body = _grid_tile.sub(_tile, body)
 LB_ORDER = _order
+
+# ---- Design Background 版面：兩欄等高、更多作品連結移入網格 ----
+# 1. 外層改為 stretch，左欄取消 sticky（sticky 與等高互斥）
+body = body.replace(
+    'display:flex;flex-wrap:wrap;gap:clamp(16px,2.2vw,28px);align-items:flex-start',
+    'display:flex;flex-wrap:wrap;gap:clamp(16px,2.2vw,28px);align-items:stretch', 1)
+body = body.replace('max-width:440px;min-width:0;position:sticky;top:110px;',
+                    'max-width:440px;min-width:0;', 1)
+
+# 2. 右欄與網格撐滿高度，列與列之間平均分配剩餘空間
+body = body.replace('flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:16px',
+                    'flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:16px', 1)
+body = body.replace(
+    'display:grid;grid-template-columns:repeat(auto-fill,minmax(min(24%,100px),1fr));gap:clamp(8px,1vw,12px)',
+    'display:grid;grid-template-columns:repeat(auto-fill,minmax(min(24%,100px),1fr));'
+    'gap:clamp(8px,1vw,12px);grid-auto-flow:row dense;align-content:space-between;flex:1', 1)
+
+# 3. 「查看更多作品 →」改名並移進網格當最後一格
+_more = re.compile(r'<a href="https://www\.cakeresume\.com/me/sandy06032/portfolios"[^>]*>.*?</a>', re.S)
+_m = _more.search(body)
+if _m:
+    body = body.replace(_m.group(0), '', 1)
+    tile = ('<a href="https://www.cakeresume.com/me/sandy06032/portfolios" target="_blank" rel="noopener" '
+            'style="aspect-ratio:1/1;border-radius:12px;border:2px dashed #14110F;'
+            'display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;'
+            'color:#14110F;font-weight:700;font-size:clamp(11px,1.05vw,13px);background:#FFF6D9;'
+            'text-align:center;padding:6px;line-height:1.5">'
+            '更多<br/>作品 →</a>')
+    # 插在「最後一個作品格」之後（不要抓到後面區塊的 button）
+    last_tile = body.rfind('data-lb=')
+    end = body.index('</button>', last_tile) + len('</button>')
+    body = body[:end] + tile + body[end:]
 
 # ---- 燈箱 ----
 _full = ','.join(f"'./assets/design/graphic/_selected/full/{n}.jpg'" for n in LB_ORDER)
