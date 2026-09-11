@@ -134,7 +134,7 @@ body = body.replace('flex:1 1 420px;min-width:0;display:flex;flex-direction:colu
 body = body.replace(
     'display:grid;grid-template-columns:repeat(auto-fill,minmax(min(24%,100px),1fr));gap:clamp(8px,1vw,12px)',
     'display:grid;grid-template-columns:repeat(auto-fill,minmax(min(24%,100px),1fr));'
-    'gap:clamp(8px,1vw,12px);grid-auto-flow:row dense;align-content:space-between;flex:1', 1)
+    'gap:clamp(8px,1vw,12px);align-content:space-between;flex:1" data-grid="works', 1)
 
 # 3. 「查看更多作品 →」改名並移進網格當最後一格
 _more = re.compile(r'<a href="https://www\.cakeresume\.com/me/sandy06032/portfolios"[^>]*>.*?</a>', re.S)
@@ -142,7 +142,7 @@ _m = _more.search(body)
 if _m:
     body = body.replace(_m.group(0), '', 1)
     tile = ('<a href="https://www.cakeresume.com/me/sandy06032/portfolios" target="_blank" rel="noopener" '
-            'style="aspect-ratio:1/1;border-radius:12px;border:2px dashed #14110F;'
+            'style="grid-column:3;aspect-ratio:1/1;border-radius:12px;border:2px dashed #14110F;'
             'display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;'
             'color:#14110F;font-weight:700;font-size:clamp(11px,1.05vw,13px);background:#FFF6D9;'
             'text-align:center;padding:6px;line-height:1.5">'
@@ -168,6 +168,10 @@ lightbox = """
 <script>window.LB_FULL=[""" + _full + """];</script>
 """
 body = body + lightbox
+
+# 左欄 UI/UX 佔位改為撐滿（等高之後不要留下空白）
+body = body.replace('aspect-ratio:4/5;border-radius:14px;background:#FFE9A8;',
+                    'flex:1;min-height:300px;border-radius:14px;background:#FFE9A8;', 1)
 
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
@@ -205,6 +209,9 @@ doc = f"""<!DOCTYPE html>
 <style>
 {hover_css}
 [hidden]{{display:none !important}}
+/* 平面作品網格：桌機 3 欄、手機 2 欄（覆寫 inline style） */
+[data-grid="works"]{{grid-template-columns:repeat(3,minmax(0,1fr)) !important}}
+@media (max-width:640px){{[data-grid="works"]{{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}}}
 :focus-visible{{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}}
 .sr-only{{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}}
 </style>

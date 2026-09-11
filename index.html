@@ -80,6 +80,9 @@ a:hover{color:#6D4AFF}
 [data-hv="h30"]:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #FFD34E}
 [data-hv="h31"]:hover{transform:translateY(-3px)}
 [hidden]{display:none !important}
+/* 平面作品網格：桌機 3 欄、手機 2 欄（覆寫 inline style） */
+[data-grid="works"]{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
+@media (max-width:640px){[data-grid="works"]{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}
 :focus-visible{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
@@ -566,7 +569,7 @@ a:hover{color:#6D4AFF}
 
       <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,2.2vw,28px);align-items:stretch">
         <a href="https://www.behance.net/changmu" target="_blank" rel="noopener" style="flex:0 1 400px;max-width:440px;min-width:0;display:flex;flex-direction:column;gap:12px;background:#FFF6D9;border:2px solid #14110F;border-radius:20px;box-shadow:5px 5px 0 #14110F;padding:16px 18px 22px;transition:transform .16s ease,box-shadow .16s ease"data-hv="h28">
-          <div style="aspect-ratio:4/5;border-radius:14px;background:#FFE9A8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:18px">
+          <div style="flex:1;min-height:300px;border-radius:14px;background:#FFE9A8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:18px">
             <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;background:#14110F;color:#FAF7F0;padding:4px 9px;border-radius:999px">素材待補</span>
             <span style="font-size:13.5px;font-weight:700;line-height:1.6">UI／UX 代表圖一張</span>
             <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5A5248">長邊 1600px</span>
@@ -578,7 +581,7 @@ a:hover{color:#6D4AFF}
         </a>
 
         <div style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:16px">
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(24%,100px),1fr));gap:clamp(8px,1vw,12px);grid-auto-flow:row dense;align-content:space-between;flex:1">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(24%,100px),1fr));gap:clamp(8px,1vw,12px);align-content:space-between;flex:1" data-grid="works">
             <button type="button" data-lb="0" aria-label="放大檢視平面設計作品 1" style="grid-column:span 2;aspect-ratio:2/1;padding:0;border:0;background:none;cursor:zoom-in;border-radius:12px;overflow:hidden;display:block"><img src="./assets/design/graphic/_selected/thumb/01.jpg" alt="平面設計作品 1" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block" /></button>
             <button type="button" data-lb="1" aria-label="放大檢視平面設計作品 2" style="aspect-ratio:1/1;padding:0;border:0;background:none;cursor:zoom-in;border-radius:12px;overflow:hidden;display:block"><img src="./assets/design/graphic/_selected/thumb/02.jpg" alt="平面設計作品 2" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block" /></button>
             <button type="button" data-lb="2" aria-label="放大檢視平面設計作品 3" style="aspect-ratio:1/1;padding:0;border:0;background:none;cursor:zoom-in;border-radius:12px;overflow:hidden;display:block"><img src="./assets/design/graphic/_selected/thumb/04.jpg" alt="平面設計作品 3" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block" /></button>
@@ -593,7 +596,7 @@ a:hover{color:#6D4AFF}
             <button type="button" data-lb="11" aria-label="放大檢視平面設計作品 12" style="aspect-ratio:1/1;padding:0;border:0;background:none;cursor:zoom-in;border-radius:12px;overflow:hidden;display:block"><img src="./assets/design/graphic/_selected/thumb/16.jpg" alt="平面設計作品 12" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block" /></button>
             <button type="button" data-lb="12" aria-label="放大檢視平面設計作品 13" style="aspect-ratio:1/1;padding:0;border:0;background:none;cursor:zoom-in;border-radius:12px;overflow:hidden;display:block"><img src="./assets/design/graphic/_selected/thumb/17.jpg" alt="平面設計作品 13" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block" /></button>
             
-            <button type="button" data-lb="13" aria-label="放大檢視平面設計作品 14" style="grid-column:span 2;aspect-ratio:2/1;padding:0;border:0;background:none;cursor:zoom-in;border-radius:12px;overflow:hidden;display:block"><img src="./assets/design/graphic/_selected/thumb/19.jpg" alt="平面設計作品 14" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block" /></button><a href="https://www.cakeresume.com/me/sandy06032/portfolios" target="_blank" rel="noopener" style="aspect-ratio:1/1;border-radius:12px;border:2px dashed #14110F;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;color:#14110F;font-weight:700;font-size:clamp(11px,1.05vw,13px);background:#FFF6D9;text-align:center;padding:6px;line-height:1.5">更多<br/>作品 →</a>
+            <button type="button" data-lb="13" aria-label="放大檢視平面設計作品 14" style="grid-column:span 2;aspect-ratio:2/1;padding:0;border:0;background:none;cursor:zoom-in;border-radius:12px;overflow:hidden;display:block"><img src="./assets/design/graphic/_selected/thumb/19.jpg" alt="平面設計作品 14" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block" /></button><a href="https://www.cakeresume.com/me/sandy06032/portfolios" target="_blank" rel="noopener" style="grid-column:3;aspect-ratio:1/1;border-radius:12px;border:2px dashed #14110F;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;color:#14110F;font-weight:700;font-size:clamp(11px,1.05vw,13px);background:#FFF6D9;text-align:center;padding:6px;line-height:1.5">更多<br/>作品 →</a>
             
             
             
