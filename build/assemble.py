@@ -194,6 +194,20 @@ body = re.sub(
     r'(<a href="mailto:mu\.chang32@gmail\.com" style=")([^"]*background:transparent;[^"]*)(")',
     _mail_chip, body)
 
+# ---- 明亮黃：∞ 與 say hello with me ----
+body = body.replace('color:#C79400', 'color:#FFC400')
+
+# ---- 頁尾：拿掉名字左邊的色塊 ----
+body = re.sub(
+    r'<span style="width:22px;height:22px;border-radius:7px;background:#FFD34E;'
+    r'border:2px solid #14110F[^"]*"></span>', '', body, count=1)
+
+# ---- 回到頂端：箭頭改為粗線 SVG ----
+body = body.replace('>↑</button>',
+    '><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#14110F" '
+    'stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+    '<path d="M12 20V5"/><path d="M5 12l7-7 7 7"/></svg></button>', 1)
+
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
 <meta name="description" content="10 年設計積累 × PM 實戰 × AI 工具應用。2025 iF 設計獎、iPAS AI 應用規劃師。從需求分析到原型實作，都能自己動手。" />
