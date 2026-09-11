@@ -180,6 +180,20 @@ body = body.replace(
     '<img src="./assets/logo.png" alt="" width="28" height="28" '
     'style="width:28px;height:28px;display:inline-block;flex:0 0 auto" />', 1)
 
+# ---- 信箱膠囊：白底、無框線 ----
+# 只改「顯示信箱位址」的兩顆（Hero 與聯絡區），不動「寫信給我」按鈕
+def _mail_chip(m):
+    st = m.group(2)
+    st = st.replace('background:transparent;', 'background:#FFFFFF;')
+    st = re.sub(r'border:2px solid #14110F;', '', st)
+    # 少了 2px 邊框，補回內距讓尺寸不變
+    st = st.replace('padding:16px 28px;', 'padding:18px 30px;').replace('padding:15px 28px;', 'padding:17px 30px;')
+    return m.group(1) + st + m.group(3)
+
+body = re.sub(
+    r'(<a href="mailto:mu\.chang32@gmail\.com" style=")([^"]*background:transparent;[^"]*)(")',
+    _mail_chip, body)
+
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
 <meta name="description" content="10 年設計積累 × PM 實戰 × AI 工具應用。2025 iF 設計獎、iPAS AI 應用規劃師。從需求分析到原型實作，都能自己動手。" />
