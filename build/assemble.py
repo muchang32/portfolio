@@ -208,6 +208,95 @@ body = body.replace('>↑</button>',
     'stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
     '<path d="M12 20V5"/><path d="M5 12l7-7 7 7"/></svg></button>', 1)
 
+# ---- 本輪文案／區塊名稱調整 ----
+# 1. say hello：改用 Hero 的黃底標示，首字大寫，加笑臉
+body = body.replace(
+    '<span style="font-family:\'Space Grotesk\',sans-serif;font-style:italic;font-weight:700;color:#FFC400">say hello with me</span>',
+    '<span style="position:relative;display:inline-block">'
+    '<span style="position:absolute;left:-6px;right:-6px;bottom:.1em;height:.34em;'
+    'background:#FFD34E;border-radius:4px;z-index:0"></span>'
+    '<span style="position:relative;z-index:1;font-family:\'Space Grotesk\',sans-serif;'
+    'font-style:italic;font-weight:700">Say hello with me ☺</span></span>', 1)
+
+# 2. 區塊改名
+body = body.replace('>Learning</h2>', '>Credentials</h2>')
+body = body.replace('>Learning<', '>Credentials<')
+body = body.replace('Design Background', 'Selected Design Work')
+
+# 3. 刪除兩句說明
+body = body.replace(
+    '<p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">'
+    '一則是交付過的產品，一則是從零定義的規劃。兩種不同的能力。</p>', '', 1)
+import re as _re
+body = _re.sub(r'<p style="margin:0;font-size:clamp\(15px,1\.4vw,19px\);font-weight:700;'
+               r'color:#2C2620;line-height:1\.7">用 AI 工具動手做出來的產品</p>', '', body, count=1)
+
+# 4. 英文 初階 → 中階（補一顆實心點）
+_en = body.index('>英文<')
+_seg_end = body.index('</div>', body.index('初階', _en))
+_seg = body[_en:_seg_end]
+_seg = _seg.replace('<span style="width:12px;height:12px;border-radius:50%;background:transparent;border:1.5px solid #14110F"></span>', '<span style="width:12px;height:12px;border-radius:50%;background:#FFD34E;border:1.5px solid #14110F"></span>', 1).replace('初階', '中階')
+body = body[:_en] + _seg + body[_seg_end:]
+
+# 5. 關於我：拿掉「與 Vibe Coding」
+body = body.replace('現在透過 AI Coding 與 Vibe Coding，', '現在透過 AI Coding，', 1)
+
+# ---- 職涯歷程：補全 2019 以前的工作內容（內容取自本人 104 履歷）----
+UL = ('<ul style="margin:10px 0 0;padding-left:1.1em;display:flex;flex-direction:column;'
+      'gap:9px;font-size:14.5px;line-height:1.8;color:#2C2620">{items}</ul>')
+P_ONE = '<p style="margin:10px 0 0;font-size:14.5px;line-height:1.8;color:#2C2620">{txt}</p>'
+
+def _bullets(*items):
+    return UL.format(items=''.join(f'<li>{x}</li>' for x in items))
+
+# 維思資訊：原本 2 條，補到 4 條
+body = body.replace(
+    '<li>品牌官網視覺設計提案與製作</li><li>活動企劃提案、廣告素材與影片腳本</li>',
+    '<li>品牌官網所有視覺設計提案與製作</li>'
+    '<li>活動企劃提案討論、活動素材製作</li>'
+    '<li>廣告素材設計（Facebook、LINE@、Instagram、Google 多媒體）</li>'
+    '<li>平面文宣設計與輸出、簡易網頁維護協助</li>', 1)
+
+# 榭澄：單句 → 條列
+body = body.replace(
+    P_ONE.format(txt='在職期間單獨執行品牌官網大改版（Web ＋ 手機版）'),
+    _bullets(
+        '品牌官網視覺與維護，在職期間<strong>單獨執行網頁大改版</strong>（Web ＋ 手機版）',
+        '商品拍攝、修圖與合成（單眼／微單拍攝，Lightroom 調光調色、Photoshop 細修）',
+        '商品影片拍攝與剪輯（Premiere），並協助外拍',
+        'FB 粉絲團、LINE@、IG 圖文與影片素材製作；平面文宣設計與季節性活動規劃',
+    ), 1)
+
+# 橋星：單句 → 條列
+body = body.replace(
+    P_ONE.format(txt='單獨從零架設品牌官網，自訂 CSS 調整版型'),
+    _bullets(
+        '<strong>單獨從零架設品牌官網</strong>，使用 Shopline 後台建置網站結構，並自訂 CSS 調整版型',
+        '品牌官網所有視覺設計',
+        'FB 粉絲團與官方 LINE@ 管理，文案撰寫與圖片、影片素材製作',
+        '平面文宣設計、季節性活動規劃與數據概略分析',
+    ), 1)
+
+# 聯興通運：原本沒有內容，補上
+body = body.replace(
+    '聯興通運・實習</span>\n                </div>',
+    '聯興通運・實習</span>\n                </div>' + _bullets(
+        '維護人力資源紀錄（員工基本資料、職務輪調、出缺勤與績效評核）',
+        '人員招募、甄選與任用',
+        '薪酬運算與人事管理報表（組織圖、工時規劃、出勤管理）',
+        '公司美編事務（宣傳海報、傳單、活動布置）',
+    ), 1)
+
+# ---- 「已解決的問題」加上 hover 對話框 ----
+body = body.replace(
+    '<div style="font-size:13px;color:#3B342E;margin-top:7px;line-height:1.7">已解決的問題</div>',
+    '<div style="font-size:13px;color:#3B342E;margin-top:7px;line-height:1.7">'
+    '<span class="tip" tabindex="0" role="button" aria-describedby="tip-inf">已解決的問題'
+    '<span class="tip-bubble" id="tip-inf" role="tooltip">'
+    '每個產品、每項功能、每個決策，背後的使用者、商業目標與技術限制都不一樣。'
+    '沒有一套能完美複製的 SOP——所以問題永遠解不完，這也是這份工作最有意思的地方。'
+    '</span></span></div>', 1)
+
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
 <meta name="description" content="10 年設計積累 × PM 實戰 × AI 工具應用。2025 iF 設計獎、iPAS AI 應用規劃師。從需求分析到原型實作，都能自己動手。" />
@@ -250,6 +339,18 @@ doc = f"""<!DOCTYPE html>
 <style>
 {hover_css}
 [hidden]{{display:none !important}}
+/* 「已解決的問題」hover 對話框 */
+.tip{{position:relative;border-bottom:2px dotted #14110F;cursor:help;outline:none}}
+.tip-bubble{{position:absolute;left:50%;bottom:calc(100% + 14px);transform:translateX(-50%) translateY(4px);
+ width:min(280px,74vw);background:#14110F;color:#FAF7F0;font-size:13px;line-height:1.75;text-align:left;
+ padding:13px 15px;border-radius:12px;box-shadow:4px 4px 0 rgba(20,17,15,.18);
+ opacity:0;visibility:hidden;transition:opacity .16s ease,transform .16s ease;z-index:40;pointer-events:none}}
+.tip-bubble::after{{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);
+ border:8px solid transparent;border-top-color:#14110F}}
+.tip:hover .tip-bubble,.tip:focus .tip-bubble{{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}}
+@media (max-width:640px){{.tip-bubble{{left:0;transform:translateX(0) translateY(4px)}}
+ .tip-bubble::after{{left:28px}}
+ .tip:hover .tip-bubble,.tip:focus .tip-bubble{{transform:translateX(0) translateY(0)}}}}
 /* 平面作品網格：桌機 3 欄、手機 2 欄（覆寫 inline style） */
 [data-grid="works"]{{grid-template-columns:repeat(5,minmax(0,1fr)) !important}}
 @media (max-width:640px){{[data-grid="works"]{{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}}}

@@ -24,7 +24,7 @@
     labLink: state.lab ? state.lab.link : '',
     labHref: state.lab ? state.lab.href : '#',
     labTags: state.lab ? state.lab.tags : [],
-    careerBtnLabel: state.careerOpen ? '收合早期經歷 ↑' : '展開完整經歷 ↓（含 2019 以前）',
+    careerBtnLabel: state.careerOpen ? '收合早期經歷 ↑' : '展開完整經歷 ↓',
     copyLabel: state.copied ? '已複製 ✓' : '複製 Email',
     nYears: state.n.years, nMvp: state.n.mvp, nVoice: state.n.voice, nProduct: state.n.product
   });
