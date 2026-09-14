@@ -78,8 +78,9 @@ _lab_ph = re.compile(
     r'<div style="position:relative;aspect-ratio:16/10;[^"]*"[^>]*>.*?</div>', re.S)
 body = _lab_ph.sub(
     r'\1<img src="./assets/ai-lab/01-udn-order.jpg" alt="要不要來一杯 點餐系統畫面" '
-    r'loading="lazy" decoding="async" '
-    r'style="aspect-ratio:16/10;width:100%;object-fit:cover;border-radius:16px;display:block" />',
+    r'loading="lazy" decoding="async" data-hv="h12" '
+    r'style="aspect-ratio:16/10;width:100%;object-fit:cover;border-radius:16px;display:block;'
+    r'transition:transform .16s ease" />',
     body, count=1)
 
 # ---- 首頁也不出現刊物名稱 ----
@@ -321,9 +322,9 @@ body = re.sub(
     body)
 body = re.sub(r'(<button data-on="copyEmail"[^>]*)(>)',
               r'\1 aria-label="複製 Email" title="複製 Email"\2', body)
-_check_icon = ('<svg data-copy-done hidden width="20" height="20" viewBox="0 0 24 24" fill="none" '
+_check_icon = ('<span data-copy-done hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" '
                'stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" '
-               'aria-hidden="true"><path d="M4 12.5l5.5 5.5L20 7"/></svg>')
+               'aria-hidden="true"><path d="M4 12.5l5.5 5.5L20 7"/></svg></span>')
 body = body.replace('<span data-bind="copyLabel"></span>',
                     '<span data-copy-idle>' + _copy_icon + '</span>' + _check_icon
                     + '<span data-bind="copyLabel" class="sr-only"></span>')
@@ -460,10 +461,11 @@ body = body.replace('>→</button>',
 hover_css = hover_css.replace('transform:translateY(-4px)', 'transform:translateY(-4px) scale(1.04)')
 
 # A6. What I Do 卡片 hover：比照 Writing 卡片
-body = body.replace(
-    'background:#DDEEFF;border:2px solid #14110F;border-radius:20px;box-shadow:5px 5px 0 #14110F;padding:24px 20px 20px"',
-    'background:#DDEEFF;border:2px solid #14110F;border-radius:20px;box-shadow:5px 5px 0 #14110F;'
-    'padding:24px 20px 20px;transition:transform .16s ease,box-shadow .16s ease" data-hv="skillcard"')
+body = re.sub(
+    r'(background:#[0-9A-Fa-f]{6};border:2px solid #14110F;border-radius:20px;'
+    r'box-shadow:5px 5px 0 #14110F;padding:24px 20px 20px)"',
+    r'\1;transition:transform .16s ease,box-shadow .16s ease" data-hv="skillcard"',
+    body)
 
 # ===== 本輪 B：信箱 hover 逐字動畫 =====
 EMAIL = 'mu.chang32@gmail.com'
@@ -474,38 +476,66 @@ body = re.sub(
     lambda m: m.group(1) + ';' + m.group(2) + ' class="mailfx"' + m.group(3) + _spans + m.group(4),
     body)
 
-# ===== 本輪 C：LANGUAGES 下方新增 SKILLS（工具 logo）=====
+# ===== 本輪 C：Credentials 四區排版 + 彩色工具 logo =====
 import json as _json
-_icons = _json.loads(pathlib.Path('build/icons.json').read_text(encoding='utf-8'))
-_ORDER = ['claude', 'googlegemini', 'openai', 'figma',
-          'adobeillustrator', 'adobephotoshop', 'adobeaftereffects', 'adobepremierepro']
+_logos = _json.loads(pathlib.Path('build/logos.json').read_text(encoding='utf-8'))
+_ORDER = ['Claude', 'Gemini', 'ChatGPT', 'Figma',
+          'Illustrator', 'Photoshop', 'After Effects', 'Premiere']
+_bylabel = {l['label']: l for l in _logos}
 
-def _logo(slug):
-    ic = _icons[slug]
-    return (f'<span title="{ic["label"]}" aria-label="{ic["label"]}" role="img" '
+def _logo(label):
+    ic = _bylabel[label]
+    return (f'<span title="{label}" aria-label="{label}" role="img" '
             f'style="width:40px;height:40px;border-radius:11px;background:#FFFFFF;'
             f'border:2px solid #14110F;display:grid;place-items:center;flex:0 0 auto">'
-            f'<svg width="20" height="20" viewBox="0 0 24 24" fill="#14110F" aria-hidden="true">'
-            f'<path d="{ic["d"]}"/></svg></span>')
+            f'<svg width="22" height="22" viewBox="{ic["vb"]}" aria-hidden="true">'
+            f'{ic["inner"]}</svg></span>')
 
-_ANTIGRAVITY = ('<span title="Google Antigravity" aria-label="Google Antigravity" role="img" '
-                'style="height:40px;padding:0 13px;border-radius:11px;background:#FFFFFF;'
-                'border:2px solid #14110F;display:grid;place-items:center;flex:0 0 auto;'
-                'font-family:\'Space Grotesk\',sans-serif;font-size:12.5px;font-weight:700;'
-                'white-space:nowrap">Antigravity</span>')
+# Google Antigravity：待使用者提供 logo，先以文字標籤佔位
+_ANTIGRAVITY = (
+    '<span title="Google Antigravity" aria-label="Google Antigravity" role="img" '
+    'style="height:40px;padding:0 13px;border-radius:11px;background:#FFFFFF;'
+    'border:2px solid #14110F;display:grid;place-items:center;flex:0 0 auto;'
+    'font-family:\'Space Grotesk\',sans-serif;font-size:12.5px;font-weight:700;'
+    'white-space:nowrap">Antigravity</span>')
 
 _skills_block = (
-    '<div style="min-width:0;margin-top:28px">'
+    '<div style="min-width:0">'
     '<p style="margin:0 0 16px;font-family:\'IBM Plex Mono\',monospace;font-size:11px;'
     'letter-spacing:.18em;color:#6B635B">SKILLS</p>'
     '<div style="display:flex;flex-wrap:wrap;gap:10px">'
     + ''.join(_logo(k) for k in _ORDER) + _ANTIGRAVITY +
     '</div></div>')
 
-# 插在 LANGUAGES 區塊結尾（該欄的最後一個 </div> 之前）
+# 把 SKILLS 併為四欄容器的第四個直接子元素
+def _close_of(html, open_idx):
+    """回傳 open_idx 這個 <div> 對應的 </div> 結束位置（含標籤）"""
+    depth = 0
+    i = open_idx
+    while i < len(html):
+        nd = html.find('<div', i)
+        cd = html.find('</div>', i)
+        if cd == -1:
+            break
+        if nd != -1 and nd < cd:
+            depth += 1
+            i = nd + 4
+        else:
+            depth -= 1
+            i = cd + 6
+            if depth == 0:
+                return i
+    raise ValueError('找不到對應的 </div>')
+
+body = body.replace(
+    'display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));'
+    'gap:clamp(18px,2.2vw,32px)',
+    'display:grid;gap:clamp(18px,2.2vw,28px)" data-grid="creds', 1)
+
 _lg = body.index('LANGUAGES</p>')
-_col_end = body.index('</div>\n        </div>', _lg)
-body = body[:_col_end] + _skills_block + body[_col_end:]
+_col_open = body.rindex('<div style="min-width:0">', 0, _lg)
+_col_close = _close_of(body, _col_open)
+body = body[:_col_close] + _skills_block + body[_col_close:]
 
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
@@ -549,6 +579,10 @@ doc = f"""<!DOCTYPE html>
 <style>
 {hover_css}
 [hidden]{{display:none !important}}
+/* Credentials 四區：桌機 4 欄、平板 2 欄、手機 1 欄 */
+[data-grid="creds"]{{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:1080px){{[data-grid="creds"]{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}
+@media (max-width:560px){{[data-grid="creds"]{{grid-template-columns:1fr}}}}
 /* 信箱 hover：逐字由上往下重新落位 */
 .mailfx span{{display:inline-block;will-change:transform}}
 .mailfx:hover span{{animation:mailDrop .52s cubic-bezier(.22,.68,.3,1) both;
