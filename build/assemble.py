@@ -297,6 +297,129 @@ body = body.replace(
     '沒有一套能完美複製的 SOP——所以問題永遠解不完，這也是這份工作最有意思的地方。'
     '</span></span></div>', 1)
 
+# ===== 本輪調整 =====
+# 1. say hello：回復黃字、取消斜體、移除黃底標示
+body = body.replace(
+    '<span style="position:relative;display:inline-block">'
+    '<span style="position:absolute;left:-6px;right:-6px;bottom:.1em;height:.34em;'
+    'background:#FFD34E;border-radius:4px;z-index:0"></span>'
+    '<span style="position:relative;z-index:1;font-family:\'Space Grotesk\',sans-serif;'
+    'font-style:italic;font-weight:700">Say hello with me ☺</span></span>',
+    '<span style="font-family:\'Space Grotesk\',sans-serif;font-weight:700;color:#FFC400">'
+    'Say hello with me ☺</span>', 1)
+
+# 2. 複製 Email → 圖示（保留無障礙名稱）
+_copy_icon = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+              'stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+              '<rect x="9" y="9" width="12" height="12" rx="2.5"/>'
+              '<path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>')
+body = re.sub(r'(<button[^>]*data-on="copyEmail"[^>]*)(>)',
+              r'\1 aria-label="複製 Email" title="複製 Email"\2', body)
+_check_icon = ('<svg data-copy-done hidden width="20" height="20" viewBox="0 0 24 24" fill="none" '
+               'stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" '
+               'aria-hidden="true"><path d="M4 12.5l5.5 5.5L20 7"/></svg>')
+body = body.replace('<span data-bind="copyLabel"></span>',
+                    '<span data-copy-idle>' + _copy_icon + '</span>' + _check_icon
+                    + '<span data-bind="copyLabel" class="sr-only"></span>')
+
+# 3. 對話框：白底黑框、換內容
+body = body.replace(
+    '每個產品、每項功能、每個決策，背後的使用者、商業目標與技術限制都不一樣。'
+    '沒有一套能完美複製的 SOP——所以問題永遠解不完，這也是這份工作最有意思的地方。',
+    '累積解決 200+ 的問題，持續增加中⋯', 1)
+
+# 4. 職涯歷程副標：點點前後不留空格
+body = body.replace('職涯歷程　·　從視覺到體驗，再到產品與 AI 落地',
+                    '職涯歷程·從視覺到體驗，再到產品與 AI 落地')
+
+# 5. 展開／收合按鈕改黑底白字
+body = body.replace(
+    '<button data-on="toggleCareer" style="border:2px solid #14110F;background:#fff;',
+    '<button data-on="toggleCareer" style="border:2px solid #14110F;background:#14110F;color:#FAF7F0;', 1)
+
+# 6. 公司名稱補全
+for a, b in [('>聯經數位<', '>聯經數位股份有限公司<'),
+             ('>盈德網絡服務<', '>盈德網絡服務有限公司<'),
+             ('>維思資訊<', '>維思資訊股份有限公司<'),
+             ('>橋星企業<', '>橋星企業有限公司<'),
+             ('>聯興通運・實習<', '>聯興通運股份有限公司・實習<')]:
+    body = body.replace(a, b)
+
+# 7. 展開區排版改為與上方一致：日期 → 職稱 → 公司 → 內容（垂直堆疊）
+def _restack(m):
+    date, title, company = m.group(1), m.group(2), m.group(3)
+    return (f'<div style="margin-bottom:12px">'
+            f'<span style="font-family:\'IBM Plex Mono\',monospace;font-size:12.5px;'
+            f'font-weight:600;letter-spacing:.04em">{date}</span></div>'
+            f'<h3 style="margin:0 0 4px;font-size:17px;font-weight:900;line-height:1.5">{title}</h3>'
+            f'<p style="margin:0 0 14px;font-size:14px;color:#3B342E">{company}</p>')
+
+body = re.sub(
+    r'<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:baseline">\s*'
+    r'<span style="font-family:\'IBM Plex Mono\',monospace;font-size:12\.5px;font-weight:600">([^<]+)</span>\s*'
+    r'<h3 style="margin:0;font-size:17px;font-weight:900">([^<]+)</h3>\s*'
+    r'<span style="font-size:14px;color:#3B342E">([^<]+)</span>\s*</div>',
+    _restack, body)
+
+# 8. 前段工作內容補齊（取自本人 104 履歷）
+body = body.replace(
+    '<li>主導 AI 有聲書平台 Aicast 的產品開發、測試驗證與外包協作，管理 9–12 人</li>',
+    '<li><strong>產品開發與迭代</strong>：主持每週兩次 Aicast 產品開發會議，控管開發進度並排除技術阻礙；'
+    '依用戶回饋分析測試結果，持續優化操作流程與 UX 體驗</li>'
+    '<li><strong>AI 語音專案落地</strong>：獨立統籌 30 位以上素人配音員的徵選、簽約與錄音審理；'
+    '自學修音技術優化台灣口音 AI 配音模型，提升語音自然度</li>', 1)
+body = body.replace(
+    '<li>建立 30+ 位配音員聲音素材庫與 720 首音效資料庫</li>',
+    '<li><strong>跨國資源與外包管理</strong>：統籌多語系翻譯人員（德、法、日）與平面設計師等外包資源，'
+    '管理 9–12 人；主導發包並建置涵蓋 720 首音效的資料庫</li>', 1)
+body = body.replace(
+    '<li>主導 iF 設計獎與金點設計獎申請，2025 年獲 iF 設計獎</li>',
+    '<li><strong>國際獎項與視覺統籌</strong>：主導產品品牌視覺與參賽策略，親自設計相關多媒體素材，'
+    '帶領 Aicast 奪得 2025 年 iF 設計獎</li>', 1)
+body = body.replace(
+    '<li>品牌官網行銷活動 Landing Page 視覺設計</li><li>APP 與 Web UI 介面設計</li>',
+    '<li>品牌官網行銷活動 Landing Page 網頁視覺設計與圖片素材 Resize</li>'
+    '<li>APP、Web UI 介面設計</li>'
+    '<li>製作廣告行銷用圖與各渠道用圖</li>'
+    '<li>製作行銷影片素材</li>', 1)
+
+# 9. 證照：核發單位改到名稱後面（同一行），並修正單位
+PILL = ('<span style="display:inline-block;background:{bg};border-radius:999px;padding:6px 14px;'
+        'font-size:13.5px;font-weight:700">{name}</span>')
+def _cert(bg, name, issuer):
+    return ('<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">'
+            + PILL.format(bg=bg, name=name)
+            + f'<span style="font-size:11.5px;color:#6B635B">{issuer}</span></div>')
+
+_certs = [
+    ('#FFD34E', 'iPAS AI 應用規劃師（初級）', '經濟部產業發展署'),
+    ('#F3EFE4', 'AI_UX 人工智慧輔助產品體驗設計', '經濟部商業發展署'),
+    ('#F3EFE4', '獨角獸設計師養成計劃 Design Jam', 'Unblock'),
+    ('#F3EFE4', '丙級電腦軟體設計技術士', '勞動部勞動力發展署'),
+    ('#F3EFE4', 'Illustrator ・ Photoshop 原廠認證', 'Adobe'),
+]
+_old_start = body.index('CERTIFICATIONS</p>')
+_blk_start = body.index('<div style="display:flex;flex-direction:column;gap:12px">', _old_start)
+_blk_end = body.index('</div>\n        </div>', _blk_start)
+body = (body[:_blk_start]
+        + '<div style="display:flex;flex-direction:column;gap:12px">'
+        + ''.join(_cert(*c) for c in _certs)
+        + body[_blk_end:])
+
+# 10. COMPETITIONS：加入 2026 公民科技協力場
+_comp = ('<div>'
+         '<p style="margin:0 0 4px;font-family:\'IBM Plex Mono\',monospace;font-size:12px;color:#6B635B">2026</p>'
+         '<h3 style="margin:0 0 5px;font-size:15px;font-weight:900;line-height:1.6">'
+         '公民科技協力場　安否通</h3>'
+         '<p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">'
+         '數位發展部徵案，兩人團隊提案弱勢機構災情即時回報平台，負責問題定義、流程設計與 UI／UX。'
+         '<a href="./case/anfu.html" style="color:#6D4AFF;font-weight:700">閱讀完整案例 →</a></p>'
+         '</div>')
+_c = body.index('COMPETITIONS</p>')
+_cb = body.index('<div style="display:flex;flex-direction:column;gap:18px">', _c)
+_ins = body.index('>', _cb) + 1
+body = body[:_ins] + _comp + body[_ins:]
+
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
 <meta name="description" content="10 年設計積累 × PM 實戰 × AI 工具應用。2025 iF 設計獎、iPAS AI 應用規劃師。從需求分析到原型實作，都能自己動手。" />
@@ -342,14 +465,17 @@ doc = f"""<!DOCTYPE html>
 /* 「已解決的問題」hover 對話框 */
 .tip{{position:relative;border-bottom:2px dotted #14110F;cursor:help;outline:none}}
 .tip-bubble{{position:absolute;left:50%;bottom:calc(100% + 14px);transform:translateX(-50%) translateY(4px);
- width:min(280px,74vw);background:#14110F;color:#FAF7F0;font-size:13px;line-height:1.75;text-align:left;
- padding:13px 15px;border-radius:12px;box-shadow:4px 4px 0 rgba(20,17,15,.18);
+ width:max-content;max-width:min(300px,74vw);background:#FFFFFF;color:#14110F;font-size:13px;
+ line-height:1.75;text-align:left;white-space:normal;font-weight:700;
+ padding:12px 16px;border:2px solid #14110F;border-radius:12px;box-shadow:4px 4px 0 #14110F;
  opacity:0;visibility:hidden;transition:opacity .16s ease,transform .16s ease;z-index:40;pointer-events:none}}
 .tip-bubble::after{{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);
- border:8px solid transparent;border-top-color:#14110F}}
+ border:9px solid transparent;border-top-color:#14110F}}
+.tip-bubble::before{{content:"";position:absolute;left:50%;top:calc(100% - 2px);transform:translateX(-50%);
+ border:9px solid transparent;border-top-color:#FFFFFF;z-index:1}}
 .tip:hover .tip-bubble,.tip:focus .tip-bubble{{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}}
 @media (max-width:640px){{.tip-bubble{{left:0;transform:translateX(0) translateY(4px)}}
- .tip-bubble::after{{left:28px}}
+ .tip-bubble::after,.tip-bubble::before{{left:28px}}
  .tip:hover .tip-bubble,.tip:focus .tip-bubble{{transform:translateX(0) translateY(0)}}}}
 /* 平面作品網格：桌機 3 欄、手機 2 欄（覆寫 inline style） */
 [data-grid="works"]{{grid-template-columns:repeat(5,minmax(0,1fr)) !important}}

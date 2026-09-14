@@ -37,6 +37,9 @@
       if (val !== undefined) el.textContent = val;
     });
     $$('[data-href-bind]').forEach(el => el.setAttribute('href', v[el.dataset.hrefBind] || '#'));
+    // 複製 Email：成功後短暫改顯示打勾
+    $$('[data-copy-idle]').forEach(el => { el.hidden = state.copied; });
+    $$('[data-copy-done]').forEach(el => { el.hidden = !state.copied; });
     const tpl = $('[data-for="labTags"]');
     if (tpl) {
       const host = tpl.parentElement;

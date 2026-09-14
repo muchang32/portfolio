@@ -89,14 +89,17 @@ a:hover{color:#6D4AFF}
 /* 「已解決的問題」hover 對話框 */
 .tip{position:relative;border-bottom:2px dotted #14110F;cursor:help;outline:none}
 .tip-bubble{position:absolute;left:50%;bottom:calc(100% + 14px);transform:translateX(-50%) translateY(4px);
- width:min(280px,74vw);background:#14110F;color:#FAF7F0;font-size:13px;line-height:1.75;text-align:left;
- padding:13px 15px;border-radius:12px;box-shadow:4px 4px 0 rgba(20,17,15,.18);
+ width:max-content;max-width:min(300px,74vw);background:#FFFFFF;color:#14110F;font-size:13px;
+ line-height:1.75;text-align:left;white-space:normal;font-weight:700;
+ padding:12px 16px;border:2px solid #14110F;border-radius:12px;box-shadow:4px 4px 0 #14110F;
  opacity:0;visibility:hidden;transition:opacity .16s ease,transform .16s ease;z-index:40;pointer-events:none}
 .tip-bubble::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);
- border:8px solid transparent;border-top-color:#14110F}
+ border:9px solid transparent;border-top-color:#14110F}
+.tip-bubble::before{content:"";position:absolute;left:50%;top:calc(100% - 2px);transform:translateX(-50%);
+ border:9px solid transparent;border-top-color:#FFFFFF;z-index:1}
 .tip:hover .tip-bubble,.tip:focus .tip-bubble{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
 @media (max-width:640px){.tip-bubble{left:0;transform:translateX(0) translateY(4px)}
- .tip-bubble::after{left:28px}
+ .tip-bubble::after,.tip-bubble::before{left:28px}
  .tip:hover .tip-bubble,.tip:focus .tip-bubble{transform:translateX(0) translateY(0)}}
 /* 平面作品網格：桌機 3 欄、手機 2 欄（覆寫 inline style） */
 [data-grid="works"]{grid-template-columns:repeat(5,minmax(0,1fr)) !important}
@@ -171,7 +174,7 @@ a:hover{color:#6D4AFF}
         <p style="font-size:clamp(15px,1.35vw,18px);line-height:2.05;color:#3B342E;margin:0 0 30px;max-width:30em">10 年設計積累 × PM 實戰 × AI 工具應用，<br />從需求分析到原型實作，都能自己動手。</p>
         <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
           <a href="mailto:mu.chang32@gmail.com" style="background:#FFFFFF;color:#14110F;border-radius:999px;padding:18px 30px;font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:clamp(14px,1.3vw,16px);transition:transform .15s ease"data-hv="h1">mu.chang32@gmail.com</a>
-          <button data-on="copyEmail" style="border:2px solid #14110F;background:#14110F;color:#FAF7F0;border-radius:999px;padding:16px 26px;font-family:'Noto Sans TC',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:4px 4px 0 #FFD34E;transition:transform .15s ease,box-shadow .15s ease"data-hv="h2"><span data-bind="copyLabel"></span></button>
+          <button data-on="copyEmail" style="border:2px solid #14110F;background:#14110F;color:#FAF7F0;border-radius:999px;padding:16px 26px;font-family:'Noto Sans TC',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:4px 4px 0 #FFD34E;transition:transform .15s ease,box-shadow .15s ease"data-hv="h2" aria-label="複製 Email" title="複製 Email"><span data-copy-idle><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></span><svg data-copy-done hidden width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5.5 5.5L20 7"/></svg><span data-bind="copyLabel" class="sr-only"></span></button>
         </div>
       </div>
 
@@ -224,7 +227,7 @@ a:hover{color:#6D4AFF}
       </div>
       <div title="累積修復 200+ 個問題，還在繼續" style="padding:6px 10px;border-left:1px solid rgba(20,17,15,.2)">
         <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:clamp(26px,3vw,36px);line-height:1.1;color:#FFC400">∞</div>
-        <div style="font-size:13px;color:#3B342E;margin-top:7px;line-height:1.7"><span class="tip" tabindex="0" role="button" aria-describedby="tip-inf">已解決的問題<span class="tip-bubble" id="tip-inf" role="tooltip">每個產品、每項功能、每個決策，背後的使用者、商業目標與技術限制都不一樣。沒有一套能完美複製的 SOP——所以問題永遠解不完，這也是這份工作最有意思的地方。</span></span></div>
+        <div style="font-size:13px;color:#3B342E;margin-top:7px;line-height:1.7"><span class="tip" tabindex="0" role="button" aria-describedby="tip-inf">已解決的問題<span class="tip-bubble" id="tip-inf" role="tooltip">累積解決 200+ 的問題，持續增加中⋯</span></span></div>
         
       </div>
     </section>
@@ -280,7 +283,7 @@ a:hover{color:#6D4AFF}
     <div style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">
       <div style="text-align:center;max-width:46em;margin:0 auto clamp(30px,3.8vw,50px)">
         <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.8vw,54px);font-weight:700;letter-spacing:-.02em;margin:0 0 12px;line-height:1.12">Work Experience</h2>
-        <p style="margin:0;font-size:clamp(15px,1.4vw,19px);font-weight:700;color:#2C2620;line-height:1.7">職涯歷程　·　從視覺到體驗，再到產品與 AI 落地</p>
+        <p style="margin:0;font-size:clamp(15px,1.4vw,19px);font-weight:700;color:#2C2620;line-height:1.7">職涯歷程·從視覺到體驗，再到產品與 AI 落地</p>
       </div>
 
       <div style="position:relative;padding-left:clamp(20px,3vw,34px);border-left:2px dashed rgba(20,17,15,.25);display:flex;flex-direction:column;gap:clamp(18px,2.4vw,26px)">
@@ -292,7 +295,7 @@ a:hover{color:#6D4AFF}
               <span style="background:#14110F;color:#FAF7F0;font-size:11.5px;font-weight:700;border-radius:999px;padding:4px 12px">現職</span>
             </div>
             <h3 style="margin:0 0 4px;font-size:clamp(19px,2.2vw,26px);font-weight:900;line-height:1.5">資訊管理師</h3>
-            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">聯經數位</p>
+            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">聯經數位股份有限公司</p>
             <ul style="margin:0 0 20px;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:clamp(14px,1.15vw,15.5px);line-height:1.8;color:#2C2620"><li>主導內部「自動配圖」功能改版：功能上線後使用率不如預期，依使用量數據訪談記者與編輯，將回饋歸納為圖像相關度、圖庫廣度、標籤精準度與使用習慣四類，排定優化順序並重新定義圖片排序邏輯（新聞相關度＋時效性＋可用性），改版後使用率回升</li><li>導入 AI 工具至實際工作流程並優化 Prompt 設計，讓非工程同仁能真正用於日常業務</li><li>推動 AI coding 與 AI 工具的內部分享與實作培訓，降低使用門檻</li><li>於企業內部刊物撰寫 AI 專欄共 5 篇，實測比較四款 AI 網頁生成工具並產出可跟做的實作教學</li><li>跨部門專案溝通，將各單位需求轉化為工程與系統可執行的內容</li></ul>
             <div data-tags-group hidden style="display:flex;flex-wrap:wrap;gap:8px"><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">使用者研究</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">Vibe Coding</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">n8n</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">內部培訓</span></div>
           </div>
@@ -306,8 +309,8 @@ a:hover{color:#6D4AFF}
               <span style="background:#CDBCFF;border:1.5px solid #14110F;font-size:11.5px;font-weight:700;border-radius:999px;padding:3px 11px">Aicast</span>
             </div>
             <h3 style="margin:0 0 4px;font-size:clamp(18px,2vw,23px);font-weight:900;line-height:1.5">專案經理</h3>
-            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">聯經數位</p>
-            <ul style="margin:0 0 20px;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:clamp(14px,1.15vw,15.5px);line-height:1.8;color:#2C2620"><li>主導 AI 有聲書平台 Aicast 的產品開發、測試驗證與外包協作，管理 9–12 人</li><li>建立 30+ 位配音員聲音素材庫與 720 首音效資料庫</li><li>主導 iF 設計獎與金點設計獎申請，2025 年獲 iF 設計獎</li></ul>
+            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">聯經數位股份有限公司</p>
+            <ul style="margin:0 0 20px;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:clamp(14px,1.15vw,15.5px);line-height:1.8;color:#2C2620"><li><strong>產品開發與迭代</strong>：主持每週兩次 Aicast 產品開發會議，控管開發進度並排除技術阻礙；依用戶回饋分析測試結果，持續優化操作流程與 UX 體驗</li><li><strong>AI 語音專案落地</strong>：獨立統籌 30 位以上素人配音員的徵選、簽約與錄音審理；自學修音技術優化台灣口音 AI 配音模型，提升語音自然度</li><li><strong>跨國資源與外包管理</strong>：統籌多語系翻譯人員（德、法、日）與平面設計師等外包資源，管理 9–12 人；主導發包並建置涵蓋 720 首音效的資料庫</li><li><strong>國際獎項與視覺統籌</strong>：主導產品品牌視覺與參賽策略，親自設計相關多媒體素材，帶領 Aicast 奪得 2025 年 iF 設計獎</li></ul>
             <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">專案管理</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">UI 設計</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">外包管理</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">使用者體驗</span><a href="#case" style="margin-left:auto;font-size:13.5px;font-weight:700;border-bottom:2px solid #FFD34E">看完整案例 →</a></div>
           </div>
         </article>
@@ -320,8 +323,8 @@ a:hover{color:#6D4AFF}
               
             </div>
             <h3 style="margin:0 0 4px;font-size:clamp(18px,2vw,23px);font-weight:900;line-height:1.5">網頁設計師（UI 設計）</h3>
-            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">盈德網絡服務</p>
-            <ul style="margin:0 0 20px;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:clamp(14px,1.15vw,15.5px);line-height:1.8;color:#2C2620"><li>品牌官網行銷活動 Landing Page 視覺設計</li><li>APP 與 Web UI 介面設計</li></ul>
+            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">盈德網絡服務有限公司</p>
+            <ul style="margin:0 0 20px;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:clamp(14px,1.15vw,15.5px);line-height:1.8;color:#2C2620"><li>品牌官網行銷活動 Landing Page 網頁視覺設計與圖片素材 Resize</li><li>APP、Web UI 介面設計</li><li>製作廣告行銷用圖與各渠道用圖</li><li>製作行銷影片素材</li></ul>
             <div data-tags-group hidden style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">Figma</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">UI 設計</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">行銷視覺</span></div>
           </div>
         </article>
@@ -335,7 +338,7 @@ a:hover{color:#6D4AFF}
               
             </div>
             <h3 style="margin:0 0 4px;font-size:clamp(18px,2vw,23px);font-weight:900;line-height:1.5">網頁企劃視覺設計</h3>
-            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">維思資訊</p>
+            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">維思資訊股份有限公司</p>
             <ul style="margin:0 0 20px;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:clamp(14px,1.15vw,15.5px);line-height:1.8;color:#2C2620"><li>品牌官網所有視覺設計提案與製作</li><li>活動企劃提案討論、活動素材製作</li><li>廣告素材設計（Facebook、LINE@、Instagram、Google 多媒體）</li><li>平面文宣設計與輸出、簡易網頁維護協助</li></ul>
             <div data-tags-group hidden style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">視覺設計</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">廣告素材</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">活動企劃</span></div>
           </div>
@@ -343,40 +346,28 @@ a:hover{color:#6D4AFF}
             <article style="position:relative">
               <span style="position:absolute;left:calc(-1 * clamp(20px,3vw,34px) - 7px);top:26px;width:12px;height:12px;border-radius:50%;background:#FAF7F0;border:2.5px solid #14110F;box-shadow:0 0 0 5px #FAF7F0"></span>
               <div style="background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:4px 4px 0 rgba(20,17,15,.18);padding:clamp(18px,2.2vw,24px)">
-                <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:baseline">
-                  <span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600">2017/2 – 2019/1</span>
-                  <h3 style="margin:0;font-size:17px;font-weight:900">視覺設計行銷企劃專員</h3>
-                  <span style="font-size:14px;color:#3B342E">榭澄有限公司</span>
-                </div>
+                <div style="margin-bottom:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;letter-spacing:.04em">2017/2 – 2019/1</span></div><h3 style="margin:0 0 4px;font-size:17px;font-weight:900;line-height:1.5">視覺設計行銷企劃專員</h3><p style="margin:0 0 14px;font-size:14px;color:#3B342E">榭澄有限公司</p>
                 <ul style="margin:10px 0 0;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:14.5px;line-height:1.8;color:#2C2620"><li>品牌官網視覺與維護，在職期間<strong>單獨執行網頁大改版</strong>（Web ＋ 手機版）</li><li>商品拍攝、修圖與合成（單眼／微單拍攝，Lightroom 調光調色、Photoshop 細修）</li><li>商品影片拍攝與剪輯（Premiere），並協助外拍</li><li>FB 粉絲團、LINE@、IG 圖文與影片素材製作；平面文宣設計與季節性活動規劃</li></ul>
               </div>
             </article>
             <article style="position:relative">
               <span style="position:absolute;left:calc(-1 * clamp(20px,3vw,34px) - 7px);top:26px;width:12px;height:12px;border-radius:50%;background:#FAF7F0;border:2.5px solid #14110F;box-shadow:0 0 0 5px #FAF7F0"></span>
               <div style="background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:4px 4px 0 rgba(20,17,15,.18);padding:clamp(18px,2.2vw,24px)">
-                <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:baseline">
-                  <span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600">2015/7 – 2017/1</span>
-                  <h3 style="margin:0;font-size:17px;font-weight:900">行銷企劃專員</h3>
-                  <span style="font-size:14px;color:#3B342E">橋星企業</span>
-                </div>
+                <div style="margin-bottom:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;letter-spacing:.04em">2015/7 – 2017/1</span></div><h3 style="margin:0 0 4px;font-size:17px;font-weight:900;line-height:1.5">行銷企劃專員</h3><p style="margin:0 0 14px;font-size:14px;color:#3B342E">橋星企業有限公司</p>
                 <ul style="margin:10px 0 0;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:14.5px;line-height:1.8;color:#2C2620"><li><strong>單獨從零架設品牌官網</strong>，使用 Shopline 後台建置網站結構，並自訂 CSS 調整版型</li><li>品牌官網所有視覺設計</li><li>FB 粉絲團與官方 LINE@ 管理，文案撰寫與圖片、影片素材製作</li><li>平面文宣設計、季節性活動規劃與數據概略分析</li></ul>
               </div>
             </article>
             <article style="position:relative">
               <span style="position:absolute;left:calc(-1 * clamp(20px,3vw,34px) - 7px);top:26px;width:12px;height:12px;border-radius:50%;background:#FAF7F0;border:2.5px solid #14110F;box-shadow:0 0 0 5px #FAF7F0"></span>
               <div style="background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:4px 4px 0 rgba(20,17,15,.18);padding:clamp(18px,2.2vw,24px)">
-                <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:baseline">
-                  <span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600">2014/10 – 2015/6</span>
-                  <h3 style="margin:0;font-size:17px;font-weight:900">人資專員（兼美編）</h3>
-                  <span style="font-size:14px;color:#3B342E">聯興通運・實習</span>
-                </div><ul style="margin:10px 0 0;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:14.5px;line-height:1.8;color:#2C2620"><li>維護人力資源紀錄（員工基本資料、職務輪調、出缺勤與績效評核）</li><li>人員招募、甄選與任用</li><li>薪酬運算與人事管理報表（組織圖、工時規劃、出勤管理）</li><li>公司美編事務（宣傳海報、傳單、活動布置）</li></ul>
+                <div style="margin-bottom:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;letter-spacing:.04em">2014/10 – 2015/6</span></div><h3 style="margin:0 0 4px;font-size:17px;font-weight:900;line-height:1.5">人資專員（兼美編）</h3><p style="margin:0 0 14px;font-size:14px;color:#3B342E">聯興通運股份有限公司・實習</p><ul style="margin:10px 0 0;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:14.5px;line-height:1.8;color:#2C2620"><li>維護人力資源紀錄（員工基本資料、職務輪調、出缺勤與績效評核）</li><li>人員招募、甄選與任用</li><li>薪酬運算與人事管理報表（組織圖、工時規劃、出勤管理）</li><li>公司美編事務（宣傳海報、傳單、活動布置）</li></ul>
               </div>
             </article>
           </div>
       </div>
 
       <div style="display:flex;justify-content:center;margin-top:clamp(26px,3.4vw,42px)">
-        <button data-on="toggleCareer" style="border:2px solid #14110F;background:#fff;border-radius:999px;padding:13px 26px;font-family:'Noto Sans TC',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:4px 4px 0 #14110F;transition:transform .15s ease,box-shadow .15s ease"data-hv="h7"><span data-bind="careerBtnLabel"></span></button>
+        <button data-on="toggleCareer" style="border:2px solid #14110F;background:#14110F;color:#FAF7F0;border-radius:999px;padding:13px 26px;font-family:'Noto Sans TC',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:4px 4px 0 #14110F;transition:transform .15s ease,box-shadow .15s ease"data-hv="h7"><span data-bind="careerBtnLabel"></span></button>
       </div>
     </div>
   </section>
@@ -683,7 +674,7 @@ a:hover{color:#6D4AFF}
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:clamp(18px,2.2vw,32px)">
         <div style="min-width:0">
           <p style="margin:0 0 16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;color:#6B635B">COMPETITIONS</p>
-          <div style="display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;flex-direction:column;gap:18px"><div><p style="margin:0 0 4px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B635B">2026</p><h3 style="margin:0 0 5px;font-size:15px;font-weight:900;line-height:1.6">公民科技協力場　安否通</h3><p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">數位發展部徵案，兩人團隊提案弱勢機構災情即時回報平台，負責問題定義、流程設計與 UI／UX。<a href="./case/anfu.html" style="color:#6D4AFF;font-weight:700">閱讀完整案例 →</a></p></div>
             <div>
               <p style="margin:0 0 4px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B635B">2023</p>
               <h3 style="margin:0 0 5px;font-size:15px;font-weight:900;line-height:1.6">第三屆捷運盃黑客松 UI/UX 設計賽</h3>
@@ -699,13 +690,7 @@ a:hover{color:#6D4AFF}
 
         <div style="min-width:0">
           <p style="margin:0 0 16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;color:#6B635B">CERTIFICATIONS</p>
-          <div style="display:flex;flex-direction:column;gap:12px">
-            <div><span style="display:inline-block;background:#FFD34E;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700">iPAS AI 應用規劃師（初級）</span><span style="display:block;margin-top:4px;font-size:11.5px;color:#6B635B">經濟部產業發展署</span></div>
-            <div><span style="display:inline-block;background:#F3EFE4;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700">AI_UX 人工智慧輔助產品體驗設計</span><span style="display:block;margin-top:4px;font-size:11.5px;color:#6B635B">2025</span></div>
-            <div><span style="display:inline-block;background:#F3EFE4;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700">獨角獸設計師養成計劃 Design Jam</span><span style="display:block;margin-top:4px;font-size:11.5px;color:#6B635B">2022</span></div>
-            <div><span style="display:inline-block;background:#F3EFE4;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700">丙級電腦軟體設計技術士</span></div>
-            <div><span style="display:inline-block;background:#F3EFE4;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700">Illustrator ・ Photoshop 原廠認證</span><span style="display:block;margin-top:4px;font-size:11.5px;color:#6B635B">Adobe</span></div>
-          </div>
+          <div style="display:flex;flex-direction:column;gap:12px"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="display:inline-block;background:#FFD34E;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700">iPAS AI 應用規劃師（初級）</span><span style="font-size:11.5px;color:#6B635B">經濟部產業發展署</span></div><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="display:inline-block;background:#F3EFE4;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700">AI_UX 人工智慧輔助產品體驗設計</span><span style="font-size:11.5px;color:#6B635B">經濟部商業發展署</span></div><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="display:inline-block;background:#F3EFE4;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700">獨角獸設計師養成計劃 Design Jam</span><span style="font-size:11.5px;color:#6B635B">Unblock</span></div><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="display:inline-block;background:#F3EFE4;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700">丙級電腦軟體設計技術士</span><span style="font-size:11.5px;color:#6B635B">勞動部勞動力發展署</span></div><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="display:inline-block;background:#F3EFE4;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700">Illustrator ・ Photoshop 原廠認證</span><span style="font-size:11.5px;color:#6B635B">Adobe</span></div></div>
         </div>
 
         <div style="min-width:0">
@@ -736,12 +721,12 @@ a:hover{color:#6D4AFF}
     <div style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">
       <div style="display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,56px);align-items:center;justify-content:space-between">
         <div style="min-width:0;flex:1 1 380px">
-          <h2 style="margin:0;font-size:clamp(34px,5.4vw,66px);font-weight:900;letter-spacing:-.02em;line-height:1.12">與我聯絡，<br /><span style="position:relative;display:inline-block"><span style="position:absolute;left:-6px;right:-6px;bottom:.1em;height:.34em;background:#FFD34E;border-radius:4px;z-index:0"></span><span style="position:relative;z-index:1;font-family:'Space Grotesk',sans-serif;font-style:italic;font-weight:700">Say hello with me ☺</span></span></h2>
+          <h2 style="margin:0;font-size:clamp(34px,5.4vw,66px);font-weight:900;letter-spacing:-.02em;line-height:1.12">與我聯絡，<br /><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:#FFC400">Say hello with me ☺</span></h2>
         </div>
 
         <div style="min-width:0;flex:0 1 auto;display:flex;flex-wrap:wrap;gap:12px;align-items:center">
           <a href="mailto:mu.chang32@gmail.com" style="background:#FFFFFF;color:#14110F;border-radius:999px;padding:17px 30px;font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:clamp(14px,1.3vw,16px);transition:transform .15s ease"data-hv="h29">mu.chang32@gmail.com</a>
-          <button data-on="copyEmail" style="border:2px solid #14110F;background:#14110F;color:#FAF7F0;border-radius:999px;padding:15px 26px;font-family:'Noto Sans TC',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:4px 4px 0 #FFD34E;transition:transform .15s ease,box-shadow .15s ease"data-hv="h30"><span data-bind="copyLabel"></span></button>
+          <button data-on="copyEmail" style="border:2px solid #14110F;background:#14110F;color:#FAF7F0;border-radius:999px;padding:15px 26px;font-family:'Noto Sans TC',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:4px 4px 0 #FFD34E;transition:transform .15s ease,box-shadow .15s ease"data-hv="h30" aria-label="複製 Email" title="複製 Email"><span data-copy-idle><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></span><svg data-copy-done hidden width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5.5 5.5L20 7"/></svg><span data-bind="copyLabel" class="sr-only"></span></button>
         </div>
       </div>
 
@@ -806,6 +791,9 @@ a:hover{color:#6D4AFF}
       if (val !== undefined) el.textContent = val;
     });
     $$('[data-href-bind]').forEach(el => el.setAttribute('href', v[el.dataset.hrefBind] || '#'));
+    // 複製 Email：成功後短暫改顯示打勾
+    $$('[data-copy-idle]').forEach(el => { el.hidden = state.copied; });
+    $$('[data-copy-done]').forEach(el => { el.hidden = !state.copied; });
     const tpl = $('[data-for="labTags"]');
     if (tpl) {
       const host = tpl.parentElement;
