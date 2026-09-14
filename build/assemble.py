@@ -472,67 +472,67 @@ body = re.sub(
     lambda m: m.group(1) + ';' + m.group(2) + ' class="mailfx"' + m.group(3) + _spans + m.group(4),
     body)
 
-# ===== 本輪 C：Credentials 四區排版 + 彩色工具 logo =====
-import json as _json
-_logos = _json.loads(pathlib.Path('build/logos.json').read_text(encoding='utf-8'))
-_ORDER = ['Claude', 'Gemini', 'ChatGPT', 'Figma',
-          'Illustrator', 'Photoshop', 'After Effects', 'Premiere']
-_bylabel = {l['label']: l for l in _logos}
+# ===== 本輪 C：Credentials 版面 + SKILLS 工具 logo（使用者提供的檔案）=====
+_SKILLS = [
+    ('Claude',           'claude.png'),
+    ('Gemini',           'gemini.png'),
+    ('ChatGPT',          'ChatGPT.svg'),
+    ('Google Antigravity','antigravity.png'),
+    ('VS Code',          'VScode.png'),
+    ('Figma',            'figma.png'),
+    ('Illustrator',      'Adobe_Illustrator.png'),
+    ('Photoshop',        'Adobe_Photoshop_CC.png'),
+    ('After Effects',    'After_Effects.svg'),
+    ('Premiere',         'Premiere.svg'),
+]
 
-def _logo(label):
-    ic = _bylabel[label]
-    return (f'<span title="{label}" aria-label="{label}" role="img" '
-            f'style="width:44px;height:44px;border-radius:11px;overflow:hidden;'
-            f'border:2px solid #14110F;display:block;flex:0 0 auto;line-height:0">'
-            f'<svg width="100%" height="100%" viewBox="{ic["vb"]}" '
-            f'preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
-            f'{ic["inner"]}</svg></span>')
-
-# Google Antigravity：待使用者提供 logo，先以文字標籤佔位
-_ANTIGRAVITY = (
-    '<span title="Google Antigravity" aria-label="Google Antigravity" role="img" '
-    'style="height:44px;padding:0 13px;border-radius:11px;background:#FFFFFF;'
-    'border:2px solid #14110F;display:grid;place-items:center;flex:0 0 auto;'
-    'font-family:\'Space Grotesk\',sans-serif;font-size:12.5px;font-weight:700;'
-    'white-space:nowrap">Antigravity</span>')
+def _logo(label, fn):
+    return (f'<img src="./assets/logos/opt/{fn}" alt="{label}" title="{label}" '
+            f'loading="lazy" decoding="async" '
+            f'style="width:100%;height:auto;aspect-ratio:1;object-fit:contain;display:block" />')
 
 _skills_block = (
-    '<div style="min-width:0;margin-top:22px">'
-    '<p style="margin:0 0 16px;font-family:\'IBM Plex Mono\',monospace;font-size:11px;'
+    '<div style="min-width:0;margin-top:18px">'
+    '<p style="margin:0 0 12px;font-family:\'IBM Plex Mono\',monospace;font-size:11px;'
     'letter-spacing:.18em;color:#6B635B">SKILLS</p>'
-    '<div style="display:flex;flex-wrap:wrap;gap:10px">'
-    + ''.join(_logo(k) for k in _ORDER) + _ANTIGRAVITY +
+    '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:9px;max-width:250px">'
+    + ''.join(_logo(l, f) for l, f in _SKILLS) +
     '</div></div>')
-
-# 把 SKILLS 併為四欄容器的第四個直接子元素
-def _close_of(html, open_idx):
-    """回傳 open_idx 這個 <div> 對應的 </div> 結束位置（含標籤）"""
-    depth = 0
-    i = open_idx
-    while i < len(html):
-        nd = html.find('<div', i)
-        cd = html.find('</div>', i)
-        if cd == -1:
-            break
-        if nd != -1 and nd < cd:
-            depth += 1
-            i = nd + 4
-        else:
-            depth -= 1
-            i = cd + 6
-            if depth == 0:
-                return i
-    raise ValueError('找不到對應的 </div>')
 
 body = body.replace(
     'display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));'
     'gap:clamp(18px,2.2vw,32px)',
     'display:grid;gap:clamp(18px,2.2vw,28px)" data-grid="creds', 1)
 
+def _close_of(html, open_idx):
+    """回傳 open_idx 這個 <div> 對應的 </div> 結束位置（含標籤）"""
+    depth, i = 0, open_idx
+    while i < len(html):
+        nd, cd = html.find('<div', i), html.find('</div>', i)
+        if cd == -1:
+            break
+        if nd != -1 and nd < cd:
+            depth += 1; i = nd + 4
+        else:
+            depth -= 1; i = cd + 6
+            if depth == 0:
+                return i
+    raise ValueError('找不到對應的 </div>')
+
 _lg = body.index('LANGUAGES</p>')
 _col_open = body.rindex('<div style="min-width:0">', 0, _lg)
 _col_close = _close_of(body, _col_open)
 body = body[:_col_close - len('</div>')] + _skills_block + body[_col_close - len('</div>'):]
+
+# LANGUAGES 三列行距縮小
+body = body.replace('LANGUAGES</p> <div style="display:flex;flex-direction:column;gap:16px">',
+                    'LANGUAGES</p> <div style="display:flex;flex-direction:column;gap:16px">')
+_lgblk = body.index('LANGUAGES</p>')
+_seg_end = body.index('</div>', body.index('英文', _lgblk))
+_seg = body[_lgblk:_seg_end]
+_seg = _seg.replace('flex-direction:column;gap:16px', 'flex-direction:column;gap:9px')
+_seg = _seg.replace('display:flex;align-items:center;gap:12px', 'display:flex;align-items:center;gap:10px')
+body = body[:_lgblk] + _seg + body[_seg_end:]
 
 # ===== 本輪 D：摘要文案與 hover =====
 # D1. Say hello 套用與信箱相同的逐字動畫
