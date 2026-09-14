@@ -135,7 +135,9 @@
     if (!t) return;
     const fn = actions[t.dataset.on];
     if (!fn) return;
-    if (t.tagName !== 'A' || t.getAttribute('href') === '#') e.preventDefault();
+    // 若實際點到的是真正的連結（例如 modal 內的「開啟網頁」），不要擋掉它的預設行為
+    const realLink = e.target.closest('a[href]:not([href="#"])');
+    if (!realLink && (t.tagName !== 'A' || t.getAttribute('href') === '#')) e.preventDefault();
     fn({ currentTarget: t, target: e.target });
   });
   document.addEventListener('click', e => {

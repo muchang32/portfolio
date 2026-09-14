@@ -460,12 +460,8 @@ body = body.replace('>→</button>',
 # A5. AI Lab 卡片 hover：上浮 + 微放大（規則位於 hover_css）
 hover_css = hover_css.replace('transform:translateY(-4px)', 'transform:translateY(-4px) scale(1.04)')
 
-# A6. What I Do 卡片 hover：比照 Writing 卡片
-body = re.sub(
-    r'(background:#[0-9A-Fa-f]{6};border:2px solid #14110F;border-radius:20px;'
-    r'box-shadow:5px 5px 0 #14110F;padding:24px 20px 20px)"',
-    r'\1;transition:transform .16s ease,box-shadow .16s ease" data-hv="skillcard"',
-    body)
+# A6. What I Do 卡片 hover 改以 CSS 結構選擇器處理（見 head 的樣式區）
+
 
 # ===== 本輪 B：信箱 hover 逐字動畫 =====
 EMAIL = 'mu.chang32@gmail.com'
@@ -486,21 +482,22 @@ _bylabel = {l['label']: l for l in _logos}
 def _logo(label):
     ic = _bylabel[label]
     return (f'<span title="{label}" aria-label="{label}" role="img" '
-            f'style="width:40px;height:40px;border-radius:11px;background:#FFFFFF;'
-            f'border:2px solid #14110F;display:grid;place-items:center;flex:0 0 auto">'
-            f'<svg width="22" height="22" viewBox="{ic["vb"]}" aria-hidden="true">'
+            f'style="width:44px;height:44px;border-radius:11px;overflow:hidden;'
+            f'border:2px solid #14110F;display:block;flex:0 0 auto;line-height:0">'
+            f'<svg width="100%" height="100%" viewBox="{ic["vb"]}" '
+            f'preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
             f'{ic["inner"]}</svg></span>')
 
 # Google Antigravity：待使用者提供 logo，先以文字標籤佔位
 _ANTIGRAVITY = (
     '<span title="Google Antigravity" aria-label="Google Antigravity" role="img" '
-    'style="height:40px;padding:0 13px;border-radius:11px;background:#FFFFFF;'
+    'style="height:44px;padding:0 13px;border-radius:11px;background:#FFFFFF;'
     'border:2px solid #14110F;display:grid;place-items:center;flex:0 0 auto;'
     'font-family:\'Space Grotesk\',sans-serif;font-size:12.5px;font-weight:700;'
     'white-space:nowrap">Antigravity</span>')
 
 _skills_block = (
-    '<div style="min-width:0">'
+    '<div style="min-width:0;margin-top:22px">'
     '<p style="margin:0 0 16px;font-family:\'IBM Plex Mono\',monospace;font-size:11px;'
     'letter-spacing:.18em;color:#6B635B">SKILLS</p>'
     '<div style="display:flex;flex-wrap:wrap;gap:10px">'
@@ -535,7 +532,40 @@ body = body.replace(
 _lg = body.index('LANGUAGES</p>')
 _col_open = body.rindex('<div style="min-width:0">', 0, _lg)
 _col_close = _close_of(body, _col_open)
-body = body[:_col_close] + _skills_block + body[_col_close:]
+body = body[:_col_close - len('</div>')] + _skills_block + body[_col_close - len('</div>'):]
+
+# ===== 本輪 D：摘要文案與 hover =====
+# D1. Say hello 套用與信箱相同的逐字動畫
+body = body.replace(
+    '<span style="font-family:\'Space Grotesk\',sans-serif;font-weight:700;color:#FFC400">'
+    'Say hello with me ☺</span>',
+    '<span class="mailfx" style="font-family:\'Space Grotesk\',sans-serif;font-weight:700;color:#FFC400">'
+    + ''.join(f'<span style="--i:{i}">{c}</span>' if c != ' ' else '<span style="--i:%d">&nbsp;</span>' % i
+              for i, c in enumerate('Say hello with me ☺'))
+    + '</span>', 1)
+
+# D2. Aicast 摘要：拿掉反思，改以成果吸引點擊
+body = body.replace(
+    '製作一本多角色有聲書，需要配音員、錄音室與大量協調成本。Aicast 用三項 AI 技術把這件事自動化'
+    '——但真正讓我學到最多的，是它最終在商業上並不成功。',
+    '製作一本多角色有聲書，需要配音員、錄音室與大量協調成本。Aicast 用三項 AI 技術把這件事自動化：'
+    '8 位 AI 配音員演繹 42 種聲音，多人配音有聲書的製作時間最多減少 90%。', 1)
+body = re.sub(
+    r'<p[^>]*>這個案例包含我如何在資源有限的團隊中做取捨.*?是兩件事。</strong></p>',
+    '<p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">'
+    '我負責需求定義、UI 規劃、測試驗證與跨職能外包管理，並主導申請 '
+    '<strong>2025 iF 設計獎</strong>。</p>', body, count=1, flags=re.S)
+
+# D3. 安否通摘要：反思移到內頁，首頁只留主張
+body = re.sub(
+    r'<p[^>]*>這個案例包含我如何在兩人團隊與三個月期程下切出 P0 範圍.*?寫進文件第一頁。</strong></p>',
+    '<p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">'
+    '兩人團隊提案，通過文件初審並進入<strong>數位發展部徵案決選</strong>。'
+    '我負責問題定義、流程設計、介面設計與 P0 範圍切分。</p>', body, count=1, flags=re.S)
+
+# D4. 要不要來一杯：移除該標籤
+body = body.replace('data-tags="團購|使用者測試|唯一有真實其他使用者的產品"',
+                    'data-tags="團購|使用者測試|多人協作"', 1)
 
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
@@ -580,8 +610,8 @@ doc = f"""<!DOCTYPE html>
 {hover_css}
 [hidden]{{display:none !important}}
 /* Credentials 四區：桌機 4 欄、平板 2 欄、手機 1 欄 */
-[data-grid="creds"]{{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media (max-width:1080px){{[data-grid="creds"]{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}
+[data-grid="creds"]{{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}}
+@media (max-width:900px){{[data-grid="creds"]{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}
 @media (max-width:560px){{[data-grid="creds"]{{grid-template-columns:1fr}}}}
 /* 信箱 hover：逐字由上往下重新落位 */
 .mailfx span{{display:inline-block;will-change:transform}}
@@ -596,7 +626,9 @@ doc = f"""<!DOCTYPE html>
 @media (prefers-reduced-motion: reduce){{.mailfx:hover span{{animation:none}}}}
 [data-copybtn]:hover{{transform:scale(1.12);color:#6D4AFF}}
 [data-copybtn]:active{{transform:scale(.94)}}
-[data-hv="skillcard"]:hover{{transform:translate(-3px,-3px);box-shadow:8px 8px 0 #14110F}}
+/* What I Do：四張卡片結構不同，改用屬性選擇器一次涵蓋 */
+#skills div[style*="border:2px solid #14110F"]{{transition:transform .16s ease,box-shadow .16s ease}}
+#skills div[style*="border:2px solid #14110F"]:hover{{transform:translate(-3px,-3px);box-shadow:8px 8px 0 #14110F}}
 /* 「已解決的問題」hover 對話框 */
 .tip{{position:relative;border-bottom:2px dotted #14110F;cursor:help;outline:none}}
 .tip-bubble{{position:absolute;left:0;bottom:calc(100% + 14px);transform:translateY(4px);
