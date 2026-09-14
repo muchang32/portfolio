@@ -313,7 +313,13 @@ _copy_icon = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="none" strok
               'stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
               '<rect x="9" y="9" width="12" height="12" rx="2.5"/>'
               '<path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>')
-body = re.sub(r'(<button[^>]*data-on="copyEmail"[^>]*)(>)',
+body = re.sub(
+    r'<button data-on="copyEmail" style="[^"]*"(?:data-hv="h\d+")?',
+    '<button data-on="copyEmail" data-copybtn style="border:0;background:none;padding:8px;'
+    'color:#14110F;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;'
+    'line-height:0;transition:transform .16s ease,color .16s ease"',
+    body)
+body = re.sub(r'(<button data-on="copyEmail"[^>]*)(>)',
               r'\1 aria-label="複製 Email" title="複製 Email"\2', body)
 _check_icon = ('<svg data-copy-done hidden width="20" height="20" viewBox="0 0 24 24" fill="none" '
                'stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" '
@@ -420,6 +426,87 @@ _cb = body.index('<div style="display:flex;flex-direction:column;gap:18px">', _c
 _ins = body.index('>', _cb) + 1
 body = body[:_ins] + _comp + body[_ins:]
 
+# ===== 本輪 A：提示、箭頭、hover、競賽 =====
+# A1. ∞ 的原生 title 會跟自訂對話框重複出現，移除
+body = body.replace(' title="累積修復 200+ 個問題，還在繼續"', '')
+body = body.replace('title="累積修復 200+ 個問題，還在繼續"', '')
+
+# A2. 公民科技協力場：移除「閱讀完整案例」連結
+body = body.replace(
+    '<a href="./case/anfu.html" style="color:#6D4AFF;font-weight:700">閱讀完整案例 →</a>', '', 1)
+
+# A3. COMPETITIONS：年份移到標題右方
+def _comp_head(m):
+    year, title = m.group(1), m.group(2)
+    return (f'<div style="display:flex;align-items:baseline;gap:10px;justify-content:space-between;margin:0 0 5px">'
+            f'<h3 style="margin:0;font-size:15px;font-weight:900;line-height:1.6">{title}</h3>'
+            f'<span style="font-family:\'IBM Plex Mono\',monospace;font-size:12px;color:#6B635B;'
+            f'flex:0 0 auto">{year}</span></div>')
+body = re.sub(
+    r'<p style="margin:0 0 4px;font-family:\'IBM Plex Mono\',monospace;font-size:12px;color:#6B635B">(\d{4})</p>\s*'
+    r'<h3 style="margin:0 0 5px;font-size:15px;font-weight:900;line-height:1.6">([^<]+)</h3>',
+    _comp_head, body)
+
+# A4. Writing 箭頭改粗線 SVG
+_ARROW = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#14110F" '
+          'stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+          '<path d="M{d1}"/><path d="M{d2}"/></svg>')
+body = body.replace('>←</button>',
+    '>' + _ARROW.format(d1='19 12H5', d2='12 19l-7-7 7-7') + '</button>', 1)
+body = body.replace('>→</button>',
+    '>' + _ARROW.format(d1='5 12h14', d2='12 5l7 7-7 7') + '</button>', 1)
+
+# A5. AI Lab 卡片 hover：上浮 + 微放大（規則位於 hover_css）
+hover_css = hover_css.replace('transform:translateY(-4px)', 'transform:translateY(-4px) scale(1.04)')
+
+# A6. What I Do 卡片 hover：比照 Writing 卡片
+body = body.replace(
+    'background:#DDEEFF;border:2px solid #14110F;border-radius:20px;box-shadow:5px 5px 0 #14110F;padding:24px 20px 20px"',
+    'background:#DDEEFF;border:2px solid #14110F;border-radius:20px;box-shadow:5px 5px 0 #14110F;'
+    'padding:24px 20px 20px;transition:transform .16s ease,box-shadow .16s ease" data-hv="skillcard"')
+
+# ===== 本輪 B：信箱 hover 逐字動畫 =====
+EMAIL = 'mu.chang32@gmail.com'
+_spans = ''.join(
+    f'<span style="--i:{i}">{c}</span>' for i, c in enumerate(EMAIL))
+body = re.sub(
+    r'(<a href="mailto:mu\.chang32@gmail\.com"[^>]*style="[^"]*)(")([^>]*>)' + re.escape(EMAIL) + r'(</a>)',
+    lambda m: m.group(1) + ';' + m.group(2) + ' class="mailfx"' + m.group(3) + _spans + m.group(4),
+    body)
+
+# ===== 本輪 C：LANGUAGES 下方新增 SKILLS（工具 logo）=====
+import json as _json
+_icons = _json.loads(pathlib.Path('build/icons.json').read_text(encoding='utf-8'))
+_ORDER = ['claude', 'googlegemini', 'openai', 'figma',
+          'adobeillustrator', 'adobephotoshop', 'adobeaftereffects', 'adobepremierepro']
+
+def _logo(slug):
+    ic = _icons[slug]
+    return (f'<span title="{ic["label"]}" aria-label="{ic["label"]}" role="img" '
+            f'style="width:40px;height:40px;border-radius:11px;background:#FFFFFF;'
+            f'border:2px solid #14110F;display:grid;place-items:center;flex:0 0 auto">'
+            f'<svg width="20" height="20" viewBox="0 0 24 24" fill="#14110F" aria-hidden="true">'
+            f'<path d="{ic["d"]}"/></svg></span>')
+
+_ANTIGRAVITY = ('<span title="Google Antigravity" aria-label="Google Antigravity" role="img" '
+                'style="height:40px;padding:0 13px;border-radius:11px;background:#FFFFFF;'
+                'border:2px solid #14110F;display:grid;place-items:center;flex:0 0 auto;'
+                'font-family:\'Space Grotesk\',sans-serif;font-size:12.5px;font-weight:700;'
+                'white-space:nowrap">Antigravity</span>')
+
+_skills_block = (
+    '<div style="min-width:0;margin-top:28px">'
+    '<p style="margin:0 0 16px;font-family:\'IBM Plex Mono\',monospace;font-size:11px;'
+    'letter-spacing:.18em;color:#6B635B">SKILLS</p>'
+    '<div style="display:flex;flex-wrap:wrap;gap:10px">'
+    + ''.join(_logo(k) for k in _ORDER) + _ANTIGRAVITY +
+    '</div></div>')
+
+# 插在 LANGUAGES 區塊結尾（該欄的最後一個 </div> 之前）
+_lg = body.index('LANGUAGES</p>')
+_col_end = body.index('</div>\n        </div>', _lg)
+body = body[:_col_end] + _skills_block + body[_col_end:]
+
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
 <meta name="description" content="10 年設計積累 × PM 實戰 × AI 工具應用。2025 iF 設計獎、iPAS AI 應用規劃師。從需求分析到原型實作，都能自己動手。" />
@@ -462,21 +549,33 @@ doc = f"""<!DOCTYPE html>
 <style>
 {hover_css}
 [hidden]{{display:none !important}}
+/* 信箱 hover：逐字由上往下重新落位 */
+.mailfx span{{display:inline-block;will-change:transform}}
+.mailfx:hover span{{animation:mailDrop .52s cubic-bezier(.22,.68,.3,1) both;
+ animation-delay:calc(var(--i) * 26ms)}}
+@keyframes mailDrop{{
+ 0%{{transform:translateY(0);opacity:1}}
+ 42%{{transform:translateY(-115%);opacity:0}}
+ 43%{{transform:translateY(115%);opacity:0}}
+ 100%{{transform:translateY(0);opacity:1}}
+}}
+@media (prefers-reduced-motion: reduce){{.mailfx:hover span{{animation:none}}}}
+[data-copybtn]:hover{{transform:scale(1.12);color:#6D4AFF}}
+[data-copybtn]:active{{transform:scale(.94)}}
+[data-hv="skillcard"]:hover{{transform:translate(-3px,-3px);box-shadow:8px 8px 0 #14110F}}
 /* 「已解決的問題」hover 對話框 */
 .tip{{position:relative;border-bottom:2px dotted #14110F;cursor:help;outline:none}}
-.tip-bubble{{position:absolute;left:50%;bottom:calc(100% + 14px);transform:translateX(-50%) translateY(4px);
+.tip-bubble{{position:absolute;left:0;bottom:calc(100% + 14px);transform:translateY(4px);
  width:max-content;max-width:min(300px,74vw);background:#FFFFFF;color:#14110F;font-size:13px;
  line-height:1.75;text-align:left;white-space:normal;font-weight:700;
  padding:12px 16px;border:2px solid #14110F;border-radius:12px;box-shadow:4px 4px 0 #14110F;
  opacity:0;visibility:hidden;transition:opacity .16s ease,transform .16s ease;z-index:40;pointer-events:none}}
-.tip-bubble::after{{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);
+.tip-bubble::after{{content:"";position:absolute;left:22px;top:100%;
  border:9px solid transparent;border-top-color:#14110F}}
-.tip-bubble::before{{content:"";position:absolute;left:50%;top:calc(100% - 2px);transform:translateX(-50%);
+.tip-bubble::before{{content:"";position:absolute;left:22px;top:calc(100% - 3px);
  border:9px solid transparent;border-top-color:#FFFFFF;z-index:1}}
-.tip:hover .tip-bubble,.tip:focus .tip-bubble{{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}}
-@media (max-width:640px){{.tip-bubble{{left:0;transform:translateX(0) translateY(4px)}}
- .tip-bubble::after,.tip-bubble::before{{left:28px}}
- .tip:hover .tip-bubble,.tip:focus .tip-bubble{{transform:translateX(0) translateY(0)}}}}
+.tip:hover .tip-bubble,.tip:focus .tip-bubble{{opacity:1;visibility:visible;transform:translateY(0)}}
+
 /* 平面作品網格：桌機 3 欄、手機 2 欄（覆寫 inline style） */
 [data-grid="works"]{{grid-template-columns:repeat(5,minmax(0,1fr)) !important}}
 @media (max-width:640px){{[data-grid="works"]{{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}}}
