@@ -73,22 +73,6 @@ def _cover(m, _i=[0]):
 body = _ph.sub(_cover, body)
 
 # ---- AI Lab 第一張卡：接上實際截圖 ----
-_lab_ph = re.compile(
-    r'(<div data-href="https://muchang32\.github\.io/udn-order/"[^>]*>\s*)'
-    r'<div style="position:relative;aspect-ratio:16/10;[^"]*"[^>]*>.*?</div>', re.S)
-body = _lab_ph.sub(
-    r'\1<img src="./assets/ai-lab/01-udn-order.jpg" alt="要不要來一杯 點餐系統畫面" '
-    r'loading="lazy" decoding="async" data-hv="h12" '
-    r'style="aspect-ratio:16/10;width:100%;object-fit:cover;border-radius:16px;display:block;'
-    r'transition:transform .16s ease" />',
-    body, count=1)
-
-# ---- 首頁也不出現刊物名稱 ----
-body = body.replace('《聯8達》', '企業內部刊物').replace('「聯8達」', '企業內部刊物')
-body = body.replace('企業內部刊物企業內部刊物', '企業內部刊物')
-
-# ---- AI Lab 首張卡改用新截圖 ----
-body = body.replace('./assets/ai-lab/01-udn-order.jpg', './assets/ai-lab/01-udn-order-2.jpg')
 
 # ---- Design Background 右欄：接上 19 張平面作品 ----
 # 設計已排好 7 個 2:1 寬格與 12 個 1:1 方格；依比例對應填入，保留原本的排列節奏
@@ -567,20 +551,34 @@ body = re.sub(
 body = body.replace('data-tags="團購|使用者測試|唯一有真實其他使用者的產品"',
                     'data-tags="團購|使用者測試|多人協作"', 1)
 
+# ---- 首頁也不出現刊物名稱 ----
+body = body.replace('《聯8達》', '企業內部刊物').replace('「聯8達」', '企業內部刊物')
+body = body.replace('企業內部刊物企業內部刊物', '企業內部刊物')
+
 # ===== 本輪 F：接上四張封面 =====
 def _img(src, alt, ratio, extra=''):
     return (f'<img src="{src}" alt="{alt}" loading="lazy" decoding="async"{extra} '
             f'style="aspect-ratio:{ratio};width:100%;max-width:100%;min-width:0;'
             f'object-fit:cover;border-radius:16px;display:block" />')
 
-# F1. AI Lab：我的財務管家
-_fin = body.index('data-href="https://miyu0603.github.io/my-finance/"')
-_ph_start = body.index('<div style="position:relative;aspect-ratio:16/10;', _fin)
-_ph_end = _close_of(body, _ph_start)
-body = (body[:_ph_start]
-        + _img('./assets/ai-lab/05-my-finance.jpg', '我的財務管家 介面', '16/10',
-               ' data-hv="h16"')
-        + body[_ph_end:])
+# F1. AI Lab：逐張把有素材的卡片接上截圖（佔位框以深度配對取代，並標示提示文字）
+_LAB_COVERS = [
+    ('https://muchang32.github.io/udn-order/',              '01-udn-order-2.jpg',   '要不要來一杯 點餐系統畫面'),
+    ('https://miyu0603.github.io/my-finance/',              '05-my-finance.jpg',    '我的財務管家 介面'),
+    ('https://muchang32.github.io/ai-treasure-chest/',      '06-treasure-chest.jpg','AI 精選寶箱 介面'),
+    ('https://muchang32.github.io/winter-fuji-hakone-2026/','08-winter-fuji.jpg',   '冬富士之旅 2026 介面'),
+]
+for _href, _file, _alt in _LAB_COVERS:
+    _anchor = f'data-href="{_href}"'
+    if _anchor not in body:
+        raise SystemExit(f'找不到 AI Lab 卡片：{_href}')
+    _c = body.index(_anchor)
+    _ph = body.index('<div style="position:relative;aspect-ratio:16/10;', _c)
+    _end = _close_of(body, _ph)
+    # 佔位框上的 hover 標記必須跟著移轉，否則該卡會失去 hover 效果
+    _hv = re.search(r'data-hv="(\w+)"', body[_ph:_end])
+    _extra = f' data-hv="{_hv.group(1)}"' if _hv else ''
+    body = body[:_ph] + _img(f'./assets/ai-lab/{_file}', _alt, '16/10', _extra) + body[_end:]
 
 # F2. 精選案例 Aicast：主圖 + iF 官方獎章（用深度配對取代佔位框，避免吃掉相鄰結構）
 _ai = body.index('Aicast 有聲內容製作平台')
