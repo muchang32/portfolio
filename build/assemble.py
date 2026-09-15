@@ -567,6 +567,25 @@ body = re.sub(
 body = body.replace('data-tags="團購|使用者測試|唯一有真實其他使用者的產品"',
                     'data-tags="團購|使用者測試|多人協作"', 1)
 
+# ===== 本輪 E：聯絡區加入 LinkedIn =====
+_LINKEDIN = 'https://www.linkedin.com/in/shi-yi-chang/'
+_li_icon = ('<svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
+            '<path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67'
+            'H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43'
+            'a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77'
+            'C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73'
+            'C24 .77 23.2 0 22.22 0z"/></svg>')
+_li_btn = (f'<a href="{_LINKEDIN}" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn" '
+           f'style="background:#FFFFFF;color:#14110F;border-radius:999px;padding:15px 22px;'
+           f'display:inline-flex;align-items:center;gap:9px;font-family:\'IBM Plex Mono\',monospace;'
+           f'font-weight:500;font-size:clamp(14px,1.3vw,16px);text-decoration:none;'
+           f'transition:transform .15s ease" data-hv="li">{_li_icon}LinkedIn</a>')
+
+# 放在聯絡區「複製 Email」之後
+_c = body.index('id="contact"')
+_btn_end = body.index('</button>', body.index('data-on="copyEmail"', _c)) + len('</button>')
+body = body[:_btn_end] + _li_btn + body[_btn_end:]
+
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
 <meta name="description" content="10 年設計積累 × PM 實戰 × AI 工具應用。2025 iF 設計獎、iPAS AI 應用規劃師。從需求分析到原型實作，都能自己動手。" />
@@ -625,6 +644,7 @@ doc = f"""<!DOCTYPE html>
 }}
 @media (prefers-reduced-motion: reduce){{.mailfx:hover span{{animation:none}}}}
 [data-copybtn]:hover{{transform:scale(1.12);color:#6D4AFF}}
+[data-hv="li"]:hover{{transform:translateY(-2px);color:#6D4AFF}}
 [data-copybtn]:active{{transform:scale(.94)}}
 /* What I Do：四張卡片結構不同，改用屬性選擇器一次涵蓋 */
 #skills div[style*="border:2px solid #14110F"]{{transition:transform .16s ease,box-shadow .16s ease}}
