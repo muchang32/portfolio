@@ -567,24 +567,44 @@ body = re.sub(
 body = body.replace('data-tags="團購|使用者測試|唯一有真實其他使用者的產品"',
                     'data-tags="團購|使用者測試|多人協作"', 1)
 
-# ===== 本輪 E：聯絡區加入 LinkedIn =====
-_LINKEDIN = 'https://www.linkedin.com/in/shi-yi-chang/'
-_li_icon = ('<svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
-            '<path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67'
-            'H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43'
-            'a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77'
-            'C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73'
-            'C24 .77 23.2 0 22.22 0z"/></svg>')
-_li_btn = (f'<a href="{_LINKEDIN}" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn" '
-           f'style="background:#FFFFFF;color:#14110F;border-radius:999px;padding:15px 22px;'
-           f'display:inline-flex;align-items:center;gap:9px;font-family:\'IBM Plex Mono\',monospace;'
-           f'font-weight:500;font-size:clamp(14px,1.3vw,16px);text-decoration:none;'
-           f'transition:transform .15s ease" data-hv="li">{_li_icon}LinkedIn</a>')
+# ===== 本輪 F：接上四張封面 =====
+def _img(src, alt, ratio, extra=''):
+    return (f'<img src="{src}" alt="{alt}" loading="lazy" decoding="async"{extra} '
+            f'style="aspect-ratio:{ratio};width:100%;object-fit:cover;border-radius:16px;display:block" />')
 
-# 放在聯絡區「複製 Email」之後
-_c = body.index('id="contact"')
-_btn_end = body.index('</button>', body.index('data-on="copyEmail"', _c)) + len('</button>')
-body = body[:_btn_end] + _li_btn + body[_btn_end:]
+# F1. AI Lab：我的財務管家
+_fin = body.index('data-href="https://miyu0603.github.io/my-finance/"')
+_ph_start = body.index('<div style="position:relative;aspect-ratio:16/10;', _fin)
+_ph_end = body.index('</div>', body.index('產品截圖 16:10', _ph_start)) + len('</div>')
+body = (body[:_ph_start]
+        + _img('./assets/ai-lab/05-my-finance.jpg', '我的財務管家 介面', '16/10',
+               ' data-hv="h16"')
+        + body[_ph_end:])
+
+# F2. 精選案例 Aicast：主圖 + iF 官方獎章
+_ai = body.index('Aicast 有聲內容製作平台')
+_ap_start = body.rindex('<div style="aspect-ratio:16/10;border-radius:16px;background:#FFF1C2;', 0, _ai)
+_ap_end = body.index('</div>', body.index('素材待補', _ap_start)) + len('</div>')
+_ap_end = body.index('</div>', _ap_end) + len('</div>')
+body = (body[:_ap_start]
+        + '<div style="position:relative">'
+        + _img('./assets/case/aicast/01.jpg', 'Aicast 有聲內容製作平台 產品畫面', '16/10')
+        + '<img src="./assets/case/aicast/if-award-2025.png" alt="2025 iF Design Award" '
+          'loading="lazy" decoding="async" '
+          'style="position:absolute;right:12px;bottom:12px;width:clamp(78px,16%,118px);height:auto;'
+          'display:block;filter:drop-shadow(0 2px 6px rgba(20,17,15,.28))" />'
+        + '</div>'
+        + body[_ap_end:])
+
+# F3. Design Background 左欄 UI/UX 代表圖
+_ui = body.index('前往 Behance 作品集')
+_up_start = body.rindex('<div style="flex:1;min-height:300px;', 0, _ui)
+_up_end = body.index('</div>', body.index('長邊 1600px', _up_start)) + len('</div>')
+body = (body[:_up_start]
+        + '<img src="./assets/design/uiux/cover.jpg" alt="UI／UX 代表作品" '
+          'loading="lazy" decoding="async" '
+          'style="flex:1;min-height:0;width:100%;object-fit:cover;border-radius:14px;display:block" />'
+        + body[_up_end:])
 
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
