@@ -648,6 +648,8 @@ doc = f"""<!DOCTYPE html>
 <style>
 {hover_css}
 [hidden]{{display:none !important}}
+/* 有 hover 標記就一定有過渡，避免取代元素時漏掉 inline transition */
+[data-hv]{{transition:transform .16s ease,box-shadow .16s ease,color .16s ease}}
 /* Credentials 四區：桌機 4 欄、平板 2 欄、手機 1 欄 */
 [data-grid="creds"]{{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}}
 @media (max-width:900px){{[data-grid="creds"]{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}
@@ -687,6 +689,9 @@ doc = f"""<!DOCTYPE html>
 @media (max-width:640px){{[data-grid="works"]{{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}}}
 :focus-visible{{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}}
 .sr-only{{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}}
+/* 跳過連結：鍵盤 focus 時要看得見，否則等於沒有 */
+a.sr-only:focus{{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:0;clip:auto;
+ padding:12px 20px;background:#14110F;color:#FAF7F0;border-radius:999px;font-weight:700;z-index:300}}
 </style>
 </head>
 <body>
