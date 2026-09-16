@@ -55,6 +55,13 @@ C = [
   ('信箱逐字動畫', h.count('class="mailfx"') == 3),
   ('對話框存在', has('tip-bubble')),
   ('輪播循環', has('writingNext') and has('writingPrev')),
+  # --- style 屬性完整性（字串注入最常見的破壞方式）---
+  ('彈窗面板保有 flex 版面',
+   bool(re.search(r'<div style="[^"]*position:relative;background:#fff;[^"]*'
+                  r'display:flex;flex-direction:column;gap:14px;animation:riseIn', h))),
+  ('沒有被切斷到 data 屬性的樣式',
+   not re.search(r'data-[\w-]+="[^"]*(?:display:flex|flex-direction|animation:|'
+                 r'box-shadow:|border-radius:)[^"]*"', h)),
   ('hover 元素都有過渡', has('[data-hv]{transition:')),
   ('無 React 依賴', absent('unpkg.com') and absent('React.createElement')),
 ]
