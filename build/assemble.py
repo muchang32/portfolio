@@ -566,6 +566,7 @@ _LAB_COVERS = [
     ('https://muchang32.github.io/udn-order/',              '01-udn-order-2.jpg',   '要不要來一杯 點餐系統畫面'),
     ('https://miyu0603.github.io/my-finance/',              '05-my-finance.jpg',    '我的財務管家 介面'),
     ('https://muchang32.github.io/ai-treasure-chest/',      '06-treasure-chest.jpg','AI 精選寶箱 介面'),
+    ('https://miyu0603.github.io/kyushu-2026/',              '07-kyushu.jpg',        '九州縱斷之旅 2026 介面'),
     ('https://muchang32.github.io/winter-fuji-hakone-2026/','08-winter-fuji.jpg',   '冬富士之旅 2026 介面'),
 ]
 for _href, _file, _alt in _LAB_COVERS:

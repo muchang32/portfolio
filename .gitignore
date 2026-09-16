@@ -31,3 +31,10 @@ CLAUDE.md
 # 建置中間檔
 build/_parts.txt
 張詩沂個人網站首頁/.thumbnail
+
+# 設計原始檔（體積大、非網站必要）
+自留編輯檔(勿刪)/
+*.psd
+*.ai
+*.sketch
+*.fig
