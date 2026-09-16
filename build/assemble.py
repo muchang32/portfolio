@@ -607,14 +607,37 @@ body = (body[:_up_start]
           'style="flex:1;min-height:0;width:100%;object-fit:cover;border-radius:14px;display:block" />'
         + body[_up_end:])
 
-# ===== 本輪 G：AI Lab 彈窗顯示封面 =====
+# ===== 本輪 G：AI Lab 彈窗（封面、放大、關閉鍵固定右上）=====
+_mi = body.index('data-if="labOpen"')
+
+# G1. 面板加大並改為 relative，讓關閉鍵可絕對定位
+_panel = ('background:#fff;border:2.5px solid #14110F;border-radius:22px;'
+          'box-shadow:8px 8px 0 #14110F;padding:clamp(24px,3.4vw,38px);max-width:520px;width:100%;')
+assert _panel in body, '找不到彈窗面板樣式'
+body = body.replace(_panel,
+    'position:relative;background:#fff;border:2.5px solid #14110F;border-radius:22px;'
+    'box-shadow:8px 8px 0 #14110F;padding:clamp(22px,3vw,34px);max-width:min(860px,94vw);'
+    'width:100%;max-height:88vh;overflow-y:auto;', 1)
+
+# G2. 關閉鍵移出標題列，固定於面板右上
+_close_btn = ('<button data-on="closeLab" aria-label="關閉" style="flex:0 0 auto;width:38px;height:38px;'
+              'border-radius:50%;border:2px solid #14110F;background:#fff;font-size:17px;'
+              'line-height:1;cursor:pointer">×</button>')
+assert _close_btn in body, '找不到彈窗關閉鍵'
+body = body.replace(_close_btn, '', 1)
+
+_close_fixed = ('<button data-on="closeLab" aria-label="關閉" data-hv="lbclose" '
+                'style="position:absolute;top:14px;right:14px;z-index:2;width:40px;height:40px;'
+                'border-radius:50%;border:2px solid #14110F;background:#fff;font-size:19px;'
+                'line-height:1;cursor:pointer;box-shadow:2px 2px 0 #14110F">×</button>')
+
+# G3. 封面圖插在面板最前，關閉鍵疊在其上
 _modal_img = ('<img data-img-bind="labImg" alt="" hidden '
               'style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:14px;'
-              'border:2px solid #14110F;display:block;margin-bottom:2px" />')
-_h3 = '<div style="display:flex;gap:14px;align-items:flex-start;justify-content:space-between">'
-_mi = body.index('data-if="labOpen"')
-_ins = body.index(_h3, _mi)
-body = body[:_ins] + _modal_img + body[_ins:]
+              'border:2px solid #14110F;display:block" />')
+_h3row = '<div style="display:flex;gap:14px;align-items:flex-start;justify-content:space-between">'
+_ins = body.index(_h3row, _mi)
+body = body[:_ins] + _close_fixed + _modal_img + body[_ins:]
 
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
@@ -676,7 +699,7 @@ doc = f"""<!DOCTYPE html>
 }}
 @media (prefers-reduced-motion: reduce){{.mailfx:hover span{{animation:none}}}}
 [data-copybtn]:hover{{transform:scale(1.12);color:#6D4AFF}}
-[data-hv="li"]:hover{{transform:translateY(-2px);color:#6D4AFF}}
+[data-hv="lbclose"]:hover{{transform:translate(-1px,-1px);box-shadow:3px 3px 0 #14110F}}
 [data-copybtn]:active{{transform:scale(.94)}}
 /* What I Do：四張卡片結構不同，改用屬性選擇器一次涵蓋 */
 #skills div[style*="border:2px solid #14110F"]{{transition:transform .16s ease,box-shadow .16s ease}}

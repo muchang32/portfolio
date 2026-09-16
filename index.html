@@ -104,7 +104,7 @@ a:hover{color:#6D4AFF}
 }
 @media (prefers-reduced-motion: reduce){.mailfx:hover span{animation:none}}
 [data-copybtn]:hover{transform:scale(1.12);color:#6D4AFF}
-[data-hv="li"]:hover{transform:translateY(-2px);color:#6D4AFF}
+[data-hv="lbclose"]:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 #14110F}
 [data-copybtn]:active{transform:scale(.94)}
 /* What I Do：四張卡片結構不同，改用屬性選擇器一次涵蓋 */
 #skills div[style*="border:2px solid #14110F"]{transition:transform .16s ease,box-shadow .16s ease}
@@ -513,10 +513,10 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
   </section>
 
   <div data-on="closeLab" style="position:fixed;inset:0;z-index:90;background:rgba(20,17,15,.55);display:flex;align-items:center;justify-content:center;padding:clamp(16px,4vw,40px)" data-if="labOpen" hidden>
-      <div style="background:#fff;border:2.5px solid #14110F;border-radius:22px;box-shadow:8px 8px 0 #14110F;padding:clamp(24px,3.4vw,38px);max-width:520px;width:100%;display:flex;flex-direction:column;gap:14px;animation:riseIn .25s ease both">
-        <img data-img-bind="labImg" alt="" hidden style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:14px;border:2px solid #14110F;display:block;margin-bottom:2px" /><div style="display:flex;gap:14px;align-items:flex-start;justify-content:space-between">
+      <div style="position:relative;background:#fff;border:2.5px solid #14110F;border-radius:22px;box-shadow:8px 8px 0 #14110F;padding:clamp(22px,3vw,34px);max-width:min(860px,94vw);width:100%;max-height:88vh;overflow-y:auto;display:flex;flex-direction:column;gap:14px;animation:riseIn .25s ease both">
+        <button data-on="closeLab" aria-label="關閉" data-hv="lbclose" style="position:absolute;top:14px;right:14px;z-index:2;width:40px;height:40px;border-radius:50%;border:2px solid #14110F;background:#fff;font-size:19px;line-height:1;cursor:pointer;box-shadow:2px 2px 0 #14110F">×</button><img data-img-bind="labImg" alt="" hidden style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:14px;border:2px solid #14110F;display:block" /><div style="display:flex;gap:14px;align-items:flex-start;justify-content:space-between">
           <h3 style="margin:0;font-size:clamp(20px,2.3vw,26px);font-weight:900;line-height:1.5"><span data-bind="labTitle"></span></h3>
-          <button data-on="closeLab" aria-label="關閉" style="flex:0 0 auto;width:38px;height:38px;border-radius:50%;border:2px solid #14110F;background:#fff;font-size:17px;line-height:1;cursor:pointer">×</button>
+          
         </div>
         <p style="margin:0;font-size:15px;line-height:1.9;color:#2C2620"><span data-bind="labDesc"></span></p>
         <div style="display:flex;flex-wrap:wrap;gap:7px">
