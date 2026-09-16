@@ -634,7 +634,7 @@ _close_fixed = ('<button data-on="closeLab" aria-label="關閉" data-hv="lbclose
 # G3. 封面圖插在面板最前，關閉鍵疊在其上
 _modal_img = ('<img data-img-bind="labImg" alt="" hidden '
               'style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:14px;'
-              'border:2px solid #14110F;display:block" />')
+              'display:block" />')
 _h3row = '<div style="display:flex;gap:14px;align-items:flex-start;justify-content:space-between">'
 _ins = body.index(_h3row, _mi)
 body = body[:_ins] + _close_fixed + _modal_img + body[_ins:]
@@ -707,6 +707,9 @@ doc = f"""<!DOCTYPE html>
 [hidden]{{display:none !important}}
 /* 有 hover 標記就一定有過渡，避免取代元素時漏掉 inline transition */
 [data-hv]{{transition:transform .16s ease,box-shadow .16s ease,color .16s ease}}
+/* 彈窗面板：隱藏捲軸但保留捲動 */
+[data-if="labOpen"] > div{{scrollbar-width:none;-ms-overflow-style:none}}
+[data-if="labOpen"] > div::-webkit-scrollbar{{display:none}}
 /* Credentials 四區：桌機 4 欄、平板 2 欄、手機 1 欄 */
 [data-grid="creds"]{{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}}
 @media (max-width:900px){{[data-grid="creds"]{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}
