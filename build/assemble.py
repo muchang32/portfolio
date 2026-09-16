@@ -639,6 +639,25 @@ _h3row = '<div style="display:flex;gap:14px;align-items:flex-start;justify-conte
 _ins = body.index(_h3row, _mi)
 body = body[:_ins] + _close_fixed + _modal_img + body[_ins:]
 
+# ===== 本輪 H：旅遊系列兩張卡對調，冬富士在前 =====
+# 先改文案：原本冬富士寫「第二次實作、沿用九州版架構」，排到前面會讀起來顛倒。
+# 改為各自獨立描述，不再宣稱先後（內容取自 ai-lab-copy.md）。
+body = body.replace(
+    '同一套行程工具的第二次實作，沿用九州版架構並簡化操作流程。',
+    '冬季富士山與箱根行程，依天候與交通調整安排，並附中日雙語地名對照。')
+
+def _card_span(marker):
+    # rindex 的 end 界限必須容得下整個比對字串，否則會往回找到前一張卡
+    i = body.index(marker)
+    start = body.rindex('<div ', 0, i)
+    return start, _close_of(body, start)
+
+_k_start, _k_end = _card_span('data-href="https://miyu0603.github.io/kyushu-2026/"')
+_f_start, _f_end = _card_span('data-href="https://muchang32.github.io/winter-fuji-hakone-2026/"')
+assert _k_end <= _f_start, '兩張卡不相鄰，取消對調以免破壞結構'
+_kyushu, _between, _fuji = body[_k_start:_k_end], body[_k_end:_f_start], body[_f_start:_f_end]
+body = body[:_k_start] + _fuji + _between + _kyushu + body[_f_end:]
+
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
 <meta name="description" content="10 年設計積累 × PM 實戰 × AI 工具應用。2025 iF 設計獎、iPAS AI 應用規劃師。從需求分析到原型實作，都能自己動手。" />
