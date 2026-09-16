@@ -563,7 +563,7 @@ def _img(src, alt, ratio, extra=''):
 
 # F1. AI Lab：逐張把有素材的卡片接上截圖（佔位框以深度配對取代，並標示提示文字）
 _LAB_COVERS = [
-    ('https://muchang32.github.io/muchang-order/',              '01-udn-order-2.jpg',   '要不要來一杯 點餐系統畫面'),
+    ('https://muchang32.github.io/muchang-order/',              '01-muchang-order.jpg',   '要不要來一杯 點餐系統畫面'),
     ('https://miyu0603.github.io/my-finance/',              '05-my-finance.jpg',    '我的財務管家 介面'),
     ('https://muchang32.github.io/ai-treasure-chest/',      '06-treasure-chest.jpg','AI 精選寶箱 介面'),
     ('https://miyu0603.github.io/kyushu-2026/',              '07-kyushu.jpg',        '九州縱斷之旅 2026 介面'),
