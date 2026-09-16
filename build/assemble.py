@@ -580,6 +580,8 @@ for _href, _file, _alt in _LAB_COVERS:
     _hv = re.search(r'data-hv="(\w+)"', body[_ph:_end])
     _extra = f' data-hv="{_hv.group(1)}"' if _hv else ''
     body = body[:_ph] + _img(f'./assets/ai-lab/{_file}', _alt, '16/10', _extra) + body[_end:]
+    # 卡片帶上封面路徑，彈窗開啟時顯示放大版
+    body = body.replace(_anchor, _anchor + f' data-img="./assets/ai-lab/{_file}"', 1)
 
 # F2. 精選案例 Aicast：主圖 + iF 官方獎章（用深度配對取代佔位框，避免吃掉相鄰結構）
 _ai = body.index('Aicast 有聲內容製作平台')
@@ -604,6 +606,15 @@ body = (body[:_up_start]
           'loading="lazy" decoding="async" '
           'style="flex:1;min-height:0;width:100%;object-fit:cover;border-radius:14px;display:block" />'
         + body[_up_end:])
+
+# ===== 本輪 G：AI Lab 彈窗顯示封面 =====
+_modal_img = ('<img data-img-bind="labImg" alt="" hidden '
+              'style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:14px;'
+              'border:2px solid #14110F;display:block;margin-bottom:2px" />')
+_h3 = '<div style="display:flex;gap:14px;align-items:flex-start;justify-content:space-between">'
+_mi = body.index('data-if="labOpen"')
+_ins = body.index(_h3, _mi)
+body = body[:_ins] + _modal_img + body[_ins:]
 
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
