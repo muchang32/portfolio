@@ -563,7 +563,7 @@ def _img(src, alt, ratio, extra=''):
 
 # F1. AI Lab：逐張把有素材的卡片接上截圖（佔位框以深度配對取代，並標示提示文字）
 _LAB_COVERS = [
-    ('https://muchang32.github.io/udn-order/',              '01-udn-order-2.jpg',   '要不要來一杯 點餐系統畫面'),
+    ('https://muchang32.github.io/muchang-order/',              '01-udn-order-2.jpg',   '要不要來一杯 點餐系統畫面'),
     ('https://miyu0603.github.io/my-finance/',              '05-my-finance.jpg',    '我的財務管家 介面'),
     ('https://muchang32.github.io/ai-treasure-chest/',      '06-treasure-chest.jpg','AI 精選寶箱 介面'),
     ('https://miyu0603.github.io/kyushu-2026/',              '07-kyushu.jpg',        '九州縱斷之旅 2026 介面'),
@@ -645,6 +645,11 @@ body = body[:_ins] + _close_fixed + _modal_img + body[_ins:]
 body = body.replace(
     '同一套行程工具的第二次實作，沿用九州版架構並簡化操作流程。',
     '冬季富士山與箱根行程，依天候與交通調整安排，並附中日雙語地名對照。')
+# 九州是系列第一版，脈絡寫在它身上（冬富士雖然排在前面，這樣讀起來仍通順）
+body = body.replace(
+    '自助旅行的行程規劃與離線查閱工具，依日程自動排列景點與交通。',
+    '自助旅行的行程規劃與離線查閱工具，依日程自動排列景點與交通。'
+    '這是系列的第一版，冬富士沿用了同一套架構並簡化操作流程。')
 
 def _card_span(marker):
     # rindex 的 end 界限必須容得下整個比對字串，否則會往回找到前一張卡
