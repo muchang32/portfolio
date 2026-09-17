@@ -471,9 +471,12 @@ _SKILLS = [
 ]
 
 def _logo(label, fn):
-    return (f'<img src="./assets/logos/opt/{fn}" alt="{label}" title="{label}" '
+    # 統一容器：自帶色底的 logo 會填滿，透明底的 logo 也因此有可見邊界
+    return (f'<span title="{label}" style="display:block;aspect-ratio:1;border-radius:11px;'
+            f'overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)">'
+            f'<img src="./assets/logos/opt/{fn}" alt="{label}" '
             f'loading="lazy" decoding="async" '
-            f'style="width:100%;height:auto;aspect-ratio:1;object-fit:contain;display:block" />')
+            f'style="width:100%;height:100%;object-fit:contain;display:block" /></span>')
 
 _skills_block = (
     '<div style="min-width:0;margin-top:18px">'
