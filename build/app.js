@@ -209,7 +209,7 @@
 
     if (reduce) return;   // 關掉動態效果時就不播
 
-    const SEQ = [0, 1, 0, 1];   // 2 秒一顆，共 8 秒
+    const SEQ = [0, 1, 0, 1, 0, 1, 0, 1];   // 1 秒一顆，共 8 秒
     let step = 0;
     const run = () => {
       if (stopped) return;
@@ -217,7 +217,7 @@
       if (step >= SEQ.length) { stopped = true; return; }
       chips[SEQ[step]].classList.add('cued');
       step += 1;
-      timer = setTimeout(run, 2000);
+      timer = setTimeout(run, 1000);
     };
 
     // IntersectionObserver 與 scroll 事件在部分內嵌／預覽環境收不到，

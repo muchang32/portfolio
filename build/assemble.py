@@ -59,9 +59,9 @@ assert _n == 2, f'預期移除 2 個 #design 錨點，實際 {_n}'
 # ---- About 轉職鏈：平面設計與 UI / UX 掛上作品集外連 ----
 _ARC = [
     ('平面設計', 'https://www.cakeresume.com/me/sandy06032/portfolios', 'tip-graphic',
-     '平面設計作品集'),
+     '前往平面設計作品集'),
     ('UI / UX', 'https://www.behance.net/changmu', 'tip-uiux',
-     'UI / UX 作品集'),
+     '前往 UI / UX 作品集'),
 ]
 for _label, _href, _id, _desc in _ARC:
     _chip = ('<span style="background:#E8E4DC;border-radius:999px;padding:8px 18px;'

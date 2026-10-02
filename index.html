@@ -304,9 +304,9 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
       </div>
 
       <div data-arc style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin-bottom:clamp(30px,4vw,50px)">
-        <a class="tip tip-link" href="https://www.cakeresume.com/me/sandy06032/portfolios" target="_blank" rel="noopener" aria-describedby="tip-graphic" style="border-radius:999px;padding:8px 18px;font-size:14px;font-weight:700;color:#14110F;text-decoration:none">平面設計<span class="tip-bubble" id="tip-graphic" role="tooltip">平面設計作品集</span></a>
+        <a class="tip tip-link" href="https://www.cakeresume.com/me/sandy06032/portfolios" target="_blank" rel="noopener" aria-describedby="tip-graphic" style="border-radius:999px;padding:8px 18px;font-size:14px;font-weight:700;color:#14110F;text-decoration:none">平面設計<span class="tip-bubble" id="tip-graphic" role="tooltip">前往平面設計作品集</span></a>
         <span style="font-family:'IBM Plex Mono',monospace;color:#9E968B">→</span>
-        <a class="tip tip-link" href="https://www.behance.net/changmu" target="_blank" rel="noopener" aria-describedby="tip-uiux" style="border-radius:999px;padding:8px 18px;font-size:14px;font-weight:700;color:#14110F;text-decoration:none">UI / UX<span class="tip-bubble" id="tip-uiux" role="tooltip">UI / UX 作品集</span></a>
+        <a class="tip tip-link" href="https://www.behance.net/changmu" target="_blank" rel="noopener" aria-describedby="tip-uiux" style="border-radius:999px;padding:8px 18px;font-size:14px;font-weight:700;color:#14110F;text-decoration:none">UI / UX<span class="tip-bubble" id="tip-uiux" role="tooltip">前往 UI / UX 作品集</span></a>
         <span style="font-family:'IBM Plex Mono',monospace;color:#9E968B">→</span>
         <span style="background:#FFD34E;border:2px solid #14110F;border-radius:999px;padding:8px 18px;font-size:14px;font-weight:700;box-shadow:3px 3px 0 #14110F">產品管理</span>
       </div>
@@ -944,7 +944,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
 
     if (reduce) return;   // 關掉動態效果時就不播
 
-    const SEQ = [0, 1, 0, 1];   // 2 秒一顆，共 8 秒
+    const SEQ = [0, 1, 0, 1, 0, 1, 0, 1];   // 1 秒一顆，共 8 秒
     let step = 0;
     const run = () => {
       if (stopped) return;
@@ -952,7 +952,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
       if (step >= SEQ.length) { stopped = true; return; }
       chips[SEQ[step]].classList.add('cued');
       step += 1;
-      timer = setTimeout(run, 2000);
+      timer = setTimeout(run, 1000);
     };
 
     // IntersectionObserver 與 scroll 事件在部分內嵌／預覽環境收不到，
