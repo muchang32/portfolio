@@ -11,9 +11,6 @@ LINKS = {
     'behance': 'https://www.behance.net/changmu',
     'resume':  './assets/resume.pdf',
 }
-# Behance：左欄整塊是一個 <a href="#" target="_blank">，用它獨有的 sticky 樣式定位
-body = body.replace('<a href="#" target="_blank" rel="noopener" style="flex:0 1 400px',
-                    f'<a href="{LINKS["behance"]}" target="_blank" rel="noopener" style="flex:0 1 400px', 1)
 # 履歷下載
 body = re.sub(r'href="#"([^>]*?)>(\s*)履歷下載',
               f'href="{LINKS["resume"]}" target="_blank" rel="noopener"\\1>\\2履歷下載', body)
@@ -34,8 +31,32 @@ seg = body[w_start:w_end]
 seg = re.sub(r'href="#"', wire_writing, seg)
 body = body[:w_start] + seg + body[w_end:]
 
-# ---- 移除「待補：Behance 網址」提示 ----
-body = re.sub(r'<[^>]*>\s*待補：Behance 網址\s*</[^>]*>', '', body)
+# ---- 移除 Selected Design Work 整區 ----
+# 設計背景改由 About 的轉職鏈帶出（平面設計 → Cake、UI / UX → Behance），不再單獨陳列作品
+_ds = body.index('<section id="design"')
+_de = body.index('</section>', _ds) + len('</section>')
+assert '<section' not in body[_ds + 8:_de], '設計區內有巢狀 section，不能用第一個 </section> 當界線'
+body = body[:_ds] + body[_de:]
+# 導覽列與手機選單的錨點一起移除，否則會留下指向空白的連結
+body, _n = re.subn(r'<a href="#design"[^>]*>.*?</a>\s*', '', body, flags=re.S)
+assert _n == 2, f'預期移除 2 個 #design 錨點，實際 {_n}'
+
+# ---- About 轉職鏈：平面設計與 UI / UX 掛上作品集外連 ----
+_ARC = [
+    ('平面設計', 'https://www.cakeresume.com/me/sandy06032/portfolios', 'tip-graphic',
+     '品牌識別、活動主視覺與行銷素材，十年累積收錄在 Cake 作品集。'),
+    ('UI / UX', 'https://www.behance.net/changmu', 'tip-uiux',
+     'APP 介面、官網改版與活動頁，完整維護在 Behance。'),
+]
+for _label, _href, _id, _desc in _ARC:
+    _chip = ('<span style="background:#E8E4DC;border-radius:999px;padding:8px 18px;'
+             f'font-size:14px;font-weight:700">{_label}</span>')
+    assert _chip in body, f'找不到轉職鏈節點：{_label}'
+    body = body.replace(_chip, (
+        f'<a class="tip tip-link" href="{_href}" target="_blank" rel="noopener" '
+        f'aria-describedby="{_id}" style="background:#E8E4DC;border-radius:999px;padding:8px 18px;'
+        f'font-size:14px;font-weight:700;color:#14110F;text-decoration:none">{_label} ↗'
+        f'<span class="tip-bubble" id="{_id}" role="tooltip">{_desc}</span></a>'), 1)
 
 # ---- 職涯歷程容器寬度對齊其他區塊 ----
 body = body.replace('max-width:940px', 'max-width:1240px')
@@ -73,90 +94,6 @@ def _cover(m, _i=[0]):
 body = _ph.sub(_cover, body)
 
 # ---- AI Lab 第一張卡：接上實際截圖 ----
-
-# ---- Design Background 右欄：接上 19 張平面作品 ----
-# 設計已排好 7 個 2:1 寬格與 12 個 1:1 方格；依比例對應填入，保留原本的排列節奏
-WIDE   = ['01', '03', '10', '18', '19']
-SQUARE = ['02', '04', '07', '11', '13', '14', '16', '17', '20']
-_w, _sq = iter(WIDE), iter(SQUARE)
-_order = []
-
-def _tile(m):
-    span, ratio = m.group(1) or '', m.group(2)
-    if ratio == '2/1':
-        n = next(_w, None)
-    elif ratio == '1/1':
-        n = next(_sq, None)
-    else:
-        return m.group(0)          # 4/5 是左欄 UI/UX 佔位，不動
-    if n is None:
-        return ''          # 圖不夠時直接移除該格，不要留下灰色佔位框
-    idx = len(_order); _order.append(n)
-    return (f'<button type="button" data-lb="{idx}" aria-label="放大檢視平面設計作品 {idx+1}" '
-            f'style="{span}aspect-ratio:{ratio};padding:0;border:0;background:none;cursor:zoom-in;'
-            f'border-radius:12px;overflow:hidden;display:block">'
-            f'<img src="./assets/design/graphic/_selected/thumb/{n}.jpg" alt="平面設計作品 {idx+1}" '
-            f'loading="lazy" decoding="async" '
-            f'style="width:100%;height:100%;object-fit:cover;display:block" /></button>')
-
-_grid_tile = re.compile(
-    r'<div style="(grid-column:span 2;)?aspect-ratio:(\d/\d);border-radius:12px;background:#F1ECE1;[^"]*">.*?</div>',
-    re.S)
-body = _grid_tile.sub(_tile, body)
-LB_ORDER = _order
-
-# ---- Design Background 版面：兩欄等高、更多作品連結移入網格 ----
-# 1. 外層改為 stretch，左欄取消 sticky（sticky 與等高互斥）
-body = body.replace(
-    'display:flex;flex-wrap:wrap;gap:clamp(16px,2.2vw,28px);align-items:flex-start',
-    'display:flex;flex-wrap:wrap;gap:clamp(16px,2.2vw,28px);align-items:stretch', 1)
-body = body.replace('max-width:440px;min-width:0;position:sticky;top:110px;',
-                    'max-width:440px;min-width:0;', 1)
-
-# 2. 右欄與網格撐滿高度，列與列之間平均分配剩餘空間
-body = body.replace('flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:16px',
-                    'flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:16px', 1)
-body = body.replace(
-    'display:grid;grid-template-columns:repeat(auto-fill,minmax(min(24%,100px),1fr));gap:clamp(8px,1vw,12px)',
-    'display:grid;grid-template-columns:repeat(auto-fill,minmax(min(24%,100px),1fr));'
-    'gap:clamp(8px,1vw,12px);align-content:space-between;flex:1" data-grid="works', 1)
-
-# 3. 「查看更多作品 →」改名並移進網格當最後一格
-_more = re.compile(r'<a href="https://www\.cakeresume\.com/me/sandy06032/portfolios"[^>]*>.*?</a>', re.S)
-_m = _more.search(body)
-if _m:
-    body = body.replace(_m.group(0), '', 1)
-    tile = ('<a href="https://www.cakeresume.com/me/sandy06032/portfolios" target="_blank" rel="noopener" '
-            'style="aspect-ratio:auto;min-height:100%;border-radius:12px;border:2px dashed #14110F;'
-            'display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;'
-            'color:#14110F;font-weight:700;font-size:clamp(11px,1.05vw,13px);background:#FFF6D9;'
-            'text-align:center;padding:6px;line-height:1.5">'
-            '更多<br/>作品 →</a>')
-    # 插在「最後一個作品格」之後（不要抓到後面區塊的 button）
-    last_tile = body.rfind('data-lb=')
-    end = body.index('</button>', last_tile) + len('</button>')
-    body = body[:end] + tile + body[end:]
-
-# ---- 燈箱 ----
-_full = ','.join(f"'./assets/design/graphic/_selected/full/{n}.jpg'" for n in LB_ORDER)
-lightbox = """
-<div id="lb" hidden role="dialog" aria-modal="true" aria-label="作品放大檢視"
-     style="position:fixed;inset:0;z-index:200;background:rgba(20,17,15,.92);display:flex;align-items:center;justify-content:center;padding:clamp(12px,4vw,48px)">
-  <img id="lb-img" alt="" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;display:block" />
-  <div style="position:absolute;left:0;right:0;bottom:clamp(10px,2vw,20px);text-align:center;color:#FAF7F0;font-family:'IBM Plex Mono',monospace;font-size:13px">
-    <span id="lb-count"></span>
-  </div>
-  <button id="lb-prev" type="button" aria-label="上一張" style="position:absolute;left:clamp(6px,2vw,20px);top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:999px;border:2px solid #FAF7F0;background:rgba(20,17,15,.5);color:#FAF7F0;font-size:20px;cursor:pointer">‹</button>
-  <button id="lb-next" type="button" aria-label="下一張" style="position:absolute;right:clamp(6px,2vw,20px);top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:999px;border:2px solid #FAF7F0;background:rgba(20,17,15,.5);color:#FAF7F0;font-size:20px;cursor:pointer">›</button>
-  <button id="lb-close" type="button" aria-label="關閉" style="position:absolute;top:clamp(8px,2vw,18px);right:clamp(8px,2vw,18px);width:44px;height:44px;border-radius:999px;border:2px solid #FAF7F0;background:rgba(20,17,15,.5);color:#FAF7F0;font-size:22px;cursor:pointer">×</button>
-</div>
-<script>window.LB_FULL=[""" + _full + """];</script>
-"""
-body = body + lightbox
-
-# 左欄 UI/UX 佔位改為撐滿（等高之後不要留下空白）
-body = body.replace('aspect-ratio:4/5;border-radius:14px;background:#FFE9A8;',
-                    'flex:1;min-height:300px;border-radius:14px;background:#FFE9A8;', 1)
 
 # ---- 導覽列 logo 換成星芒圖 ----
 body = body.replace(
@@ -206,7 +143,6 @@ body = body.replace(
 # 2. 區塊改名
 body = body.replace('>Learning</h2>', '>Credentials</h2>')
 body = body.replace('>Learning<', '>Credentials<')
-body = body.replace('Design Background', 'Selected Design Work')
 
 # 3. 刪除兩句說明
 body = body.replace(
@@ -600,16 +536,6 @@ body = (body[:_ap_start]
         + '</div>'
         + body[_ap_end:])
 
-# F3. Design Background 左欄 UI/UX 代表圖
-_ui = body.index('前往 Behance 作品集')
-_up_start = body.rindex('<div style="flex:1;min-height:300px;', 0, _ui)
-_up_end = _close_of(body, _up_start)
-body = (body[:_up_start]
-        + '<img src="./assets/design/uiux/cover.jpg" alt="UI／UX 代表作品" '
-          'loading="lazy" decoding="async" '
-          'style="flex:1;min-height:0;width:100%;object-fit:cover;border-radius:14px;display:block" />'
-        + body[_up_end:])
-
 # ===== 本輪 G：AI Lab 彈窗（封面、放大、關閉鍵固定右上）=====
 _mi = body.index('data-if="labOpen"')
 
@@ -746,10 +672,21 @@ doc = f"""<!DOCTYPE html>
 .tip-bubble::before{{content:"";position:absolute;left:22px;top:calc(100% - 3px);
  border:9px solid transparent;border-top-color:#FFFFFF;z-index:1}}
 .tip:hover .tip-bubble,.tip:focus .tip-bubble{{opacity:1;visibility:visible;transform:translateY(0)}}
+/* 轉職鏈上的兩顆外連膠囊：沿用同一顆對話框，但游標、底色與箭頭位置要像連結 */
+.tip-link{{display:inline-block;border-bottom:0;cursor:pointer;
+ transition:background .16s ease,transform .16s ease,box-shadow .16s ease}}
+.tip-link:hover,.tip-link:focus{{background:#FFD34E;transform:translate(-2px,-2px);
+ box-shadow:3px 3px 0 #14110F}}
+.tip-link .tip-bubble{{left:50%;transform:translate(-50%,4px);max-width:min(300px,calc(100vw - 32px))}}
+.tip-link:hover .tip-bubble,.tip-link:focus .tip-bubble{{transform:translate(-50%,0)}}
+.tip-link .tip-bubble::after,.tip-link .tip-bubble::before{{left:50%;margin-left:-9px}}
+/* 觸控裝置沒有 hover，且窄螢幕放不下對話框；留給輔助技術讀、不佔版面 */
+@media (max-width:640px){{
+ .tip-link .tip-bubble{{width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);
+  border:0;box-shadow:none;opacity:1;visibility:visible;transform:none}}
+ .tip-link .tip-bubble::after,.tip-link .tip-bubble::before{{display:none}}
+}}
 
-/* 平面作品網格：桌機 3 欄、手機 2 欄（覆寫 inline style） */
-[data-grid="works"]{{grid-template-columns:repeat(5,minmax(0,1fr)) !important}}
-@media (max-width:640px){{[data-grid="works"]{{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}}}
 :focus-visible{{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}}
 .sr-only{{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}}
 /* 跳過連結：鍵盤 focus 時要看得見，否則等於沒有 */
