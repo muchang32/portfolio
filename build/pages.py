@@ -125,7 +125,7 @@ hr{{border:0;border-top:1px solid #E3DEF2;margin:44px 0}}
 </html>
 """
 
-def build(md_path, out_path, kicker, back_anchor, back_label, prev, nxt, depth, wrap='760px'):
+def build(md_path, out_path, kicker, back_anchor, back_label, prev, nxt, depth, wrap='880px'):
     md = pathlib.Path(md_path).read_text(encoding='utf-8')
     lines = md.split('\n')
     title = lines[0].lstrip('# ').strip()
@@ -147,8 +147,7 @@ ARTS = ['01-auto-image','02-50lan','03-ai-era','04-lovable','05-travel-app']
 for i, a in enumerate(ARTS):
     prev = (f'./{ARTS[i-1]}.html' if i > 0 else f'./{ARTS[-1]}.html', '← 上一篇')
     nxt  = (f'./{ARTS[i+1]}.html' if i < len(ARTS)-1 else f'./{ARTS[0]}.html', '下一篇 →')
-    # 專欄多圖，版面放寬讓截圖看得清楚
-    t = build(f'writing/{a}.md', f'writing/{a}.html', '企業內部刊物專欄', 'writing', '回到專欄', prev, nxt, 1, wrap='880px')
+    t = build(f'writing/{a}.md', f'writing/{a}.html', '企業內部刊物專欄', 'writing', '回到專欄', prev, nxt, 1)
     print('writing/', a, '→', t)
 
 CASES = [('aicast-case-study.md','case/aicast.html','Aicast'), ('anfu-case-study.md','case/anfu.html','安否通')]
