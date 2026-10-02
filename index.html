@@ -125,7 +125,7 @@ a:hover{color:#6D4AFF}
  border:9px solid transparent;border-top-color:#FFFFFF;z-index:1}
 .tip:hover .tip-bubble,.tip:focus .tip-bubble{opacity:1;visibility:visible;transform:translateY(0)}
 /* 轉職鏈上的兩顆外連膠囊：沿用同一顆對話框，但游標、底色與箭頭位置要像連結 */
-.tip-link{display:inline-block;border-bottom:0;cursor:pointer;
+.tip-link{display:inline-block;border-bottom:0;cursor:pointer;background:#E8E4DC;
  transition:background .16s ease,transform .16s ease,box-shadow .16s ease}
 .tip-link:hover,.tip-link:focus{background:#FFD34E;transform:translate(-2px,-2px);
  box-shadow:3px 3px 0 #14110F}
@@ -142,6 +142,34 @@ a:hover{color:#6D4AFF}
 :focus-visible{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 /* 跳過連結：鍵盤 focus 時要看得見，否則等於沒有 */
+/* 導覽列的設計作品下拉 */
+[data-dropdown] a:hover{background:#FFF6D9}
+[data-dropdown] button[aria-expanded="true"] [data-chevron]{transform:rotate(180deg)}
+
+/* 轉職鏈的手指游標：輪流指向兩顆膠囊，最後停在平面設計 */
+[data-handcue]{transition:left .42s cubic-bezier(.34,1.2,.5,1),top .42s ease}
+[data-handcue][data-tap]{animation:handTap .42s ease}
+@keyframes handTap{0%,100%{transform:translateY(0)}45%{transform:translateY(-6px)}}
+.tip-link.cued{background:#FFD34E;transform:translate(-2px,-2px);box-shadow:3px 3px 0 #14110F}
+@media (prefers-reduced-motion: reduce){
+ [data-handcue]{transition:none}
+ [data-handcue][data-tap]{animation:none}
+}
+
+/* ===== 手機最佳化 =====
+   這個站幾乎全靠 inline style，樣式表要蓋過它一律得 !important */
+@media (max-width:640px){
+ /* 專欄輪播：箭頭移到下方，卡片吃滿整個寬度（原本只剩 200px） */
+ [data-carousel]{flex-wrap:wrap;justify-content:center;gap:14px}
+ [data-carousel] [data-slider]{order:-1;flex:1 0 100% !important}
+ [data-carousel] [data-slider] > a{flex:0 0 86% !important}
+ /* 觸控目標補到 44px */
+ [data-copybtn]{padding:12px !important}
+ /* 主要閱讀段落與小標在手機上太小 */
+ #about div[style*="clamp(14.5px,1.2vw,16.5px)"]{font-size:16px !important}
+ #career ul[style*="clamp(14px,1.15vw,15.5px)"]{font-size:15.5px !important}
+ p[style*="clamp(10px,1.15vw,12.5px)"]{font-size:11.5px !important;letter-spacing:.18em}
+}
 a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:0;clip:auto;
  padding:12px 20px;background:#14110F;color:#FAF7F0;border-radius:999px;font-weight:700;z-index:300}
 </style>
@@ -153,7 +181,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
   <header style="position:sticky;top:0;z-index:60;background:rgba(250,247,240,.92);backdrop-filter:blur(10px)">
     <div data-ref="navRef" style="max-width:1240px;margin:0 auto;padding:14px clamp(16px,4vw,40px);display:flex;align-items:center;gap:20px;justify-content:space-between">
       <a href="#top" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:-.02em;display:flex;align-items:center;gap:9px;flex:0 0 auto;white-space:nowrap">
-        <img src="./assets/logo.png" alt="" width="28" height="28" style="width:28px;height:28px;display:inline-block;flex:0 0 auto" />
+        <img src="./assets/logo-84.png" alt="" width="28" height="28" style="width:28px;height:28px;display:inline-block;flex:0 0 auto" />
         <span>張詩沂<span style="opacity:.45;font-weight:500"> / Shi-Yi</span></span>
       </a>
 
@@ -162,7 +190,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
           <a href="#career" data-sec="career" style="font-size:15px;font-weight:500;padding:6px 2px;border-bottom:2px solid transparent;white-space:nowrap">職涯歷程</a>
           <a href="#case" data-sec="case" style="font-size:15px;font-weight:500;padding:6px 2px;border-bottom:2px solid transparent;white-space:nowrap">精選案例</a>
           <a href="#ai-lab" data-sec="ai-lab" style="font-size:15px;font-weight:500;padding:6px 2px;border-bottom:2px solid transparent;white-space:nowrap">AI Lab</a>
-          <a href="#writing" data-sec="writing" style="font-size:15px;font-weight:500;padding:6px 2px;border-bottom:2px solid transparent;white-space:nowrap">專欄</a>
+          <a href="#writing" data-sec="writing" style="font-size:15px;font-weight:500;padding:6px 2px;border-bottom:2px solid transparent;white-space:nowrap">專欄</a><div data-dropdown style="position:relative;display:flex;align-items:center"><button data-on="toggleDesign" aria-expanded="false" aria-controls="design-menu" style="font-size:15px;font-weight:500;padding:6px 2px;border-bottom:2px solid transparent;white-space:nowrap;font-family:inherit;color:inherit;background:none;border:0;border-bottom:2px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:5px">設計作品<span data-chevron style="display:inline-flex;line-height:0;transition:transform .18s ease"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span></button><div id="design-menu" data-if="designOpen" hidden style="position:absolute;top:calc(100% + 12px);right:0;min-width:200px;background:#fff;border:2px solid #14110F;border-radius:14px;box-shadow:4px 4px 0 #14110F;padding:6px;display:flex;flex-direction:column;gap:2px;z-index:90"><a href="https://www.cakeresume.com/me/sandy06032/portfolios" target="_blank" rel="noopener" data-on="closeDesign" style="font-size:14.5px;font-weight:700;padding:10px 12px;border-radius:9px;white-space:nowrap">平面設計作品集 ↗</a><a href="https://www.behance.net/changmu" target="_blank" rel="noopener" data-on="closeDesign" style="font-size:14.5px;font-weight:700;padding:10px 12px;border-radius:9px;white-space:nowrap">UI / UX 作品集 ↗</a></div></div>
           <a href="#skills" data-sec="skills" style="font-size:15px;font-weight:500;padding:6px 2px;border-bottom:2px solid transparent;white-space:nowrap">我能做什麼</a>
           <a href="#contact" data-sec="contact" style="font-size:15px;font-weight:500;padding:6px 2px;border-bottom:2px solid transparent;white-space:nowrap">聯絡</a>
         </nav>
@@ -186,7 +214,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
       <a href="#career" data-on="toggleMenu" style="font-size:30px;font-weight:900;padding:14px 0;border-bottom:2px dashed rgba(20,17,15,.18)">職涯歷程</a>
       <a href="#case" data-on="toggleMenu" style="font-size:30px;font-weight:900;padding:14px 0;border-bottom:2px dashed rgba(20,17,15,.18)">精選案例</a>
       <a href="#ai-lab" data-on="toggleMenu" style="font-size:30px;font-weight:900;padding:14px 0;border-bottom:2px dashed rgba(20,17,15,.18)">AI Lab</a>
-      <a href="#writing" data-on="toggleMenu" style="font-size:30px;font-weight:900;padding:14px 0;border-bottom:2px dashed rgba(20,17,15,.18)">專欄</a>
+      <a href="#writing" data-on="toggleMenu" style="font-size:30px;font-weight:900;padding:14px 0;border-bottom:2px dashed rgba(20,17,15,.18)">專欄</a><div style="padding:14px 0;border-bottom:2px dashed rgba(20,17,15,.18)"><span style="font-size:30px;font-weight:900;display:block;margin-bottom:6px">設計作品</span><a href="https://www.cakeresume.com/me/sandy06032/portfolios" target="_blank" rel="noopener" data-on="toggleMenu" style="font-size:19px;font-weight:700;padding:10px 0 10px 18px;border-left:3px solid #FFD34E;display:block">平面設計作品集 ↗</a><a href="https://www.behance.net/changmu" target="_blank" rel="noopener" data-on="toggleMenu" style="font-size:19px;font-weight:700;padding:10px 0 10px 18px;border-left:3px solid #FFD34E;display:block">UI / UX 作品集 ↗</a></div>
       <a href="#skills" data-on="toggleMenu" style="font-size:30px;font-weight:900;padding:14px 0;border-bottom:2px dashed rgba(20,17,15,.18)">我能做什麼</a>
       <a href="#contact" data-on="toggleMenu" style="font-size:30px;font-weight:900;padding:14px 0">聯絡</a>
       <div style="display:flex;flex-direction:column;gap:12px;margin-top:24px">
@@ -277,13 +305,13 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
         <p style="margin:0;font-size:clamp(15px,1.4vw,19px);font-weight:700;color:#2C2620;line-height:1.7">從釐清需求開始的十年</p>
       </div>
 
-      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin-bottom:clamp(30px,4vw,50px)">
-        <a class="tip tip-link" href="https://www.cakeresume.com/me/sandy06032/portfolios" target="_blank" rel="noopener" aria-describedby="tip-graphic" style="background:#E8E4DC;border-radius:999px;padding:8px 18px;font-size:14px;font-weight:700;color:#14110F;text-decoration:none">平面設計<span class="tip-bubble" id="tip-graphic" role="tooltip">平面設計作品集</span></a>
+      <div data-arc style="position:relative;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin-bottom:clamp(30px,4vw,50px)">
+        <a class="tip tip-link" href="https://www.cakeresume.com/me/sandy06032/portfolios" target="_blank" rel="noopener" aria-describedby="tip-graphic" style="border-radius:999px;padding:8px 18px;font-size:14px;font-weight:700;color:#14110F;text-decoration:none">平面設計<span class="tip-bubble" id="tip-graphic" role="tooltip">平面設計作品集</span></a>
         <span style="font-family:'IBM Plex Mono',monospace;color:#9E968B">→</span>
-        <a class="tip tip-link" href="https://www.behance.net/changmu" target="_blank" rel="noopener" aria-describedby="tip-uiux" style="background:#E8E4DC;border-radius:999px;padding:8px 18px;font-size:14px;font-weight:700;color:#14110F;text-decoration:none">UI / UX<span class="tip-bubble" id="tip-uiux" role="tooltip">UI / UX 作品集</span></a>
+        <a class="tip tip-link" href="https://www.behance.net/changmu" target="_blank" rel="noopener" aria-describedby="tip-uiux" style="border-radius:999px;padding:8px 18px;font-size:14px;font-weight:700;color:#14110F;text-decoration:none">UI / UX<span class="tip-bubble" id="tip-uiux" role="tooltip">UI / UX 作品集</span></a>
         <span style="font-family:'IBM Plex Mono',monospace;color:#9E968B">→</span>
         <span style="background:#FFD34E;border:2px solid #14110F;border-radius:999px;padding:8px 18px;font-size:14px;font-weight:700;box-shadow:3px 3px 0 #14110F">產品管理</span>
-      </div>
+      <span data-handcue hidden aria-hidden="true" style="position:absolute;left:0;top:0;width:28px;height:28px;pointer-events:none;z-index:5"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#14110F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 9.5V4a2 2 0 0 1 4 0v9" fill="#FFFFFF"/><path d="M14 11.5V10a2 2 0 0 1 4 0v3"/><path d="M18 12.5V12a2 2 0 0 1 4 0v4a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L8 15.5V4a2 2 0 0 1 4 0v9" fill="#FFFFFF"/></svg></span></div>
 
       <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,48px);align-items:flex-start;font-size:clamp(14.5px,1.2vw,16.5px);line-height:1.95;color:#2C2620">
         <div style="display:flex;flex-direction:column;gap:20px;min-width:0;flex:1.3 1 340px">
@@ -547,7 +575,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
         <p style="margin:0;font-size:clamp(15px,1.4vw,19px);font-weight:700;color:#2C2620;line-height:1.7">專欄與內部推廣</p>
       </div>
 
-      <div style="display:flex;align-items:center;gap:clamp(10px,1.6vw,20px)">
+      <div data-carousel style="display:flex;align-items:center;gap:clamp(10px,1.6vw,20px)">
         <button data-on="writingPrev" aria-label="上一篇" style="flex:0 0 auto;width:48px;height:48px;border-radius:50%;border:2.5px solid #14110F;background:#fff;font-size:18px;font-weight:700;line-height:1;cursor:pointer;display:grid;place-items:center;box-shadow:3px 3px 0 #14110F;transition:transform .15s ease,box-shadow .15s ease"data-hv="h21"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#14110F" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button>
         <div data-ref="writingRef" data-slider="writing" style="flex:1;min-width:0;display:flex;gap:clamp(16px,2vw,22px);overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:6px 6px 8px;margin:-6px -6px -8px">
           <a href="./writing/01-auto-image.html" style="flex:0 0 calc((100% - 2 * clamp(16px,2vw,22px)) / 3);min-width:200px;scroll-snap-align:start;display:flex;flex-direction:column;gap:11px;background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:5px 5px 0 #14110F;padding:14px 16px 20px;transition:transform .16s ease,box-shadow .16s ease"data-hv="h22">
@@ -714,7 +742,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
   const EMAIL = 'mu.chang32@gmail.com';
 
   const state = {
-    menuOpen: false, careerOpen: false, showTop: false, narrow: false,
+    menuOpen: false, careerOpen: false, designOpen: false, showTop: false, narrow: false,
     copied: false, lab: null,
     n: { years: 10, mvp: 1, voice: 30, product: 8 }
   };
@@ -724,6 +752,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
   const derive = () => ({
     menuOpen: state.menuOpen,
     careerOpen: state.careerOpen,
+    designOpen: state.designOpen,
     showTop: state.showTop,
     showLinks: !state.narrow,
     showBurger: state.narrow,
@@ -770,12 +799,16 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
         host.insertBefore(node, tpl);
       });
     }
+    const dBtn = $('[data-on="toggleDesign"]');
+    if (dBtn) dBtn.setAttribute('aria-expanded', String(v.designOpen));
     document.body.style.overflow = v.labOpen || (v.menuOpen && state.narrow) ? 'hidden' : '';
   }
 
   const actions = {
     toggleMenu: () => { state.menuOpen = !state.menuOpen; render(); },
     toggleCareer: () => { state.careerOpen = !state.careerOpen; render(); },
+    toggleDesign: () => { state.designOpen = !state.designOpen; render(); },
+    closeDesign: () => { state.designOpen = false; render(); },
     scrollTop: () => scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }),
     writingNext: () => scrollWriting(1),
     writingPrev: () => scrollWriting(-1),
@@ -858,12 +891,16 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
     fn({ currentTarget: t, target: e.target });
   });
   document.addEventListener('click', e => {
+    if (state.designOpen && !e.target.closest('[data-dropdown]')) { state.designOpen = false; render(); }
+  });
+  document.addEventListener('click', e => {
     const a = e.target.closest('a[href^="#"]:not([data-on])');
     if (a && state.menuOpen) { state.menuOpen = false; render(); }
   });
   addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
     if (state.lab) { state.lab = null; render(); }
+    else if (state.designOpen) { state.designOpen = false; render(); }
     else if (state.menuOpen) { state.menuOpen = false; render(); }
   });
   addEventListener('resize', measure, { passive: true });
@@ -889,7 +926,66 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
     });
   }
 
+  // ---- 轉職鏈的手指游標 ----
+  // 先在兩顆膠囊之間來回指個 10 秒，再停在「平面設計」上；
+  // 使用者一碰膠囊就讓位，不跟人搶。
+  function handCue() {
+    const row = $('[data-arc]');
+    if (!row) return;
+    const hand = $('[data-handcue]', row);
+    const chips = $$('.tip-link', row);
+    if (!hand || chips.length < 2) return;
+
+    let at = 0, timer = null, stopped = false;
+    const place = i => {
+      at = i;
+      const c = chips[i].getBoundingClientRect(), r = row.getBoundingClientRect();
+      // 9.5 是圖示裡食指尖離左緣的距離，對齊膠囊中線
+      hand.style.left = Math.round(c.left - r.left + c.width / 2 - 9.5) + 'px';
+      hand.style.top = Math.round(c.bottom - r.top + 2) + 'px';
+      chips.forEach((ch, k) => ch.classList.toggle('cued', k === i));
+      hand.hidden = false;
+    };
+    const tap = () => {
+      hand.setAttribute('data-tap', '');
+      setTimeout(() => hand.removeAttribute('data-tap'), 440);
+    };
+    const rest = () => { stopped = true; clearTimeout(timer); place(0); };
+
+    // 使用者自己操作時就停在平面設計，不要再跳
+    chips.forEach(ch => ['pointerenter', 'focus'].forEach(ev => ch.addEventListener(ev, rest)));
+    addEventListener('resize', () => place(at), { passive: true });
+
+    if (reduce) { place(0); return; }
+
+    const SEQ = [0, 1, 0, 1, 0];   // 約 10 秒，最後停在平面設計
+    let step = 0;
+    const run = () => {
+      if (stopped) return;
+      place(SEQ[step]);
+      if (step > 0) tap();
+      step += 1;
+      if (step < SEQ.length) timer = setTimeout(run, 2000);
+      else stopped = true;
+    };
+    // 捲到看得見才開始播。IntersectionObserver 與 scroll 事件在部分內嵌／
+    // 預覽環境都收不到，所以改成開頭 30 秒輪詢，之後再交給 scroll 事件。
+    let ticks = 0, poll = null;
+    const maybeStart = () => {
+      if (step > 0 || stopped) return;
+      const b = row.getBoundingClientRect();
+      if (b.bottom < 80 || b.top > innerHeight - 40) return;
+      clearInterval(poll);
+      removeEventListener('scroll', maybeStart);
+      run();
+    };
+    poll = setInterval(() => { if (++ticks > 100) clearInterval(poll); maybeStart(); }, 300);
+    addEventListener('scroll', maybeStart, { passive: true });
+    maybeStart();
+  }
+
   collapseTagGroups();
+  handCue();
   measure(); render(); countUp(); markActive();
 })();
 

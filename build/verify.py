@@ -35,7 +35,8 @@ C = [
   ('Aicast 主圖', has('case/aicast/01.jpg')),
   ('iF 獎章', has('if-award-2025.png')),
   ('SKILLS 十個 logo', len(re.findall(r'assets/logos/opt/', h)) == 10),
-  ('站台 logo 與 favicon', has('assets/logo.png') and has('assets/favicon.png')),
+  ('站台 logo 與 favicon', has('assets/logo-84.png') and has('assets/favicon.png')),
+  ('導覽列沒有用到 512px 原圖', absent('"./assets/logo.png"')),
   ('OG 分享圖為絕對網址', has('og:image" content="https://')),
   # --- 版面結構 ---
   ('Credentials 三欄', has('[data-grid="creds"]')),
