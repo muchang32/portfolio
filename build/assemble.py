@@ -44,9 +44,9 @@ assert _n == 2, f'預期移除 2 個 #design 錨點，實際 {_n}'
 # ---- About 轉職鏈：平面設計與 UI / UX 掛上作品集外連 ----
 _ARC = [
     ('平面設計', 'https://www.cakeresume.com/me/sandy06032/portfolios', 'tip-graphic',
-     '品牌識別、活動主視覺與行銷素材，十年累積收錄在 Cake 作品集。'),
+     '平面設計作品集'),
     ('UI / UX', 'https://www.behance.net/changmu', 'tip-uiux',
-     'APP 介面、官網改版與活動頁，完整維護在 Behance。'),
+     'UI / UX 作品集'),
 ]
 for _label, _href, _id, _desc in _ARC:
     _chip = ('<span style="background:#E8E4DC;border-radius:999px;padding:8px 18px;'
@@ -55,7 +55,7 @@ for _label, _href, _id, _desc in _ARC:
     body = body.replace(_chip, (
         f'<a class="tip tip-link" href="{_href}" target="_blank" rel="noopener" '
         f'aria-describedby="{_id}" style="background:#E8E4DC;border-radius:999px;padding:8px 18px;'
-        f'font-size:14px;font-weight:700;color:#14110F;text-decoration:none">{_label} ↗'
+        f'font-size:14px;font-weight:700;color:#14110F;text-decoration:none">{_label}'
         f'<span class="tip-bubble" id="{_id}" role="tooltip">{_desc}</span></a>'), 1)
 
 # ---- 職涯歷程容器寬度對齊其他區塊 ----
