@@ -23,6 +23,12 @@ C = [
   ('轉職鏈 平面設計 → Cake', has('cakeresume.com')),
   ('轉職鏈兩顆都是對話框連結', h.count('class="tip tip-link"') == 2
                              and has('.tip-link:hover')),
+  ('設計作品下拉在履歷下載左邊', h.index('data-dropdown') < h.index('履歷下載')
+                             and has('data-on="toggleDesign"')),
+  ('下拉選項沒有箭頭', not re.search(r'(平面設計|UI / UX) 作品集 ↗', h)),
+  ('手機 AI Lab 先顯示 6 張', has('[data-lab-grid]:not([data-expanded])')
+                           and has('data-on="toggleLabMore"')),
+  ('手指游標已移除', absent('data-handcue')),
   ('設計作品區已移除', absent('id="design"') and absent('_selected/')
                      and absent('design/uiux/') and absent('href="#design"')),
   ('無殘留死連結', len(re.findall(r'<a [^>]*href="#"', h)) <= 2),

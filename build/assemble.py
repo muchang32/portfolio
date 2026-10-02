@@ -116,18 +116,18 @@ NAVLINK = ('font-size:15px;font-weight:500;padding:6px 2px;border-bottom:2px sol
 MENULINK = ('font-size:30px;font-weight:900;padding:14px 0;border-bottom:2px dashed rgba(20,17,15,.18)')
 _CAKE = 'https://www.cakeresume.com/me/sandy06032/portfolios'
 _BEHANCE = 'https://www.behance.net/changmu'
-_desk_writing = ('<a href="#writing" data-sec="writing" style="%s">專欄</a>' % NAVLINK)
-assert _desk_writing in body, '找不到桌機導覽列的「專欄」'
 _chevron = ('<span data-chevron style="display:inline-flex;line-height:0;'
             'transition:transform .18s ease">'
             '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
             'stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
             '<path d="M6 9l6 6 6-6"/></svg></span>')
 _dropdown = (
-    '<div data-dropdown style="position:relative;display:flex;align-items:center">'
+    '<div data-dropdown data-if="showLinks" hidden '
+    'style="position:relative;display:flex;align-items:center;flex:0 0 auto">'
     '<button data-on="toggleDesign" aria-expanded="false" aria-controls="design-menu" '
-    f'style="{NAVLINK};font-family:inherit;color:inherit;background:none;border:0;'
-    'border-bottom:2px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:5px">'
+    'style="border:2px solid #14110F;background:transparent;color:#14110F;border-radius:999px;'
+    'padding:10px 18px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;'
+    'display:inline-flex;align-items:center;gap:6px;white-space:nowrap">'
     f'設計作品{_chevron}</button>'
     '<div id="design-menu" data-if="designOpen" hidden '
     'style="position:absolute;top:calc(100% + 12px);right:0;min-width:200px;background:#fff;'
@@ -135,12 +135,15 @@ _dropdown = (
     'display:flex;flex-direction:column;gap:2px;z-index:90">'
     f'<a href="{_CAKE}" target="_blank" rel="noopener" data-on="closeDesign" '
     'style="font-size:14.5px;font-weight:700;padding:10px 12px;border-radius:9px;white-space:nowrap">'
-    '平面設計作品集 ↗</a>'
+    '平面設計作品集</a>'
     f'<a href="{_BEHANCE}" target="_blank" rel="noopener" data-on="closeDesign" '
     'style="font-size:14.5px;font-weight:700;padding:10px 12px;border-radius:9px;white-space:nowrap">'
-    'UI / UX 作品集 ↗</a>'
+    'UI / UX 作品集</a>'
     '</div></div>')
-body = body.replace(_desk_writing, _desk_writing + _dropdown, 1)
+# 放在「履歷下載」左邊，跟著桌機導覽列一起隱藏（窄螢幕由手機選單的第二層承接）
+_btn_group = '<div style="display:flex;align-items:center;gap:10px;flex:0 0 auto">'
+assert body.count(_btn_group) == 1, '導覽列右側按鈕群組比對不唯一'
+body = body.replace(_btn_group, _btn_group + _dropdown, 1)
 
 _menu_writing = ('<a href="#writing" data-on="toggleMenu" style="%s">專欄</a>' % MENULINK)
 assert _menu_writing in body, '找不到手機選單的「專欄」'
@@ -150,35 +153,32 @@ _menu_group = (
     '<div style="padding:14px 0;border-bottom:2px dashed rgba(20,17,15,.18)">'
     '<span style="font-size:30px;font-weight:900;display:block;margin-bottom:6px">設計作品</span>'
     f'<a href="{_CAKE}" target="_blank" rel="noopener" data-on="toggleMenu" style="{_SUB}">'
-    '平面設計作品集 ↗</a>'
+    '平面設計作品集</a>'
     f'<a href="{_BEHANCE}" target="_blank" rel="noopener" data-on="toggleMenu" style="{_SUB}">'
-    'UI / UX 作品集 ↗</a>'
+    'UI / UX 作品集</a>'
     '</div>')
 body = body.replace(_menu_writing, _menu_writing + _menu_group, 1)
 
-# ---- About 轉職鏈：加上指向膠囊的手指游標圖示 ----
+# ---- About 轉職鏈：讓兩顆膠囊輪流亮起 hover 樣式 ----
 _arc_row = ('<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;'
             'align-items:center;margin-bottom:clamp(30px,4vw,50px)">')
 assert _arc_row in body, '找不到轉職鏈容器'
-body = body.replace(_arc_row, _arc_row.replace('<div style="', '<div data-arc style="position:relative;'), 1)
-_arc_start = body.index('<div data-arc ')
-_arc_end = _close_of(body, _arc_start)
-_hand = (
-    '<span data-handcue hidden aria-hidden="true" '
-    'style="position:absolute;left:0;top:0;width:28px;height:28px;pointer-events:none;z-index:5">'
-    '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#14110F" stroke-width="2" '
-    'stroke-linecap="round" stroke-linejoin="round">'
-    '<path d="M10 9.5V4a2 2 0 0 1 4 0v9" fill="#FFFFFF"/>'
-    '<path d="M14 11.5V10a2 2 0 0 1 4 0v3"/>'
-    '<path d="M18 12.5V12a2 2 0 0 1 4 0v4a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6'
-    'a2 2 0 0 1 2.83-2.82L8 15.5V4a2 2 0 0 1 4 0v9" fill="#FFFFFF"/>'
-    '</svg></span>')
-body = body[:_arc_end - 6] + _hand + body[_arc_end - 6:]
+body = body.replace(_arc_row, _arc_row.replace('<div style="', '<div data-arc style="'), 1)
 
-# ---- 專欄輪播：手機要能用整個寬度 ----
-_car = '<div style="display:flex;align-items:center;gap:clamp(10px,1.6vw,20px)">'
-assert body.count(_car) == 1, '專欄輪播容器比對不唯一'
-body = body.replace(_car, '<div data-carousel style="display:flex;align-items:center;gap:clamp(10px,1.6vw,20px)">', 1)
+# ---- AI Lab：手機先顯示 6 張，其餘由「看更多」展開 ----
+_lab_grid = ('<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));'
+             'gap:clamp(18px,2.4vw,32px) clamp(16px,2vw,26px)">')
+assert body.count(_lab_grid) == 1, 'AI Lab 網格比對不唯一'
+body = body.replace(_lab_grid, _lab_grid.replace('<div style="', '<div data-lab-grid style="'), 1)
+_lg_start = body.index('<div data-lab-grid ')
+_lg_end = _close_of(body, _lg_start)
+_more = ('<div data-lab-more data-if="showLabMore" hidden '
+         'style="display:flex;justify-content:center;margin-top:24px">'
+         '<button data-on="toggleLabMore" '
+         'style="border:2px solid #14110F;background:transparent;color:#14110F;border-radius:999px;'
+         'padding:14px 28px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;'
+         'transition:background .16s ease,color .16s ease">看更多作品 ↓</button></div>')
+body = body[:_lg_end] + _more + body[_lg_end:]
 
 # ---- 導覽列 logo 換成星芒圖 ----
 body = body.replace(
@@ -765,15 +765,8 @@ doc = f"""<!DOCTYPE html>
 [data-dropdown] a:hover{{background:#FFF6D9}}
 [data-dropdown] button[aria-expanded="true"] [data-chevron]{{transform:rotate(180deg)}}
 
-/* 轉職鏈的手指游標：輪流指向兩顆膠囊，最後停在平面設計 */
-[data-handcue]{{transition:left .42s cubic-bezier(.34,1.2,.5,1),top .42s ease}}
-[data-handcue][data-tap]{{animation:handTap .42s ease}}
-@keyframes handTap{{0%,100%{{transform:translateY(0)}}45%{{transform:translateY(-6px)}}}}
+/* 轉職鏈：兩顆膠囊輪流亮起 hover 樣式約 8 秒，之後恢復原狀 */
 .tip-link.cued{{background:#FFD34E;transform:translate(-2px,-2px);box-shadow:3px 3px 0 #14110F}}
-@media (prefers-reduced-motion: reduce){{
- [data-handcue]{{transition:none}}
- [data-handcue][data-tap]{{animation:none}}
-}}
 
 /* ===== 手機最佳化 =====
    這個站幾乎全靠 inline style，樣式表要蓋過它一律得 !important */
@@ -782,6 +775,8 @@ doc = f"""<!DOCTYPE html>
  [data-carousel]{{flex-wrap:wrap;justify-content:center;gap:14px}}
  [data-carousel] [data-slider]{{order:-1;flex:1 0 100% !important}}
  [data-carousel] [data-slider] > a{{flex:0 0 86% !important}}
+ /* AI Lab 單欄疊起來有 8 張、近 4 個螢幕高，先收到 6 張 */
+ [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+7){{display:none !important}}
  /* 觸控目標補到 44px */
  [data-copybtn]{{padding:12px !important}}
  /* 主要閱讀段落與小標在手機上太小 */
@@ -789,6 +784,9 @@ doc = f"""<!DOCTYPE html>
  #career ul[style*="clamp(14px,1.15vw,15.5px)"]{{font-size:15.5px !important}}
  p[style*="clamp(10px,1.15vw,12.5px)"]{{font-size:11.5px !important;letter-spacing:.18em}}
 }}
+/* 「看更多」只在手機出現，桌機八張本來就排得下 */
+@media (min-width:641px){{[data-lab-more]{{display:none !important}}}}
+[data-lab-more] button:hover{{background:#14110F;color:#FAF7F0}}
 a.sr-only:focus{{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:0;clip:auto;
  padding:12px 20px;background:#14110F;color:#FAF7F0;border-radius:999px;font-weight:700;z-index:300}}
 </style>

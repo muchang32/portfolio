@@ -6,7 +6,7 @@
 
   const state = {
     menuOpen: false, careerOpen: false, designOpen: false, showTop: false, narrow: false,
-    copied: false, lab: null,
+    copied: false, lab: null, labMore: false,
     n: { years: 10, mvp: 1, voice: 30, product: 8 }
   };
   const TARGETS = { years: 10, mvp: 1, voice: 30, product: 8 };
@@ -19,6 +19,7 @@
     showTop: state.showTop,
     showLinks: !state.narrow,
     showBurger: state.narrow,
+    showLabMore: !state.labMore,
     labOpen: !!state.lab,
     labTitle: state.lab ? state.lab.title : '',
     labDesc: state.lab ? state.lab.desc : '',
@@ -62,6 +63,8 @@
         host.insertBefore(node, tpl);
       });
     }
+    const labGrid = $('[data-lab-grid]');
+    if (labGrid) labGrid.toggleAttribute('data-expanded', state.labMore);
     const dBtn = $('[data-on="toggleDesign"]');
     if (dBtn) dBtn.setAttribute('aria-expanded', String(v.designOpen));
     document.body.style.overflow = v.labOpen || (v.menuOpen && state.narrow) ? 'hidden' : '';
@@ -71,6 +74,7 @@
     toggleMenu: () => { state.menuOpen = !state.menuOpen; render(); },
     toggleCareer: () => { state.careerOpen = !state.careerOpen; render(); },
     toggleDesign: () => { state.designOpen = !state.designOpen; render(); },
+    toggleLabMore: () => { state.labMore = true; render(); },
     closeDesign: () => { state.designOpen = false; render(); },
     scrollTop: () => scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }),
     writingNext: () => scrollWriting(1),
@@ -189,50 +193,35 @@
     });
   }
 
-  // ---- 轉職鏈的手指游標 ----
-  // 先在兩顆膠囊之間來回指個 10 秒，再停在「平面設計」上；
-  // 使用者一碰膠囊就讓位，不跟人搶。
-  function handCue() {
+  // ---- 轉職鏈：兩顆膠囊輪流亮起 hover 樣式 ----
+  // 捲到看得見才開始，每顆 2 秒、共約 8 秒，之後恢復成沒有 hover 的樣子。
+  // 使用者一碰膠囊就停手，不跟人搶。
+  function arcCue() {
     const row = $('[data-arc]');
     if (!row) return;
-    const hand = $('[data-handcue]', row);
     const chips = $$('.tip-link', row);
-    if (!hand || chips.length < 2) return;
+    if (chips.length < 2) return;
 
-    let at = 0, timer = null, stopped = false;
-    const place = i => {
-      at = i;
-      const c = chips[i].getBoundingClientRect(), r = row.getBoundingClientRect();
-      // 9.5 是圖示裡食指尖離左緣的距離，對齊膠囊中線
-      hand.style.left = Math.round(c.left - r.left + c.width / 2 - 9.5) + 'px';
-      hand.style.top = Math.round(c.bottom - r.top + 2) + 'px';
-      chips.forEach((ch, k) => ch.classList.toggle('cued', k === i));
-      hand.hidden = false;
-    };
-    const tap = () => {
-      hand.setAttribute('data-tap', '');
-      setTimeout(() => hand.removeAttribute('data-tap'), 440);
-    };
-    const rest = () => { stopped = true; clearTimeout(timer); place(0); };
+    const clear = () => chips.forEach(c => c.classList.remove('cued'));
+    let timer = null, stopped = false;
+    const stop = () => { stopped = true; clearTimeout(timer); clear(); };
+    chips.forEach(c => ['pointerenter', 'focus'].forEach(ev => c.addEventListener(ev, stop)));
 
-    // 使用者自己操作時就停在平面設計，不要再跳
-    chips.forEach(ch => ['pointerenter', 'focus'].forEach(ev => ch.addEventListener(ev, rest)));
-    addEventListener('resize', () => place(at), { passive: true });
+    if (reduce) return;   // 關掉動態效果時就不播
 
-    if (reduce) { place(0); return; }
-
-    const SEQ = [0, 1, 0, 1, 0];   // 約 10 秒，最後停在平面設計
+    const SEQ = [0, 1, 0, 1];   // 2 秒一顆，共 8 秒
     let step = 0;
     const run = () => {
       if (stopped) return;
-      place(SEQ[step]);
-      if (step > 0) tap();
+      clear();
+      if (step >= SEQ.length) { stopped = true; return; }
+      chips[SEQ[step]].classList.add('cued');
       step += 1;
-      if (step < SEQ.length) timer = setTimeout(run, 2000);
-      else stopped = true;
+      timer = setTimeout(run, 2000);
     };
-    // 捲到看得見才開始播。IntersectionObserver 與 scroll 事件在部分內嵌／
-    // 預覽環境都收不到，所以改成開頭 30 秒輪詢，之後再交給 scroll 事件。
+
+    // IntersectionObserver 與 scroll 事件在部分內嵌／預覽環境收不到，
+    // 開頭先輪詢 30 秒，之後再交給 scroll 事件。
     let ticks = 0, poll = null;
     const maybeStart = () => {
       if (step > 0 || stopped) return;
@@ -248,6 +237,6 @@
   }
 
   collapseTagGroups();
-  handCue();
+  arcCue();
   measure(); render(); countUp(); markActive();
 })();
