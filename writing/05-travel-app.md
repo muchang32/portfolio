@@ -63,7 +63,7 @@
 
 ### Step 1. 準備你的資料庫（Google Sheet）
 
-1. 開啟模板
+1. 開啟 [Google Sheet 記帳模板](https://docs.google.com/spreadsheets/d/1hT-ZhrWeRmMdcjt5vOa32xAWqQ7HW_UjADERuDFmGdM/edit?usp=sharing)
 2. 點選「檔案 → 建立副本」
 3. 建立一份屬於你自己的記帳試算表
 4. 內容先不要刪，當作假資料顯示用
@@ -114,4 +114,11 @@ F:小A(台), G:小A(日), H:小B(台), I:小B(日), J:備註。
 
 ---
 
-*文末原附有 AI Studio 與 Google Sheet 模板連結，公開版本請確認模板的分享權限後再放上。*
+## 模板
+
+這篇用到的兩份模板，複製一份就能改成自己的：
+
+- [AI Studio 應用範本](https://ai.studio/apps/e4a33a5d-39af-4720-8a4e-63cf2e23ce7b)
+- [Google Sheet 記帳模板](https://docs.google.com/spreadsheets/d/1hT-ZhrWeRmMdcjt5vOa32xAWqQ7HW_UjADERuDFmGdM/edit?usp=sharing)
+
+試算表請先「檔案 → 建立副本」再動手，直接改的話只會改到你自己看得到的畫面。

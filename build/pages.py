@@ -12,7 +12,12 @@ def md2html(md, depth):
     def inline(t):
         t = html.escape(t)
         t = re.sub(r'!\[\]\((?:\.\./)*([^)]+)\)', lambda m: f'<img src="{up}{m.group(1)}" alt="" loading="lazy" />', t)
-        t = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', lambda m: f'<a href="{m.group(2)}">{m.group(1)}</a>', t)
+        # 站外連結另開分頁；rel="noopener" 不能省
+        def _link(m):
+            href, text = m.group(2), m.group(1)
+            ext = ' target="_blank" rel="noopener"' if href.startswith('http') else ''
+            return f'<a href="{href}"{ext}>{text}</a>'
+        t = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', _link, t)
         t = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', t)
         t = re.sub(r'`([^`]+)`', r'<code>\1</code>', t)
         t = re.sub(r'(?<!\*)\*([^*]+)\*(?!\*)', r'<em>\1</em>', t)

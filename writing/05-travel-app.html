@@ -91,7 +91,7 @@ hr{border:0;border-top:1px solid #E3DEF2;margin:44px 0}
 <p>記帳功能背後需要一個地方存資料。這次我使用的是 Google Sheet 當作資料庫。</p>
 <p>延續上一篇提過的概念：只要涉及「寫入／讀取／修改／刪除」，就需要搭配 GAS（Google Apps Script）。</p>
 <h3>Step 1. 準備你的資料庫（Google Sheet）</h3>
-<ol><li>開啟模板</li><li>點選「檔案 → 建立副本」</li><li>建立一份屬於你自己的記帳試算表</li><li>內容先不要刪，當作假資料顯示用</li></ol>
+<ol><li>開啟 <a href="https://docs.google.com/spreadsheets/d/1hT-ZhrWeRmMdcjt5vOa32xAWqQ7HW_UjADERuDFmGdM/edit?usp=sharing" target="_blank" rel="noopener">Google Sheet 記帳模板</a></li><li>點選「檔案 → 建立副本」</li><li>建立一份屬於你自己的記帳試算表</li><li>內容先不要刪，當作假資料顯示用</li></ol>
 <h3>Step 2. 讓 AI 幫你寫程式（GAS）</h3>
 <p>建立完成後，回到 AI Studio，貼上以下這段 prompt：</p>
 <pre><code>我需要重新連結記帳的 Google Sheet。
@@ -113,7 +113,10 @@ F:小A(台), G:小A(日), H:小B(台), I:小B(日), J:備註。
 <ul><li>你正在用什麼工具（例如：我正在使用 Google AI Studio 寫 GAS）</li><li>做的是哪一種 APP（例如：旅遊記帳 APP）</li><li>卡在哪個功能（例如：雙人分帳計算錯誤）</li><li>如果有錯誤代碼、錯誤歷程，直接貼上</li></ul>
 <p>有時候卡很久的問題，換一個 AI 幫你順一下邏輯，會突然迎刃而解。</p>
 <hr />
-<p><em>文末原附有 AI Studio 與 Google Sheet 模板連結，公開版本請確認模板的分享權限後再放上。</em></p>
+<h2>模板</h2>
+<p>這篇用到的兩份模板，複製一份就能改成自己的：</p>
+<ul><li><a href="https://ai.studio/apps/e4a33a5d-39af-4720-8a4e-63cf2e23ce7b" target="_blank" rel="noopener">AI Studio 應用範本</a></li><li><a href="https://docs.google.com/spreadsheets/d/1hT-ZhrWeRmMdcjt5vOa32xAWqQ7HW_UjADERuDFmGdM/edit?usp=sharing" target="_blank" rel="noopener">Google Sheet 記帳模板</a></li></ul>
+<p>試算表請先「檔案 → 建立副本」再動手，直接改的話只會改到你自己看得到的畫面。</p>
 </div>
 <nav class="foot">
   <a href="./04-lovable.html">← 上一篇</a>
