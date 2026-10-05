@@ -615,6 +615,22 @@ body = (body[:_an_start]
         + _img('./assets/case/anfu/cover.jpg', '安否通 未回報優先佇列看板', '16/10')
         + body[_an_end:])
 
+# ---- 佔位框：移除寫給自己看的素材規格 ----
+# Hero 的去背照佔位整塊拿掉；黃色橢圓與兩顆標籤本來就是完整的構圖
+_hero_ph = body.find('border:2.5px dashed #14110F;border-radius:24px;'
+                     'background:rgba(255,255,255,.72);')
+if _hero_ph != -1:
+    _hs = body.rindex('<div ', 0, _hero_ph)
+    body = body[:_hs] + body[_close_of(body, _hs):]
+
+# 其餘佔位框（AI Lab 還沒截圖的三張）只留一行對外說得通的字
+_PENDING = ('<span style="font-family:\'IBM Plex Mono\',monospace;font-size:12px;'
+            'letter-spacing:.1em;color:#5A5248">畫面準備中</span>')
+while '素材待補' in body:
+    _ps = body.rindex('<div ', 0, body.index('素材待補'))
+    _pe = _close_of(body, _ps)
+    body = body[:body.index('>', _ps) + 1] + _PENDING + '</div>' + body[_pe:]
+
 # ===== 本輪 G：AI Lab 彈窗（封面、放大、關閉鍵固定右上）=====
 _mi = body.index('data-if="labOpen"')
 

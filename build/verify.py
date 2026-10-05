@@ -53,6 +53,8 @@ C = [
   ('區塊標題無編號', not re.search(r'>0\d\s*/\s*[A-Z]', h)),
   ('無刊物名稱', absent('聯8達')),
   ('無內網位址', absent('10.20.51')),
+  ('沒有寫給自己看的素材規格', absent('素材待補') and absent('去背半身照')
+                           and absent('示範錄影') and absent('產品截圖')),
   ('無學歷', absent('華梵')),
   ('英文為中階', not re.search(r'英文</span>.{0,400}初階', h, re.S)),
   ('數據列六格', len(re.findall(r'data-bind="n\w+"', h)) == 4

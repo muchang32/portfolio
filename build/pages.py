@@ -24,6 +24,15 @@ def md2html(md, depth):
         return t
     while i < len(lines):
         ln = lines[i]
+        # 只有開頭第一塊可以變成規格表，避免內文的粗體被誤判
+        if not out and re.match(r'^\*\*[^*]+\*\*\u3000', ln):
+            rows = []
+            while i < len(lines) and re.match(r'^\*\*[^*]+\*\*\u3000', lines[i]):
+                mm = re.match(r'^\*\*([^*]+)\*\*\u3000(.+)$', lines[i])
+                rows.append((mm.group(1), mm.group(2))); i += 1
+            out.append('<dl class="meta">' + ''.join(
+                f'<dt>{inline(k)}</dt><dd>{inline(v)}</dd>' for k, v in rows) + '</dl>')
+            continue
         mv = re.match(r'^!video\[([^\]]*)\]\(([^)]+)\)$', ln.strip())
         if mv:
             poster, src = mv.group(1), mv.group(2)
@@ -99,6 +108,13 @@ h2{{font-size:clamp(20px,2.6vw,27px);margin:52px 0 14px;line-height:1.35}}
 h1+p+h2,h1+h2{{margin-top:34px}}
 h3{{font-size:clamp(17px,2vw,20px);margin:36px 0 10px}}
 p,li{{font-size:16.5px}}
+dl.meta{{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;margin:0 0 34px;
+ padding:20px 22px;background:{soft};border-radius:14px}}
+dl.meta dt{{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;
+ color:#6E6A85;white-space:nowrap;padding-top:4px}}
+dl.meta dd{{margin:0;font-size:15px;line-height:1.75}}
+@media (max-width:480px){{dl.meta{{grid-template-columns:1fr;gap:3px 0}}
+ dl.meta dd{{margin-bottom:10px}}}}
 blockquote{{margin:26px 0;padding:2px 0 2px 20px;border-left:3px solid {accent};color:#3E3932}}
 blockquote p{{margin:6px 0}}
 figure{{margin:32px 0}}

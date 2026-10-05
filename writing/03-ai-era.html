@@ -32,6 +32,13 @@ h2{font-size:clamp(20px,2.6vw,27px);margin:52px 0 14px;line-height:1.35}
 h1+p+h2,h1+h2{margin-top:34px}
 h3{font-size:clamp(17px,2vw,20px);margin:36px 0 10px}
 p,li{font-size:16.5px}
+dl.meta{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;margin:0 0 34px;
+ padding:20px 22px;background:#FFF6D9;border-radius:14px}
+dl.meta dt{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;
+ color:#6E6A85;white-space:nowrap;padding-top:4px}
+dl.meta dd{margin:0;font-size:15px;line-height:1.75}
+@media (max-width:480px){dl.meta{grid-template-columns:1fr;gap:3px 0}
+ dl.meta dd{margin-bottom:10px}}
 blockquote{margin:26px 0;padding:2px 0 2px 20px;border-left:3px solid #FFD34E;color:#3E3932}
 blockquote p{margin:6px 0}
 figure{margin:32px 0}
