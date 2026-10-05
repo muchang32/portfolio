@@ -97,9 +97,11 @@ C.append(('案例頁的摘要與規格卡',
           'blockquote class="summary"' in _anfu and 'dl.meta' in _anfu
           and _anfu.index('blockquote class="summary"') < _anfu.index('<dl class="meta"')))
 C.append(('案例頁沒有星芒分隔線', '2726' not in _anfu))
+C.append(('安否通沒有自我評審那段', '自己的評審' not in _anfu and '86 分' not in _anfu))
+C.append(('正取公司名稱正確', '睿鍶科技' in _anfu and '睿鍇' not in _anfu))
 C.append(('Aicast 影片', 'youtube-nocookie.com/embed/WiEB46Ox8S8'
           in pathlib.Path('case/aicast.html').read_text(encoding='utf-8')))
-for desc, ok in C[-4:]:
+for desc, ok in C[-6:]:
     (fails if not ok else warns).append(desc) if not ok else None
 
 print(f'檢查 {len(C)} 項')
