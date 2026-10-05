@@ -26,25 +26,12 @@ header.bar div{max-width:880px;margin:0 auto;padding:14px clamp(16px,4vw,28px);d
 .back:hover{color:#6D4AFF}
 main{max-width:880px;margin:0 auto;padding:clamp(24px,4vw,48px) clamp(16px,4vw,28px) 88px}
 .wrap{max-width:100%;text-align:left}
-.kicker{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
- letter-spacing:.14em;background:#14110F;color:#FAF7F0;padding:6px 14px;border-radius:999px;
- margin:0 0 18px}
 h1{font-size:clamp(28px,4.6vw,44px);line-height:1.25;letter-spacing:-.02em;margin:0 0 18px}
-h2{font-size:clamp(21px,2.7vw,28px);margin:58px 0 16px;line-height:1.5}
-h2 span{box-shadow:inset 0 -.34em 0 #FFD34E}
+h2{font-size:clamp(20px,2.6vw,27px);margin:52px 0 14px;line-height:1.35}
 h1+p+h2,h1+h2{margin-top:34px}
-h3{font-size:clamp(17px,2vw,20px);margin:38px 0 10px;padding-left:13px;
- border-left:4px solid #FFD34E}
+h3{font-size:clamp(17px,2vw,20px);margin:36px 0 10px}
 p,li{font-size:16.5px}
-dl.meta{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;margin:0 0 34px;
- padding:20px 22px;background:#FFF6D9;border-radius:14px}
-dl.meta dt{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;
- color:#6E6A85;white-space:nowrap;padding-top:4px}
-dl.meta dd{margin:0;font-size:15px;line-height:1.75}
-@media (max-width:480px){dl.meta{grid-template-columns:1fr;gap:3px 0}
- dl.meta dd{margin-bottom:10px}}
-blockquote{margin:30px 0;padding:clamp(20px,2.6vw,28px);background:#FFF6D9;
- border:2px solid #14110F;border-radius:20px;box-shadow:5px 5px 0 #14110F;color:#2C2620}
+blockquote{margin:26px 0;padding:2px 0 2px 20px;border-left:3px solid #FFD34E;color:#3E3932}
 blockquote p{margin:6px 0}
 figure{margin:32px 0}
 figure img{width:100%;height:auto;border-radius:14px;display:block}
@@ -56,26 +43,50 @@ pre code{background:none;color:inherit;font-size:13.5px;line-height:1.7}
 .tw{overflow-x:auto;margin:24px 0}
 table{border-collapse:collapse;width:100%;min-width:420px}
 th,td{border-bottom:1px solid #E3DEF2;padding:10px 12px;text-align:left;font-size:15px;vertical-align:top}
+th{background:#FFF6D9;font-weight:700}
+hr{border:0;border-top:1px solid #E3DEF2;margin:44px 0}
+.foot{max-width:880px;margin:64px auto 0;padding-top:26px;border-top:1px solid #E3DEF2;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:15px}
+.foot a{font-weight:700;text-decoration:none;color:#14110F}
+.foot a:hover{color:#6D4AFF}
+:focus-visible{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}
+@media (max-width:640px){p,li{font-size:16px}main{padding-bottom:64px}}
+
+.kicker{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+ letter-spacing:.14em;background:#14110F;color:#FAF7F0;padding:6px 14px;border-radius:999px;
+ margin:0 0 18px}
+h2 span{box-shadow:inset 0 -.34em 0 #FFD34E}
+h3{padding-left:13px;border-left:4px solid #FFD34E}
+/* 摘要：無框，左邊一條亮黃直條 */
+blockquote.summary{margin:0 0 26px;padding:4px 0 4px 22px;border-left:0;position:relative;
+ font-size:16px;color:#2C2620}
+blockquote.summary::before{content:'';position:absolute;left:0;top:2px;bottom:2px;width:7px;
+ background:#FFD34E;border-radius:3px}
+/* 其餘引言維持首頁那種卡片 */
+blockquote:not(.summary){margin:30px 0;padding:clamp(20px,2.6vw,28px);background:#FFF6D9;
+ border:2px solid #14110F;border-radius:20px;box-shadow:5px 5px 0 #14110F;color:#2C2620}
+/* 角色／類型：白底圓角框加陰影 */
+dl.meta{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;margin:0 0 34px;
+ padding:clamp(20px,2.4vw,26px);background:#FFFFFF;border:2px solid #14110F;border-radius:20px;
+ box-shadow:5px 5px 0 #14110F}
+dl.meta dt{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;
+ color:#6E6A85;white-space:nowrap;padding-top:4px}
+dl.meta dd{margin:0;font-size:15px;line-height:1.75}
+@media (max-width:480px){dl.meta{grid-template-columns:1fr;gap:3px 0}
+ dl.meta dd{margin-bottom:10px}}
 th{background:#FFD34E;font-weight:700;border-bottom:2px solid #14110F}
 table{border:2px solid #14110F;border-radius:14px;overflow:hidden;border-collapse:separate;
  border-spacing:0}
 td{border-bottom:1px solid rgba(20,17,15,.12)}
 tbody tr:last-child td{border-bottom:0}
-/* 清單用小方塊取代圓點，跟站上的方形語彙一致 */
 main ul{list-style:none;padding-left:0}
 main ul li{position:relative;padding-left:24px}
 main ul li::before{content:'';position:absolute;left:3px;top:.62em;width:9px;height:9px;
  background:#FFD34E;border:1.5px solid #14110F;border-radius:3px}
-/* 分隔線改成星芒，跟首頁的裝飾同一套語彙 */
-hr{border:0;margin:54px 0;text-align:center;line-height:1}
-hr::before{content:'\2726';color:#FFD34E;font-size:17px}
-.foot{max-width:880px;margin:64px auto 0;padding-top:26px;border-top:1px solid #E3DEF2;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:15px}
-.foot a{font-weight:700;text-decoration:none;color:#14110F;border:2px solid #14110F;
- border-radius:999px;padding:11px 22px;background:#FFFFFF;
- transition:transform .15s ease,box-shadow .15s ease}
-.foot a:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #14110F}
-:focus-visible{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}
-@media (max-width:640px){p,li{font-size:16px}main{padding-bottom:64px}}
+/* YouTube 嵌入維持 16:9 */
+.yt{position:relative;width:100%;aspect-ratio:16/9;margin:32px 0;border-radius:14px;
+ overflow:hidden;background:#14110F}
+.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
 </style>
 </head>
 <body>
@@ -85,14 +96,16 @@ hr::before{content:'\2726';color:#FFD34E;font-size:17px}
 <main><div class="wrap">
 <p class="kicker">精選案例</p>
 <h1>Aicast 有聲內容製作平台</h1>
+<blockquote class="summary"><p>聯經數位的 AI 有聲內容製作平台，以 8 位 AI 配音員演繹 42 種聲音，讓多角色有聲書的製作時間最多減少 90%。2025 iF 設計獎。</p></blockquote>
 <dl class="meta"><dt>角色</dt><dd>專案經理（2024/5 – 2025/3，聯經數位）</dd><dt>類型</dt><dd>AI SaaS ・ 有聲內容製作</dd><dt>團隊</dt><dd>管理 9–12 人，開發由外包商執行</dd><dt>負責</dt><dd>需求定義 ・ 產品測試驗證 ・ UI 設計 ・ 外包與人員管理 ・ AI 配音員徵選 ・ 音效資料庫建置 ・ 國際獎項申請</dd></dl>
-<blockquote><p>聯經數位的 AI 有聲內容製作平台，以 8 位 AI 配音員演繹 42 種聲音，讓多角色有聲書的製作時間最多減少 90%。2025 iF 設計獎。</p></blockquote>
 <hr />
 <h2><span>問題</span></h2>
 <p>製作一本多角色有聲書，需要找配音員、協調檔期、租借錄音室，人力與時間成本都高。</p>
 <p>更關鍵的限制在於：受限於成本，多數有聲書只能由單人朗讀完成，無法像舞台劇一樣讓每個角色擁有自己的聲音。內容的表現力，被製作成本壓縮了。</p>
 <p>Aicast 要解決的就是這件事——<strong>讓多角色配音變得便宜到可行</strong>。</p>
 <p>平台整合三項 AI 能力：將 epub / docx / txt 文件自動拆分章節並轉為劇本型態（支援最長 50 萬字文本）、掃描並解析每句對話角色的名稱、性別、年齡與情緒（角色辨識平均正確率 75–96%），再依角色特質自動配置聲音。以 8 位 AI 配音員即可演繹橫跨各年齡層的 42 種聲音，多人配音有聲書的製作時間最多可減少 90%。</p>
+<div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/WiEB46Ox8S8" title="YouTube" loading="lazy" allowfullscreen allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture"></iframe></div>
+<p><em>Aicast 產品影片（2025 iF 設計獎參賽作品）</em></p>
 <hr />
 <h2><span>我加入時的處境</span></h2>
 <p>我在產品初期加入，核心功能已經存在——能分析文本、拆分角色、自動配置配音——但穩定性不足，也有不少思慮不夠周全的環節。</p>

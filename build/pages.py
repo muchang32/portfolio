@@ -6,6 +6,44 @@ ROOT = pathlib.Path('.')
 PAL = dict(bg='#FAF7F0', ink='#14110F', card='#FFFFFF', accent='#FFD34E',
            violet='#6D4AFF', soft='#FFF6D9', line='#14110F')
 
+CASE_CSS = """
+.kicker{{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+ letter-spacing:.14em;background:{ink};color:{bg};padding:6px 14px;border-radius:999px;
+ margin:0 0 18px}}
+h2 span{{box-shadow:inset 0 -.34em 0 {accent}}}
+h3{{padding-left:13px;border-left:4px solid {accent}}}
+/* 摘要：無框，左邊一條亮黃直條 */
+blockquote.summary{{margin:0 0 26px;padding:4px 0 4px 22px;border-left:0;position:relative;
+ font-size:16px;color:#2C2620}}
+blockquote.summary::before{{content:'';position:absolute;left:0;top:2px;bottom:2px;width:7px;
+ background:{accent};border-radius:3px}}
+/* 其餘引言維持首頁那種卡片 */
+blockquote:not(.summary){{margin:30px 0;padding:clamp(20px,2.6vw,28px);background:{soft};
+ border:2px solid {ink};border-radius:20px;box-shadow:5px 5px 0 {ink};color:#2C2620}}
+/* 角色／類型：白底圓角框加陰影 */
+dl.meta{{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;margin:0 0 34px;
+ padding:clamp(20px,2.4vw,26px);background:{card};border:2px solid {ink};border-radius:20px;
+ box-shadow:5px 5px 0 {ink}}}
+dl.meta dt{{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;
+ color:#6E6A85;white-space:nowrap;padding-top:4px}}
+dl.meta dd{{margin:0;font-size:15px;line-height:1.75}}
+@media (max-width:480px){{dl.meta{{grid-template-columns:1fr;gap:3px 0}}
+ dl.meta dd{{margin-bottom:10px}}}}
+th{{background:{accent};font-weight:700;border-bottom:2px solid {ink}}}
+table{{border:2px solid {ink};border-radius:14px;overflow:hidden;border-collapse:separate;
+ border-spacing:0}}
+td{{border-bottom:1px solid rgba(20,17,15,.12)}}
+tbody tr:last-child td{{border-bottom:0}}
+main ul{{list-style:none;padding-left:0}}
+main ul li{{position:relative;padding-left:24px}}
+main ul li::before{{content:'';position:absolute;left:3px;top:.62em;width:9px;height:9px;
+ background:{accent};border:1.5px solid {ink};border-radius:3px}}
+/* YouTube 嵌入維持 16:9 */
+.yt{{position:relative;width:100%;aspect-ratio:16/9;margin:32px 0;border-radius:14px;
+ overflow:hidden;background:{ink}}}
+.yt iframe{{position:absolute;inset:0;width:100%;height:100%;border:0}}
+"""
+
 def md2html(md, depth):
     up = '../' * depth
     out, lines, i = [], md.split('\n'), 0
@@ -25,7 +63,7 @@ def md2html(md, depth):
     while i < len(lines):
         ln = lines[i]
         # 只有開頭第一塊可以變成規格表，避免內文的粗體被誤判
-        if not out and re.match(r'^\*\*[^*]+\*\*\u3000', ln):
+        if len(out) <= 1 and re.match(r'^\*\*[^*]+\*\*\u3000', ln):
             rows = []
             while i < len(lines) and re.match(r'^\*\*[^*]+\*\*\u3000', lines[i]):
                 mm = re.match(r'^\*\*([^*]+)\*\*\u3000(.+)$', lines[i])
@@ -33,6 +71,14 @@ def md2html(md, depth):
             out.append('<dl class="meta">' + ''.join(
                 f'<dt>{inline(k)}</dt><dd>{inline(v)}</dd>' for k, v in rows) + '</dl>')
             continue
+        my = re.match(r'^!youtube\(([^)]+)\)$', ln.strip())
+        if my:
+            vid = my.group(1).rsplit('/', 1)[-1].split('?')[0]
+            # nocookie 網域：沒播放前不種追蹤 cookie
+            out.append(f'<div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/{vid}" '
+                       f'title="YouTube" loading="lazy" allowfullscreen '
+                       f'allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture">'
+                       f'</iframe></div>'); i += 1; continue
         mv = re.match(r'^!video\[([^\]]*)\]\(([^)]+)\)$', ln.strip())
         if mv:
             poster, src = mv.group(1), mv.group(2)
@@ -71,7 +117,7 @@ def md2html(md, depth):
         if ln.strip() == '---': out.append('<hr />'); i += 1; continue
         if ln.strip():
             buf = []
-            while i < len(lines) and lines[i].strip() and not re.match(r'^(#{1,4} |> |[-・*] |\d+\. |\||```|---|!\[|!video\[)', lines[i]):
+            while i < len(lines) and lines[i].strip() and not re.match(r'^(#{1,4} |> |[-・*] |\d+\. |\||```|---|!\[|!video\[|!youtube\()', lines[i]):
                 buf.append(lines[i]); i += 1
             out.append('<p>' + inline(' '.join(buf)) + '</p>'); continue
         i += 1
@@ -105,25 +151,12 @@ header.bar div{{max-width:{wrap};margin:0 auto;padding:14px clamp(16px,4vw,28px)
 .back:hover{{color:{violet}}}
 main{{max-width:{wrap};margin:0 auto;padding:clamp(24px,4vw,48px) clamp(16px,4vw,28px) 88px}}
 .wrap{{max-width:100%;text-align:left}}
-.kicker{{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
- letter-spacing:.14em;background:{ink};color:{bg};padding:6px 14px;border-radius:999px;
- margin:0 0 18px}}
 h1{{font-size:clamp(28px,4.6vw,44px);line-height:1.25;letter-spacing:-.02em;margin:0 0 18px}}
-h2{{font-size:clamp(21px,2.7vw,28px);margin:58px 0 16px;line-height:1.5}}
-h2 span{{box-shadow:inset 0 -.34em 0 {accent}}}
+h2{{font-size:clamp(20px,2.6vw,27px);margin:52px 0 14px;line-height:1.35}}
 h1+p+h2,h1+h2{{margin-top:34px}}
-h3{{font-size:clamp(17px,2vw,20px);margin:38px 0 10px;padding-left:13px;
- border-left:4px solid {accent}}}
+h3{{font-size:clamp(17px,2vw,20px);margin:36px 0 10px}}
 p,li{{font-size:16.5px}}
-dl.meta{{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;margin:0 0 34px;
- padding:20px 22px;background:{soft};border-radius:14px}}
-dl.meta dt{{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;
- color:#6E6A85;white-space:nowrap;padding-top:4px}}
-dl.meta dd{{margin:0;font-size:15px;line-height:1.75}}
-@media (max-width:480px){{dl.meta{{grid-template-columns:1fr;gap:3px 0}}
- dl.meta dd{{margin-bottom:10px}}}}
-blockquote{{margin:30px 0;padding:clamp(20px,2.6vw,28px);background:{soft};
- border:2px solid {ink};border-radius:20px;box-shadow:5px 5px 0 {ink};color:#2C2620}}
+blockquote{{margin:26px 0;padding:2px 0 2px 20px;border-left:3px solid {accent};color:#3E3932}}
 blockquote p{{margin:6px 0}}
 figure{{margin:32px 0}}
 figure img{{width:100%;height:auto;border-radius:14px;display:block}}
@@ -135,26 +168,14 @@ pre code{{background:none;color:inherit;font-size:13.5px;line-height:1.7}}
 .tw{{overflow-x:auto;margin:24px 0}}
 table{{border-collapse:collapse;width:100%;min-width:420px}}
 th,td{{border-bottom:1px solid #E3DEF2;padding:10px 12px;text-align:left;font-size:15px;vertical-align:top}}
-th{{background:{accent};font-weight:700;border-bottom:2px solid {ink}}}
-table{{border:2px solid {ink};border-radius:14px;overflow:hidden;border-collapse:separate;
- border-spacing:0}}
-td{{border-bottom:1px solid rgba(20,17,15,.12)}}
-tbody tr:last-child td{{border-bottom:0}}
-/* 清單用小方塊取代圓點，跟站上的方形語彙一致 */
-main ul{{list-style:none;padding-left:0}}
-main ul li{{position:relative;padding-left:24px}}
-main ul li::before{{content:'';position:absolute;left:3px;top:.62em;width:9px;height:9px;
- background:{accent};border:1.5px solid {ink};border-radius:3px}}
-/* 分隔線改成星芒，跟首頁的裝飾同一套語彙 */
-hr{{border:0;margin:54px 0;text-align:center;line-height:1}}
-hr::before{{content:'\\2726';color:{accent};font-size:17px}}
+th{{background:{soft};font-weight:700}}
+hr{{border:0;border-top:1px solid #E3DEF2;margin:44px 0}}
 .foot{{max-width:{wrap};margin:64px auto 0;padding-top:26px;border-top:1px solid #E3DEF2;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:15px}}
-.foot a{{font-weight:700;text-decoration:none;color:{ink};border:2px solid {ink};
- border-radius:999px;padding:11px 22px;background:{card};
- transition:transform .15s ease,box-shadow .15s ease}}
-.foot a:hover{{transform:translate(-2px,-2px);box-shadow:4px 4px 0 {ink}}}
+.foot a{{font-weight:700;text-decoration:none;color:{ink}}}
+.foot a:hover{{color:{violet}}}
 :focus-visible{{outline:3px solid {violet};outline-offset:3px;border-radius:4px}}
 @media (max-width:640px){{p,li{{font-size:16px}}main{{padding-bottom:64px}}}}
+{extra_css}
 </style>
 </head>
 <body>
@@ -162,8 +183,7 @@ hr::before{{content:'\\2726';color:{accent};font-size:17px}}
   <a class="back" href="{up}index.html#{back_anchor}">← {back_label}</a>
 </div></header>
 <main><div class="wrap">
-<p class="kicker">{kicker}</p>
-<h1>{h1}</h1>
+{kicker_html}<h1>{h1}</h1>
 {content}
 </div>
 <nav class="foot">
@@ -175,7 +195,8 @@ hr::before{{content:'\\2726';color:{accent};font-size:17px}}
 </html>
 """
 
-def build(md_path, out_path, kicker, back_anchor, back_label, prev, nxt, depth, wrap='880px'):
+def build(md_path, out_path, kicker, back_anchor, back_label, prev, nxt, depth,
+          wrap='880px', variant='plain'):
     md = pathlib.Path(md_path).read_text(encoding='utf-8')
     lines = md.split('\n')
     title = lines[0].lstrip('# ').strip()
@@ -184,10 +205,18 @@ def build(md_path, out_path, kicker, back_anchor, back_label, prev, nxt, depth, 
     for ln in lines[1:]:
         if ln.startswith('> '): desc = ln[2:].strip(); break
     content = md2html(body_md, depth)
+    extra_css, kicker_html = '', ''
+    if variant == 'case':
+        extra_css = CASE_CSS.format(**PAL)
+        kicker_html = f'<p class="kicker">{html.escape(kicker)}</p>\n'
+        # 開頭那句引言是摘要，樣式跟內文中的引言不同
+        if content.startswith('<blockquote>'):
+            content = content.replace('<blockquote>', '<blockquote class="summary">', 1)
     out = pathlib.Path(out_path); out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(SHELL.format(title=html.escape(title), h1=html.escape(title), desc=html.escape(desc or title),
                                 content=content, up='../' * depth, kicker=kicker,
                                 wrap=wrap,
+                                extra_css=extra_css, kicker_html=kicker_html,
                                 back_anchor=back_anchor, back_label=back_label,
                                 prev_href=prev[0], prev_label=prev[1],
                                 next_href=nxt[0], next_label=nxt[1], **PAL), encoding='utf-8')
@@ -204,5 +233,6 @@ CASES = [('aicast-case-study.md','case/aicast.html','Aicast'), ('anfu-case-study
 for i,(src,dst,name) in enumerate(CASES):
     other = CASES[1-i]
     t = build(src, dst, '精選案例', 'case', '回到案例',
-              ('../index.html#case','← 回到案例'), (f'../{other[1]}', f'{other[2]} →'), 1)
+              ('../index.html#case','← 回到案例'), (f'../{other[1]}', f'{other[2]} →'), 1,
+              variant='case')
     print(dst, '→', t)

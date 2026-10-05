@@ -90,6 +90,18 @@ C.append(('安否通內頁示範錄影',
 for desc, ok in C[-1:]:
     (fails if not ok else warns).append(desc) if not ok else None
 
+_w1 = pathlib.Path('writing/01-auto-image.html').read_text(encoding='utf-8')
+C.append(('專欄頁維持原本樣式',
+          'class="kicker"' not in _w1 and 'dl.meta' not in _w1 and 'h2 span{' not in _w1))
+C.append(('案例頁的摘要與規格卡',
+          'blockquote class="summary"' in _anfu and 'dl.meta' in _anfu
+          and _anfu.index('blockquote class="summary"') < _anfu.index('<dl class="meta"')))
+C.append(('案例頁沒有星芒分隔線', '2726' not in _anfu))
+C.append(('Aicast 影片', 'youtube-nocookie.com/embed/WiEB46Ox8S8'
+          in pathlib.Path('case/aicast.html').read_text(encoding='utf-8')))
+for desc, ok in C[-4:]:
+    (fails if not ok else warns).append(desc) if not ok else None
+
 print(f'檢查 {len(C)} 項')
 if fails:
     print(f'\n✗ 失敗 {len(fails)} 項：')
