@@ -607,6 +607,14 @@ body = (body[:_ap_start]
         + '</div>'
         + body[_ap_end:])
 
+# F2b. 精選案例 安否通：主圖
+_an = body.index('安否通')
+_an_start = body.rindex('<div style="aspect-ratio:16/10;border-radius:16px;background:#EDE6FF;', 0, _an)
+_an_end = _close_of(body, _an_start)
+body = (body[:_an_start]
+        + _img('./assets/case/anfu/cover.jpg', '安否通 未回報優先佇列看板', '16/10')
+        + body[_an_end:])
+
 # ===== 本輪 G：AI Lab 彈窗（封面、放大、關閉鍵固定右上）=====
 _mi = body.index('data-if="labOpen"')
 

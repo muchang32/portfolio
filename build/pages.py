@@ -24,6 +24,12 @@ def md2html(md, depth):
         return t
     while i < len(lines):
         ln = lines[i]
+        mv = re.match(r'^!video\[([^\]]*)\]\(([^)]+)\)$', ln.strip())
+        if mv:
+            poster, src = mv.group(1), mv.group(2)
+            # 螢幕錄影無聲，preload=metadata 讓手機不要一進頁就抓整支
+            out.append(f'<figure><video src="{up}{src}" poster="{up}{poster}" controls '
+                       f'preload="metadata" playsinline></video></figure>'); i += 1; continue
         if re.match(r'^!\[\]\(', ln.strip()):
             out.append('<figure>' + inline(ln.strip()) + '</figure>'); i += 1; continue
         if ln.startswith('```'):
@@ -53,7 +59,7 @@ def md2html(md, depth):
         if ln.strip() == '---': out.append('<hr />'); i += 1; continue
         if ln.strip():
             buf = []
-            while i < len(lines) and lines[i].strip() and not re.match(r'^(#{1,4} |> |[-・*] |\d+\. |\||```|---|!\[)', lines[i]):
+            while i < len(lines) and lines[i].strip() and not re.match(r'^(#{1,4} |> |[-・*] |\d+\. |\||```|---|!\[|!video\[)', lines[i]):
                 buf.append(lines[i]); i += 1
             out.append('<p>' + inline(' '.join(buf)) + '</p>'); continue
         i += 1
@@ -97,6 +103,7 @@ blockquote{{margin:26px 0;padding:2px 0 2px 20px;border-left:3px solid {accent};
 blockquote p{{margin:6px 0}}
 figure{{margin:32px 0}}
 figure img{{width:100%;height:auto;border-radius:14px;display:block}}
+figure video{{width:100%;height:auto;border-radius:14px;display:block;background:#14110F}}
 figure+p em{{display:block;text-align:left;color:#6E6A85;font-size:14px;margin-top:-22px}}
 code{{font-family:'IBM Plex Mono',monospace;font-size:14px;background:{soft};padding:2px 6px;border-radius:5px}}
 pre{{background:{ink};color:{bg};padding:18px 20px;border-radius:14px;overflow-x:auto}}

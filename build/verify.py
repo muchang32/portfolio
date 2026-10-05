@@ -39,6 +39,7 @@ C = [
   ('AI Lab 八張縮圖都有 hover 標記',
    len(re.findall(r'aspect-ratio:16/10[^>]*data-hv="h\d+"|data-hv="h\d+"[^>]*aspect-ratio:16/10', h)) == 8),
   ('Aicast 主圖', has('case/aicast/01.jpg')),
+  ('安否通 主圖', has('case/anfu/cover.jpg')),
   ('iF 獎章', has('if-award-2025.png')),
   ('SKILLS 十個 logo', len(re.findall(r'assets/logos/opt/', h)) == 10),
   ('站台 logo 與 favicon', has('assets/logo-84.png') and has('assets/favicon.png')),
@@ -73,6 +74,14 @@ C = [
   ('無 React 依賴', absent('unpkg.com') and absent('React.createElement')),
 ]
 for desc, ok in C:
+    (fails if not ok else warns).append(desc) if not ok else None
+
+# 內頁的素材也要跟著檢查
+_anfu = pathlib.Path('case/anfu.html').read_text(encoding='utf-8')
+C.append(('安否通內頁示範錄影',
+          'assets/case/anfu/demo.mp4' in _anfu and 'demo-poster.jpg' in _anfu
+          and pathlib.Path('assets/case/anfu/demo.mp4').exists()))
+for desc, ok in C[-1:]:
     (fails if not ok else warns).append(desc) if not ok else None
 
 print(f'檢查 {len(C)} 項')
