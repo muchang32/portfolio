@@ -47,6 +47,10 @@ C = [
   ('OG 分享圖為絕對網址', has('og:image" content="https://')),
   # --- 版面結構 ---
   ('Credentials 三欄', has('[data-grid="creds"]')),
+  ('精選案例只有整張卡有 hover',
+   len(re.findall(r'data-hv="h\d+"', h[h.index('id="case"'):h.index('id="ai-lab"')])) == 2),
+  ('案例按鈕與內文留有間距', h.count('style="margin-top:22px;display:inline-block;') == 2),
+  ('沒有重複的 style 屬性', not re.search(r'<[a-z]+[^>]*\sstyle="[^"]*"[^>]*\sstyle="', h)),
   ('What I Do 用結構選擇器', has('#skills div[style*="border:2px solid #14110F"]:hover')),
   ('無 hidden 殘留在 SVG', not re.search(r'<svg[^>]*\shidden[^>]*>', h)),
   # --- 文案 ---

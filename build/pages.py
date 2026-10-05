@@ -55,7 +55,10 @@ def md2html(md, depth):
             out.append(f'<div class="tw"><table><thead><tr>{th}</tr></thead><tbody>{tb}</tbody></table></div>'); continue
         m = re.match(r'^(#{1,4}) (.+)', ln)
         if m:
-            lvl = len(m.group(1)); out.append(f'<h{lvl}>{inline(m.group(2))}</h{lvl}>'); i += 1; continue
+            lvl = len(m.group(1)); txt = inline(m.group(2))
+            # h2 的黃色標示只能蓋在文字上，所以包一層 inline 的 span
+            inner = f'<span>{txt}</span>' if lvl == 2 else txt
+            out.append(f'<h{lvl}>{inner}</h{lvl}>'); i += 1; continue
         if ln.startswith('> '):
             buf = []
             while i < len(lines) and lines[i].startswith('> '): buf.append(lines[i][2:]); i += 1
@@ -102,11 +105,15 @@ header.bar div{{max-width:{wrap};margin:0 auto;padding:14px clamp(16px,4vw,28px)
 .back:hover{{color:{violet}}}
 main{{max-width:{wrap};margin:0 auto;padding:clamp(24px,4vw,48px) clamp(16px,4vw,28px) 88px}}
 .wrap{{max-width:100%;text-align:left}}
-.kicker{{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#6E6A85;margin-bottom:14px}}
+.kicker{{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+ letter-spacing:.14em;background:{ink};color:{bg};padding:6px 14px;border-radius:999px;
+ margin:0 0 18px}}
 h1{{font-size:clamp(28px,4.6vw,44px);line-height:1.25;letter-spacing:-.02em;margin:0 0 18px}}
-h2{{font-size:clamp(20px,2.6vw,27px);margin:52px 0 14px;line-height:1.35}}
+h2{{font-size:clamp(21px,2.7vw,28px);margin:58px 0 16px;line-height:1.5}}
+h2 span{{box-shadow:inset 0 -.34em 0 {accent}}}
 h1+p+h2,h1+h2{{margin-top:34px}}
-h3{{font-size:clamp(17px,2vw,20px);margin:36px 0 10px}}
+h3{{font-size:clamp(17px,2vw,20px);margin:38px 0 10px;padding-left:13px;
+ border-left:4px solid {accent}}}
 p,li{{font-size:16.5px}}
 dl.meta{{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;margin:0 0 34px;
  padding:20px 22px;background:{soft};border-radius:14px}}
@@ -115,7 +122,8 @@ dl.meta dt{{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:
 dl.meta dd{{margin:0;font-size:15px;line-height:1.75}}
 @media (max-width:480px){{dl.meta{{grid-template-columns:1fr;gap:3px 0}}
  dl.meta dd{{margin-bottom:10px}}}}
-blockquote{{margin:26px 0;padding:2px 0 2px 20px;border-left:3px solid {accent};color:#3E3932}}
+blockquote{{margin:30px 0;padding:clamp(20px,2.6vw,28px);background:{soft};
+ border:2px solid {ink};border-radius:20px;box-shadow:5px 5px 0 {ink};color:#2C2620}}
 blockquote p{{margin:6px 0}}
 figure{{margin:32px 0}}
 figure img{{width:100%;height:auto;border-radius:14px;display:block}}
@@ -127,11 +135,24 @@ pre code{{background:none;color:inherit;font-size:13.5px;line-height:1.7}}
 .tw{{overflow-x:auto;margin:24px 0}}
 table{{border-collapse:collapse;width:100%;min-width:420px}}
 th,td{{border-bottom:1px solid #E3DEF2;padding:10px 12px;text-align:left;font-size:15px;vertical-align:top}}
-th{{background:{soft};font-weight:700}}
-hr{{border:0;border-top:1px solid #E3DEF2;margin:44px 0}}
+th{{background:{accent};font-weight:700;border-bottom:2px solid {ink}}}
+table{{border:2px solid {ink};border-radius:14px;overflow:hidden;border-collapse:separate;
+ border-spacing:0}}
+td{{border-bottom:1px solid rgba(20,17,15,.12)}}
+tbody tr:last-child td{{border-bottom:0}}
+/* 清單用小方塊取代圓點，跟站上的方形語彙一致 */
+main ul{{list-style:none;padding-left:0}}
+main ul li{{position:relative;padding-left:24px}}
+main ul li::before{{content:'';position:absolute;left:3px;top:.62em;width:9px;height:9px;
+ background:{accent};border:1.5px solid {ink};border-radius:3px}}
+/* 分隔線改成星芒，跟首頁的裝飾同一套語彙 */
+hr{{border:0;margin:54px 0;text-align:center;line-height:1}}
+hr::before{{content:'\\2726';color:{accent};font-size:17px}}
 .foot{{max-width:{wrap};margin:64px auto 0;padding-top:26px;border-top:1px solid #E3DEF2;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:15px}}
-.foot a{{font-weight:700;text-decoration:none;color:{ink}}}
-.foot a:hover{{color:{violet}}}
+.foot a{{font-weight:700;text-decoration:none;color:{ink};border:2px solid {ink};
+ border-radius:999px;padding:11px 22px;background:{card};
+ transition:transform .15s ease,box-shadow .15s ease}}
+.foot a:hover{{transform:translate(-2px,-2px);box-shadow:4px 4px 0 {ink}}}
 :focus-visible{{outline:3px solid {violet};outline-offset:3px;border-radius:4px}}
 @media (max-width:640px){{p,li{{font-size:16px}}main{{padding-bottom:64px}}}}
 </style>
@@ -141,6 +162,7 @@ hr{{border:0;border-top:1px solid #E3DEF2;margin:44px 0}}
   <a class="back" href="{up}index.html#{back_anchor}">← {back_label}</a>
 </div></header>
 <main><div class="wrap">
+<p class="kicker">{kicker}</p>
 <h1>{h1}</h1>
 {content}
 </div>

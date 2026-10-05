@@ -26,11 +26,15 @@ header.bar div{max-width:880px;margin:0 auto;padding:14px clamp(16px,4vw,28px);d
 .back:hover{color:#6D4AFF}
 main{max-width:880px;margin:0 auto;padding:clamp(24px,4vw,48px) clamp(16px,4vw,28px) 88px}
 .wrap{max-width:100%;text-align:left}
-.kicker{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#6E6A85;margin-bottom:14px}
+.kicker{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+ letter-spacing:.14em;background:#14110F;color:#FAF7F0;padding:6px 14px;border-radius:999px;
+ margin:0 0 18px}
 h1{font-size:clamp(28px,4.6vw,44px);line-height:1.25;letter-spacing:-.02em;margin:0 0 18px}
-h2{font-size:clamp(20px,2.6vw,27px);margin:52px 0 14px;line-height:1.35}
+h2{font-size:clamp(21px,2.7vw,28px);margin:58px 0 16px;line-height:1.5}
+h2 span{box-shadow:inset 0 -.34em 0 #FFD34E}
 h1+p+h2,h1+h2{margin-top:34px}
-h3{font-size:clamp(17px,2vw,20px);margin:36px 0 10px}
+h3{font-size:clamp(17px,2vw,20px);margin:38px 0 10px;padding-left:13px;
+ border-left:4px solid #FFD34E}
 p,li{font-size:16.5px}
 dl.meta{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;margin:0 0 34px;
  padding:20px 22px;background:#FFF6D9;border-radius:14px}
@@ -39,7 +43,8 @@ dl.meta dt{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.
 dl.meta dd{margin:0;font-size:15px;line-height:1.75}
 @media (max-width:480px){dl.meta{grid-template-columns:1fr;gap:3px 0}
  dl.meta dd{margin-bottom:10px}}
-blockquote{margin:26px 0;padding:2px 0 2px 20px;border-left:3px solid #FFD34E;color:#3E3932}
+blockquote{margin:30px 0;padding:clamp(20px,2.6vw,28px);background:#FFF6D9;
+ border:2px solid #14110F;border-radius:20px;box-shadow:5px 5px 0 #14110F;color:#2C2620}
 blockquote p{margin:6px 0}
 figure{margin:32px 0}
 figure img{width:100%;height:auto;border-radius:14px;display:block}
@@ -51,11 +56,24 @@ pre code{background:none;color:inherit;font-size:13.5px;line-height:1.7}
 .tw{overflow-x:auto;margin:24px 0}
 table{border-collapse:collapse;width:100%;min-width:420px}
 th,td{border-bottom:1px solid #E3DEF2;padding:10px 12px;text-align:left;font-size:15px;vertical-align:top}
-th{background:#FFF6D9;font-weight:700}
-hr{border:0;border-top:1px solid #E3DEF2;margin:44px 0}
+th{background:#FFD34E;font-weight:700;border-bottom:2px solid #14110F}
+table{border:2px solid #14110F;border-radius:14px;overflow:hidden;border-collapse:separate;
+ border-spacing:0}
+td{border-bottom:1px solid rgba(20,17,15,.12)}
+tbody tr:last-child td{border-bottom:0}
+/* 清單用小方塊取代圓點，跟站上的方形語彙一致 */
+main ul{list-style:none;padding-left:0}
+main ul li{position:relative;padding-left:24px}
+main ul li::before{content:'';position:absolute;left:3px;top:.62em;width:9px;height:9px;
+ background:#FFD34E;border:1.5px solid #14110F;border-radius:3px}
+/* 分隔線改成星芒，跟首頁的裝飾同一套語彙 */
+hr{border:0;margin:54px 0;text-align:center;line-height:1}
+hr::before{content:'\2726';color:#FFD34E;font-size:17px}
 .foot{max-width:880px;margin:64px auto 0;padding-top:26px;border-top:1px solid #E3DEF2;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:15px}
-.foot a{font-weight:700;text-decoration:none;color:#14110F}
-.foot a:hover{color:#6D4AFF}
+.foot a{font-weight:700;text-decoration:none;color:#14110F;border:2px solid #14110F;
+ border-radius:999px;padding:11px 22px;background:#FFFFFF;
+ transition:transform .15s ease,box-shadow .15s ease}
+.foot a:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #14110F}
 :focus-visible{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}
 @media (max-width:640px){p,li{font-size:16px}main{padding-bottom:64px}}
 </style>
@@ -65,6 +83,7 @@ hr{border:0;border-top:1px solid #E3DEF2;margin:44px 0}
   <a class="back" href="../index.html#writing">← 回到專欄</a>
 </div></header>
 <main><div class="wrap">
+<p class="kicker">企業內部刊物專欄</p>
 <h1>請你跟我這樣做！保姆級旅遊 APP 教學（附模板）</h1>
 <blockquote><p>有讀者說「看起來很厲害，但跟我沒關係」，所以我改從日常旅遊重寫一篇，附模板讓人直接跟著做。</p></blockquote>
 <figure><img src="../assets/writing/05-travel-app/cover.jpg" alt="" loading="lazy" /></figure>
@@ -74,7 +93,7 @@ hr{border:0;border-top:1px solid #E3DEF2;margin:44px 0}
 <p>我完全能理解「寫程式」、「做系統」這幾個字，對很多人來說，是跟自己完全沒有關係的一件事，甚至覺得我工作都做得好好的，為什麼要改變我熟悉的工作模式。</p>
 <p>為了讓大家更能體會 AI coding 與人的真實距離，我們先不談工作而從日常，以一個普通人的角度出發，看 AI coding 能幫你做什麼？</p>
 <p>這篇，我選了很多人「應該」會有感的主題——<strong>旅遊，一個為自己而生的旅遊 APP</strong>。我會在文末附上 AI Studio 及 Google Sheet 模板，讓你看完馬上能試做。</p>
-<h2>為自己量身打造的「隨身導遊」</h2>
+<h2><span>為自己量身打造的「隨身導遊」</span></h2>
 <figure><img src="../assets/writing/05-travel-app/01.jpg" alt="" loading="lazy" /></figure>
 <p>先簡單介紹這次的旅遊 APP。基於隱私考量，APP 中的行程內容為網路上隨機找的旅行團資料，僅作為示範使用。</p>
 <p>打開 APP，你會看到：</p>
@@ -83,11 +102,11 @@ hr{border:0;border-top:1px solid #E3DEF2;margin:44px 0}
 <p>在「行程」頁中，可以用日曆切換每天的安排，並依實際旅遊日期彈性調整。你只需要把完整行程提供給 AI Studio，它就能自動幫你：調整成正確的日期、重新整理每日行程內容、同步更新「準備事項」「旅途叮嚀」「代辦清單」，甚至依照旅遊地點與氣候調整提醒內容。</p>
 <p>例如：如果行程中有滑雪行程，準備清單就會自動出現「手套、毛帽」；如果有迪士尼樂園，資訊頁就會幫你補上官方連結。</p>
 <p>當然，你也可以再手動修改，讓整個 APP 變成真正只為你存在的版本。</p>
-<h2>痛點擊破：多人分帳不再頭痛</h2>
+<h2><span>痛點擊破：多人分帳不再頭痛</span></h2>
 <p>在所有功能裡，我特別想分享的是「記帳」。</p>
 <p>這個記帳功能支援<strong>多人分帳</strong>：一筆花費可以選擇平均分攤，或自行輸入每個人的金額，並且可以做到最終結算，誰該給誰多少日幣或台幣，完全省去自己算錢的大工程。</p>
 <p>目前示範版本以雙人為主，但如果你是多人同行，只要跟 AI 說清楚實際人數、名稱，甚至幣別需求，並且修改 Google Sheet 欄位，就能延伸使用。</p>
-<h2>建立 APP 的整體流程</h2>
+<h2><span>建立 APP 的整體流程</span></h2>
 <ol><li><strong>在左側對話區貼上你的完整旅遊行程</strong></li></ol>
 <p>   讓 AI Studio 先幫你生成並調整整體行程內容。</p>
 <ol><li><strong>微調每日行程細節</strong></li></ol>
@@ -95,7 +114,7 @@ hr{border:0;border-top:1px solid #E3DEF2;margin:44px 0}
 <ol><li><strong>檢查核心功能與清單</strong></li></ol>
 <p>   看看「準備事項、行李、代辦、資訊」是否有需要補充或刪減的地方。</p>
 <p>確認整體結構沒問題後，再進行記帳資料串接。</p>
-<h2>手把手教學：三步驟完成你的記帳功能</h2>
+<h2><span>手把手教學：三步驟完成你的記帳功能</span></h2>
 <p>記帳功能背後需要一個地方存資料。這次我使用的是 Google Sheet 當作資料庫。</p>
 <p>延續上一篇提過的概念：只要涉及「寫入／讀取／修改／刪除」，就需要搭配 GAS（Google Apps Script）。</p>
 <h3>Step 1. 準備你的資料庫（Google Sheet）</h3>
@@ -113,7 +132,7 @@ F:小A(台), G:小A(日), H:小B(台), I:小B(日), J:備註。
 <p>如果下方出現紅色錯誤訊息，請直接把錯誤訊息複製貼回給 AI，跟他說：「執行時出現這段錯誤，請修正。」它會幫你改好程式碼，再把改好的程式碼覆蓋原來的，重複上述動作。</p>
 <ol><li>確認無誤後，點擊右上角「部署 → 新增部署 → 網頁應用程式」</li><li>將取得的部署網址（Web App URL）貼回給 AI Studio，請它更新連結</li></ol>
 <p>只要這三步完成，你的 APP 就能即時讀取並寫入那張 Google Sheet 了。</p>
-<h2>遇到卡關？讓 Gemini 成為你的技術顧問</h2>
+<h2><span>遇到卡關？讓 Gemini 成為你的技術顧問</span></h2>
 <p>在開發過程中，你可能會遇到報錯、畫面跑版，或者資料抓不到。這時候請記住一個最重要的心法：</p>
 <blockquote><p><strong>不要直接在 AI Studio 裡除錯，請移駕到 Gemini 詢問。</strong></p></blockquote>
 <p>最安全的操作流程是：保持 AI Studio 視窗不動，另開一個 Gemini 視窗。把 Gemini 當成你的資深技術顧問，將錯誤訊息丟給它分析，等到找出原因後，請 Gemini 幫你擬定「給 AI Studio 的修正指令」，再把這段指令貼回 AI Studio，讓它自動幫你執行修改。</p>
@@ -121,7 +140,7 @@ F:小A(台), G:小A(日), H:小B(台), I:小B(日), J:備註。
 <ul><li>你正在用什麼工具（例如：我正在使用 Google AI Studio 寫 GAS）</li><li>做的是哪一種 APP（例如：旅遊記帳 APP）</li><li>卡在哪個功能（例如：雙人分帳計算錯誤）</li><li>如果有錯誤代碼、錯誤歷程，直接貼上</li></ul>
 <p>有時候卡很久的問題，換一個 AI 幫你順一下邏輯，會突然迎刃而解。</p>
 <hr />
-<h2>模板</h2>
+<h2><span>模板</span></h2>
 <p>這篇用到的兩份模板，複製一份就能改成自己的：</p>
 <ul><li><a href="https://ai.studio/apps/e4a33a5d-39af-4720-8a4e-63cf2e23ce7b" target="_blank" rel="noopener">AI Studio 應用範本</a></li><li><a href="https://docs.google.com/spreadsheets/d/1hT-ZhrWeRmMdcjt5vOa32xAWqQ7HW_UjADERuDFmGdM/edit?usp=sharing" target="_blank" rel="noopener">Google Sheet 記帳模板</a></li></ul>
 <p>試算表請先「檔案 → 建立副本」再動手，直接改的話只會改到你自己看得到的畫面。</p>

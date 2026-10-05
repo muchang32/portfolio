@@ -615,6 +615,18 @@ body = (body[:_an_start]
         + _img('./assets/case/anfu/cover.jpg', '安否通 未回報優先佇列看板', '16/10')
         + body[_an_end:])
 
+# ---- 精選案例卡片：整張卡 hover 就夠，按鈕不要再各自跳一次 ----
+_cs, _ce = body.index('id="case"'), body.index('id="ai-lab"')
+_seg = body[_cs:_ce]
+# 標籤群預設隱藏，它的 margin-bottom 跟著失效，按鈕會貼著內文；改由按鈕自己留間距
+for _c in ('aicast', 'anfu'):
+    _old = f'href="./case/{_c}.html" style="display:inline-block;'
+    assert _old in _seg, f'找不到{_c}的按鈕'
+    _seg = _seg.replace(_old, f'href="./case/{_c}.html" style="margin-top:22px;display:inline-block;', 1)
+_seg = re.sub(r'\s*data-hv="h(?:9|11)"', '', _seg)
+assert 'data-hv="h9"' not in _seg and 'data-hv="h11"' not in _seg
+body = body[:_cs] + _seg + body[_ce:]
+
 # ---- 佔位框：移除寫給自己看的素材規格 ----
 # Hero 的去背照佔位整塊拿掉；黃色橢圓與兩顆標籤本來就是完整的構圖
 _hero_ph = body.find('border:2.5px dashed #14110F;border-radius:24px;'

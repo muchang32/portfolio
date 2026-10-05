@@ -26,11 +26,15 @@ header.bar div{max-width:880px;margin:0 auto;padding:14px clamp(16px,4vw,28px);d
 .back:hover{color:#6D4AFF}
 main{max-width:880px;margin:0 auto;padding:clamp(24px,4vw,48px) clamp(16px,4vw,28px) 88px}
 .wrap{max-width:100%;text-align:left}
-.kicker{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#6E6A85;margin-bottom:14px}
+.kicker{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+ letter-spacing:.14em;background:#14110F;color:#FAF7F0;padding:6px 14px;border-radius:999px;
+ margin:0 0 18px}
 h1{font-size:clamp(28px,4.6vw,44px);line-height:1.25;letter-spacing:-.02em;margin:0 0 18px}
-h2{font-size:clamp(20px,2.6vw,27px);margin:52px 0 14px;line-height:1.35}
+h2{font-size:clamp(21px,2.7vw,28px);margin:58px 0 16px;line-height:1.5}
+h2 span{box-shadow:inset 0 -.34em 0 #FFD34E}
 h1+p+h2,h1+h2{margin-top:34px}
-h3{font-size:clamp(17px,2vw,20px);margin:36px 0 10px}
+h3{font-size:clamp(17px,2vw,20px);margin:38px 0 10px;padding-left:13px;
+ border-left:4px solid #FFD34E}
 p,li{font-size:16.5px}
 dl.meta{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;margin:0 0 34px;
  padding:20px 22px;background:#FFF6D9;border-radius:14px}
@@ -39,7 +43,8 @@ dl.meta dt{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.
 dl.meta dd{margin:0;font-size:15px;line-height:1.75}
 @media (max-width:480px){dl.meta{grid-template-columns:1fr;gap:3px 0}
  dl.meta dd{margin-bottom:10px}}
-blockquote{margin:26px 0;padding:2px 0 2px 20px;border-left:3px solid #FFD34E;color:#3E3932}
+blockquote{margin:30px 0;padding:clamp(20px,2.6vw,28px);background:#FFF6D9;
+ border:2px solid #14110F;border-radius:20px;box-shadow:5px 5px 0 #14110F;color:#2C2620}
 blockquote p{margin:6px 0}
 figure{margin:32px 0}
 figure img{width:100%;height:auto;border-radius:14px;display:block}
@@ -51,11 +56,24 @@ pre code{background:none;color:inherit;font-size:13.5px;line-height:1.7}
 .tw{overflow-x:auto;margin:24px 0}
 table{border-collapse:collapse;width:100%;min-width:420px}
 th,td{border-bottom:1px solid #E3DEF2;padding:10px 12px;text-align:left;font-size:15px;vertical-align:top}
-th{background:#FFF6D9;font-weight:700}
-hr{border:0;border-top:1px solid #E3DEF2;margin:44px 0}
+th{background:#FFD34E;font-weight:700;border-bottom:2px solid #14110F}
+table{border:2px solid #14110F;border-radius:14px;overflow:hidden;border-collapse:separate;
+ border-spacing:0}
+td{border-bottom:1px solid rgba(20,17,15,.12)}
+tbody tr:last-child td{border-bottom:0}
+/* 清單用小方塊取代圓點，跟站上的方形語彙一致 */
+main ul{list-style:none;padding-left:0}
+main ul li{position:relative;padding-left:24px}
+main ul li::before{content:'';position:absolute;left:3px;top:.62em;width:9px;height:9px;
+ background:#FFD34E;border:1.5px solid #14110F;border-radius:3px}
+/* 分隔線改成星芒，跟首頁的裝飾同一套語彙 */
+hr{border:0;margin:54px 0;text-align:center;line-height:1}
+hr::before{content:'\2726';color:#FFD34E;font-size:17px}
 .foot{max-width:880px;margin:64px auto 0;padding-top:26px;border-top:1px solid #E3DEF2;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:15px}
-.foot a{font-weight:700;text-decoration:none;color:#14110F}
-.foot a:hover{color:#6D4AFF}
+.foot a{font-weight:700;text-decoration:none;color:#14110F;border:2px solid #14110F;
+ border-radius:999px;padding:11px 22px;background:#FFFFFF;
+ transition:transform .15s ease,box-shadow .15s ease}
+.foot a:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #14110F}
 :focus-visible{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}
 @media (max-width:640px){p,li{font-size:16px}main{padding-bottom:64px}}
 </style>
@@ -65,19 +83,20 @@ hr{border:0;border-top:1px solid #E3DEF2;margin:44px 0}
   <a class="back" href="../index.html#writing">← 回到專欄</a>
 </div></header>
 <main><div class="wrap">
+<p class="kicker">企業內部刊物專欄</p>
 <h1>為了一杯 50 嵐，我竟然做了一個點餐系統</h1>
 <blockquote><p>經理在部門會議上開了個玩笑挑戰，我當天用四小時把它變成真的。</p></blockquote>
 <figure><img src="../assets/writing/02-50lan/cover.jpg" alt="" loading="lazy" /></figure>
 <hr />
 <p>你有沒有因為某個誘因或小獎勵，突然覺得自己什麼技能都能立刻學會？我常常有這種情況，甚至誘因不一定很「有價值」，只是剛好戳中興趣就會爆發行動力。</p>
 <p>這次的故事就從一杯 50 嵐開始。</p>
-<h2>小小玩笑，意外變挑戰</h2>
+<h2><span>小小玩笑，意外變挑戰</span></h2>
 <p>前兩週的部門會議中，同事介紹 Perplexity 的 AI 瀏覽器「Comet」。這個瀏覽器能在網站頁面內直接擷取資訊、點擊按鈕蒐集資料、把圖片文字轉成可複製內容，同事示範時剛好拿 50 嵐菜單當例子。</p>
 <p>看到這裡，經理即興開了一個挑戰：</p>
 <blockquote><p>「如果有人能用 AI 瀏覽器做出 50 嵐點餐的 Google Form，資料能自動彙整到 Google Sheet，而且整個過程不能有人為操作，我就自掏腰包請大家喝 50 嵐！」</p></blockquote>
 <p>對於非常愛喝 50 嵐的我來說，這完全是天降任務。我當下眼神馬上發亮，會議結束回到座位，我立刻開始動手。</p>
 <p>而既然都要做一個表單，那乾脆直接做成「完整點餐系統」吧！</p>
-<h2>找菜單，才是最難關</h2>
+<h2><span>找菜單，才是最難關</span></h2>
 <p>真正開始做才發現，最麻煩的不是做頁面，而是「取得正確的菜單」。</p>
 <ul><li>50 嵐北中南價格不同</li><li>同一間品牌不同分店菜單也略有差異</li><li>加料選項、加料價格各店也不同</li><li>AI 直接看圖片很容易辨識錯誤</li></ul>
 <figure><img src="../assets/writing/02-50lan/01.jpg" alt="" loading="lazy" /></figure>
@@ -87,14 +106,14 @@ hr{border:0;border-top:1px solid #E3DEF2;margin:44px 0}
 <p>Comet 最大的好處是它的操作是可見的，你真的能看到它「操縱滑鼠」點選每個品項，最後也會把它的操作步驟記錄下來。這樣就能確定菜單內容是完整、精準的。</p>
 <figure><img src="../assets/writing/02-50lan/02.jpg" alt="" loading="lazy" /></figure>
 <p><em>圖 2．Comet 實際操作過程</em></p>
-<h2>讓 AI 跟 AI 對話，創造高效團隊</h2>
+<h2><span>讓 AI 跟 AI 對話，創造高效團隊</span></h2>
 <p>拿到正確菜單後，後面的流程就順多了。這次使用的工具是 v0.app。</p>
 <p>基於先前使用的經驗，不要沒有系統性地、一股腦地零散講需求，後續反而會需要大量調整，免費額度會很快用光，修改上也有一定的困難。所以我採新的策略：</p>
 <ol><li>先用 Gemini 討論需求</li><li>讓 Gemini 產生「提供給 v0 的提示詞」</li><li>讓 AI 跟 AI 溝通</li></ol>
 <p>Gemini 生成的初稿提示詞當然不會一次就完美，需要經過多輪調整，包含 UI 需求、使用流程、輸入驗證、與 Google Sheets 的互動方式等。</p>
 <figure><img src="../assets/writing/02-50lan/03.jpg" alt="" loading="lazy" /></figure>
 <p><em>圖 3．與 Gemini 初始討論示意</em></p>
-<h2>點餐系統完成：從零到可用，只花 2 小時</h2>
+<h2><span>點餐系統完成：從零到可用，只花 2 小時</span></h2>
 <p>在 2 小時內就建好一個可以點餐並記錄到 Google Sheet 的簡易點餐系統，包含基本功能：抓資料 → 建置前端 → 串接試算表 → 測試資料同步。</p>
 <p>為了讓大家可以修改或刪除訂單，又接著做「點餐紀錄」頁讓整個流程更完整。</p>
 <figure><img src="../assets/writing/02-50lan/04.jpg" alt="" loading="lazy" /></figure>
@@ -103,7 +122,7 @@ hr{border:0;border-top:1px solid #E3DEF2;margin:44px 0}
 <blockquote><p>「我可以重複用同一個名字點兩次餐欸！」</p></blockquote>
 <p>於是回頭請 AI 加邏輯限制：「在輸入姓名時增加審核機制，若名字已存在資料庫，跳出彈窗引導去『修改訂單』而不是『新增訂單』。」雖然不是最嚴謹的作法，但對於解決眼前「重複點飲料」的問題，已經綽綽有餘。</p>
 <p>完整功能調整大約又花了一些時間，<strong>總計約 4 小時完成點餐系統。</strong></p>
-<h2>關鍵知識點：用 Google Sheet 當資料庫，為什麼需要 GAS？</h2>
+<h2><span>關鍵知識點：用 Google Sheet 當資料庫，為什麼需要 GAS？</span></h2>
 <p>在製作點餐系統過程中，這是沒有程式背景的人特別需要去理解的地方。很多人會問：「為什麼不能直接連 Google Sheet，還需要使用擴充功能 Apps Script？」</p>
 <p>這邊補充一個技術小知識：網頁是「前台」，Google Sheet 是「後台資料庫」。兩者原本語言不通，GAS 就像是他們之間的翻譯官兼搬運工。</p>
 <p>用日常生活的例子來說：網頁就像是招呼客人的「櫃檯」，Google Sheet 則是專門記錄大家要喝什麼的「記錄簿」。GAS 就像「店員」是他們之間的橋樑，負責把櫃檯收到的點單，翻譯好寫進記錄簿裡。</p>
@@ -114,7 +133,7 @@ hr{border:0;border-top:1px solid #E3DEF2;margin:44px 0}
 <ul><li>新增一筆訂單</li><li>修改既有訂單</li><li>刪除某人訂單</li></ul>
 <p>確保不同使用者同時操作不會覆蓋資料，這類行為必須透過 GAS 才能穩定執行。</p>
 <p>簡單說：只要 Google Sheet 不是「靜態資料」，幾乎都會需要 GAS。而 AI coding 工具（v0、Bolt、Lovable 等）通常都能自動生成相對穩定的 GAS 程式碼，成功率也比自己寫高很多。</p>
-<h2>從一杯飲料開始，你也可以做出自己的工具</h2>
+<h2><span>從一杯飲料開始，你也可以做出自己的工具</span></h2>
 <p>從會議結束，基本功能花 2 小時，後續修調總共花 4 個多小時。這是一個完全沒有資訊系統開發背景的人，在 AI 輔助下所能達到的速度。</p>
 <p>這次的經驗讓我體會到：<strong>技術不再是高牆，想法才是關鍵。</strong></p>
 <p>你也有什麼 idea 想變成網頁或 APP 嗎？現在就開始動手做吧！</p>
