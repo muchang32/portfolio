@@ -64,7 +64,7 @@
 
 !video[assets/case/anfu/demo-poster.jpg](assets/case/anfu/demo.mp4)
 
-*原型操作錄影：從權責人員發起點名，到機構免登入回報、市府端未回報佇列更新（30 秒，無聲）*
+*原型操作錄影*
 
 ---
 
