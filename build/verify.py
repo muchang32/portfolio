@@ -100,14 +100,13 @@ C.append(('案例頁沒有星芒分隔線', '2726' not in _anfu))
 C.append(('安否通沒有自我評審那段', '自己的評審' not in _anfu and '86 分' not in _anfu))
 C.append(('正取公司名稱正確', '睿鍶科技' in _anfu and '睿鍇' not in _anfu))
 _ai = pathlib.Path('case/aicast.html').read_text(encoding='utf-8')
-C.append(('Aicast 影片', 'data-yt="WiEB46Ox8S8"' in _ai
-          and 'case/aicast/video-poster.jpg' in _ai
-          and pathlib.Path('assets/case/aicast/video-poster.jpg').exists()))
-C.append(('影片未播放前不載入 YouTube',
-          'youtube' not in _ai.split('<script>')[0] and 'class="yt-cover"' in _ai))
-C.append(('影片結束換回封面，不出現推薦影片',
-          'PlayerState.ENDED' in _ai and 'rel: 0' in _ai))
-for desc, ok in C[-8:]:
+C.append(('Aicast 影片自架', 'case/aicast/if-video.mp4' in _ai
+          and pathlib.Path('assets/case/aicast/if-video.mp4').exists()
+          and pathlib.Path('assets/case/aicast/if-video-poster.jpg').exists()))
+C.append(('案例頁完全沒有 YouTube', 'youtube' not in _ai.lower()))
+C.append(('影片用原生控制列',
+          _ai.count('<video') == 1 and 'controls' in _ai and 'preload="metadata"' in _ai))
+for desc, ok in C[-7:]:
     (fails if not ok else warns).append(desc) if not ok else None
 
 print(f'檢查 {len(C)} 項')

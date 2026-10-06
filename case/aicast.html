@@ -83,18 +83,10 @@ main ul{list-style:none;padding-left:0}
 main ul li{position:relative;padding-left:24px}
 main ul li::before{content:'';position:absolute;left:3px;top:.62em;width:9px;height:9px;
  background:#FFD34E;border:1.5px solid #14110F;border-radius:3px}
-/* YouTube 嵌入維持 16:9 */
+/* 影片容器：維持 16:9，播完收回封面 */
 .yt{position:relative;width:100%;aspect-ratio:16/9;margin:32px 0;border-radius:14px;
  overflow:hidden;background:#14110F}
-.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.yt-cover{position:absolute;inset:0;z-index:2;width:100%;height:100%;padding:0;
- border:0;background:none;cursor:pointer;display:block}
-.yt-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.yt-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:72px;height:72px;
- border-radius:50%;border:2.5px solid #14110F;background:#FFD34E;color:#14110F;display:grid;
- place-items:center;box-shadow:3px 3px 0 #14110F;transition:transform .15s ease}
-.yt-play svg{width:30px;height:30px}
-.yt-cover:hover .yt-play{transform:translate(-50%,-50%) scale(1.08)}
+.yt video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 
 </style>
 </head>
@@ -113,7 +105,7 @@ main ul li::before{content:'';position:absolute;left:3px;top:.62em;width:9px;hei
 <p>更關鍵的限制在於：受限於成本，多數有聲書只能由單人朗讀完成，無法像舞台劇一樣讓每個角色擁有自己的聲音。內容的表現力，被製作成本壓縮了。</p>
 <p>Aicast 要解決的就是這件事——<strong>讓多角色配音變得便宜到可行</strong>。</p>
 <p>平台整合三項 AI 能力：將 epub / docx / txt 文件自動拆分章節並轉為劇本型態（支援最長 50 萬字文本）、掃描並解析每句對話角色的名稱、性別、年齡與情緒（角色辨識平均正確率 75–96%），再依角色特質自動配置聲音。產品初期以 8 位 AI 配音員即可演繹橫跨各年齡層的 42 種聲音，多人配音有聲書的製作時間最多可減少 90%。</p>
-<div class="yt" data-yt="WiEB46Ox8S8"><button type="button" class="yt-cover" aria-label="播放影片"><img class="yt-poster" src="../assets/case/aicast/video-poster.jpg" alt="" loading="lazy" decoding="async" /><span class="yt-play"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg></span></button></div>
+<figure><div class="yt"><video src="../assets/case/aicast/if-video.mp4" poster="../assets/case/aicast/if-video-poster.jpg" controls preload="metadata" playsinline></video></div></figure>
 <p><em>Aicast iF 設計獎影片</em></p>
 <hr />
 <h2><span>我加入時的處境</span></h2>
@@ -169,56 +161,9 @@ main ul li::before{content:'';position:absolute;left:3px;top:.62em;width:9px;hei
 </main>
 <script>
 (function () {
-  var boxes = [].slice.call(document.querySelectorAll('.yt[data-yt]'));
-  if (!boxes.length) return;
-  var apiReady = null;
-
-  // 官方 API 只在使用者按下播放後才載入，進站時完全不打 YouTube
-  function loadApi() {
-    if (apiReady) return apiReady;
-    apiReady = new Promise(function (resolve) {
-      if (window.YT && window.YT.Player) return resolve();
-      var prev = window.onYouTubeIframeAPIReady;
-      window.onYouTubeIframeAPIReady = function () {
-        if (typeof prev === 'function') prev();
-        resolve();
-      };
-      var tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      document.head.appendChild(tag);
-    });
-    return apiReady;
-  }
-
-  boxes.forEach(function (box) {
-    var cover = box.querySelector('.yt-cover');
-    var vid = box.getAttribute('data-yt');
-    if (!cover || !vid) return;
-    var player = null;
-
-    cover.addEventListener('click', function () {
-      if (player) {                       // 放完之後再按一次，從頭播
-        cover.hidden = true;
-        player.seekTo(0); player.playVideo();
-        return;
-      }
-      var slot = document.createElement('div');
-      box.appendChild(slot);
-      cover.hidden = true;
-      loadApi().then(function () {
-        player = new YT.Player(slot, {
-          host: 'https://www.youtube-nocookie.com',
-          videoId: vid,
-          playerVars: { autoplay: 1, rel: 0, playsinline: 1 },
-          events: {
-            onStateChange: function (e) {
-              // 影片結束就換回封面，推薦影片牆不會出現
-              if (e.data === YT.PlayerState.ENDED) cover.hidden = false;
-            }
-          }
-        });
-      });
-    });
+  // 播完把畫面收回封面，下一次按播放從頭開始
+  document.querySelectorAll('.yt video').forEach(function (video) {
+    video.addEventListener('ended', function () { video.load(); });
   });
 })();
 </script>

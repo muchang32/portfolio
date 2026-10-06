@@ -6,8 +6,6 @@ ROOT = pathlib.Path('.')
 PAL = dict(bg='#FAF7F0', ink='#14110F', card='#FFFFFF', accent='#FFD34E',
            violet='#6D4AFF', soft='#FFF6D9', line='#14110F')
 
-_PLAY = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
-         '<path d="M7 4.5v15l13-7.5z"/></svg>')
 CASE_CSS = """
 .kicker{{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
  letter-spacing:.14em;background:{ink};color:{bg};padding:6px 14px;border-radius:999px;
@@ -40,72 +38,17 @@ main ul{{list-style:none;padding-left:0}}
 main ul li{{position:relative;padding-left:24px}}
 main ul li::before{{content:'';position:absolute;left:3px;top:.62em;width:9px;height:9px;
  background:{accent};border:1.5px solid {ink};border-radius:3px}}
-/* YouTube 嵌入維持 16:9 */
+/* 影片容器：維持 16:9，播完收回封面 */
 .yt{{position:relative;width:100%;aspect-ratio:16/9;margin:32px 0;border-radius:14px;
  overflow:hidden;background:{ink}}}
-.yt iframe{{position:absolute;inset:0;width:100%;height:100%;border:0}}
-.yt-cover{{position:absolute;inset:0;z-index:2;width:100%;height:100%;padding:0;
- border:0;background:none;cursor:pointer;display:block}}
-.yt-poster{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}}
-.yt-play{{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:72px;height:72px;
- border-radius:50%;border:2.5px solid {ink};background:{accent};color:{ink};display:grid;
- place-items:center;box-shadow:3px 3px 0 {ink};transition:transform .15s ease}}
-.yt-play svg{{width:30px;height:30px}}
-.yt-cover:hover .yt-play{{transform:translate(-50%,-50%) scale(1.08)}}
+.yt video{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}}
 """
 
 CASE_JS = """<script>
 (function () {
-  var boxes = [].slice.call(document.querySelectorAll('.yt[data-yt]'));
-  if (!boxes.length) return;
-  var apiReady = null;
-
-  // 官方 API 只在使用者按下播放後才載入，進站時完全不打 YouTube
-  function loadApi() {
-    if (apiReady) return apiReady;
-    apiReady = new Promise(function (resolve) {
-      if (window.YT && window.YT.Player) return resolve();
-      var prev = window.onYouTubeIframeAPIReady;
-      window.onYouTubeIframeAPIReady = function () {
-        if (typeof prev === 'function') prev();
-        resolve();
-      };
-      var tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      document.head.appendChild(tag);
-    });
-    return apiReady;
-  }
-
-  boxes.forEach(function (box) {
-    var cover = box.querySelector('.yt-cover');
-    var vid = box.getAttribute('data-yt');
-    if (!cover || !vid) return;
-    var player = null;
-
-    cover.addEventListener('click', function () {
-      if (player) {                       // 放完之後再按一次，從頭播
-        cover.hidden = true;
-        player.seekTo(0); player.playVideo();
-        return;
-      }
-      var slot = document.createElement('div');
-      box.appendChild(slot);
-      cover.hidden = true;
-      loadApi().then(function () {
-        player = new YT.Player(slot, {
-          host: 'https://www.youtube-nocookie.com',
-          videoId: vid,
-          playerVars: { autoplay: 1, rel: 0, playsinline: 1 },
-          events: {
-            onStateChange: function (e) {
-              // 影片結束就換回封面，推薦影片牆不會出現
-              if (e.data === YT.PlayerState.ENDED) cover.hidden = false;
-            }
-          }
-        });
-      });
-    });
+  // 播完把畫面收回封面，下一次按播放從頭開始
+  document.querySelectorAll('.yt video').forEach(function (video) {
+    video.addEventListener('ended', function () { video.load(); });
   });
 })();
 </script>
@@ -138,24 +81,14 @@ def md2html(md, depth):
             out.append('<dl class="meta">' + ''.join(
                 f'<dt>{inline(k)}</dt><dd>{inline(v)}</dd>' for k, v in rows) + '</dl>')
             continue
-        my = re.match(r'^!youtube\[([^\]]*)\]\(([^)]+)\)$', ln.strip())
-        if my:
-            poster, url = my.group(1), my.group(2)
-            vid = url.rsplit('/', 1)[-1].split('?')[0]
-            # 未播放時只有自家封面，看不到 YouTube 的標題列與頻道頭像；
-            # 點了才載入播放器，控制列（含進度條）交還給 YouTube
-            out.append(
-                f'<div class="yt" data-yt="{vid}">'
-                f'<button type="button" class="yt-cover" aria-label="播放影片">'
-                f'<img class="yt-poster" src="{up}{poster}" alt="" loading="lazy" decoding="async" />'
-                f'<span class="yt-play">{_PLAY}</span>'
-                f'</button></div>'); i += 1; continue
         mv = re.match(r'^!video\[([^\]]*)\]\(([^)]+)\)$', ln.strip())
         if mv:
             poster, src = mv.group(1), mv.group(2)
             # 螢幕錄影無聲，preload=metadata 讓手機不要一進頁就抓整支
-            out.append(f'<figure><video src="{up}{src}" poster="{up}{poster}" controls '
-                       f'preload="metadata" playsinline></video></figure>'); i += 1; continue
+            out.append(
+                f'<figure><div class="yt">'
+                f'<video src="{up}{src}" poster="{up}{poster}" controls preload="metadata" '
+                f'playsinline></video></div></figure>'); i += 1; continue
         if re.match(r'^!\[\]\(', ln.strip()):
             out.append('<figure>' + inline(ln.strip()) + '</figure>'); i += 1; continue
         if ln.startswith('```'):
@@ -188,7 +121,7 @@ def md2html(md, depth):
         if ln.strip() == '---': out.append('<hr />'); i += 1; continue
         if ln.strip():
             buf = []
-            while i < len(lines) and lines[i].strip() and not re.match(r'^(#{1,4} |> |[-・*] |\d+\. |\||```|---|!\[|!video\[|!youtube\()', lines[i]):
+            while i < len(lines) and lines[i].strip() and not re.match(r'^(#{1,4} |> |[-・*] |\d+\. |\||```|---|!\[|!video\[)', lines[i]):
                 buf.append(lines[i]); i += 1
             out.append('<p>' + inline(' '.join(buf)) + '</p>'); continue
         i += 1
