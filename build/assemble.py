@@ -616,11 +616,12 @@ body = (body[:_an_start]
         + body[_an_end:])
 
 # ---- 現職補上 LiveLingo 這條：自己做的東西被實際拿去用 ----
+# 寫成常態能力而不是單一場次——後續其他國際講者的場子也會用到
 _after = '<li>導入 AI 工具至實際工作流程並優化 Prompt 設計，讓非工程同仁能真正用於日常業務</li>'
 assert body.count(_after) == 1, '找不到現職的「導入 AI 工具」條目'
 body = body.replace(_after,
-    '<li>自製即時字幕翻譯工具（Chrome 擴充功能），供報系邀請 Mario García 博士來台授課期間使用，'
-    '涵蓋內部工作坊與台北漢來大飯店的對外公開演講</li>' + _after, 1)
+    '<li>自製即時字幕翻譯工具（Chrome 擴充功能），供報系邀請國際講者來台時使用，'
+    '涵蓋內部工作坊與對外公開演講</li>' + _after, 1)
 
 # ---- LiveLingo：改以實際導入的場合開頭，技術細節退到彈窗 ----
 _LL_OLD = ('Chrome MV3 擴充功能，AudioWorklet 將分頁音訊降為 16kHz PCM16，'
