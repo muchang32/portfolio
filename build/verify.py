@@ -104,9 +104,10 @@ C.append(('Aicast 影片', 'data-yt="WiEB46Ox8S8"' in _ai
           and 'case/aicast/video-poster.jpg' in _ai
           and pathlib.Path('assets/case/aicast/video-poster.jpg').exists()))
 C.append(('影片未播放前不載入 YouTube',
-          'youtube-nocookie.com/embed/' not in _ai.split('<script>')[0]
-          and 'controls=0' in _ai and 'data-yt-toggle' in _ai))
-for desc, ok in C[-7:]:
+          'youtube' not in _ai.split('<script>')[0] and 'class="yt-cover"' in _ai))
+C.append(('影片結束換回封面，不出現推薦影片',
+          'PlayerState.ENDED' in _ai and 'rel: 0' in _ai))
+for desc, ok in C[-8:]:
     (fails if not ok else warns).append(desc) if not ok else None
 
 print(f'檢查 {len(C)} 項')

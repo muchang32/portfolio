@@ -8,10 +8,6 @@ PAL = dict(bg='#FAF7F0', ink='#14110F', card='#FFFFFF', accent='#FFD34E',
 
 _PLAY = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
          '<path d="M7 4.5v15l13-7.5z"/></svg>')
-_PAUSE = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
-          '<rect x="6" y="4.5" width="4" height="15" rx="1.3"/>'
-          '<rect x="14" y="4.5" width="4" height="15" rx="1.3"/></svg>')
-
 CASE_CSS = """
 .kicker{{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
  letter-spacing:.14em;background:{ink};color:{bg};padding:6px 14px;border-radius:999px;
@@ -48,61 +44,67 @@ main ul li::before{{content:'';position:absolute;left:3px;top:.62em;width:9px;he
 .yt{{position:relative;width:100%;aspect-ratio:16/9;margin:32px 0;border-radius:14px;
  overflow:hidden;background:{ink}}}
 .yt iframe{{position:absolute;inset:0;width:100%;height:100%;border:0}}
+.yt-cover{{position:absolute;inset:0;z-index:2;width:100%;height:100%;padding:0;
+ border:0;background:none;cursor:pointer;display:block}}
 .yt-poster{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}}
-/* 擋住播放器本身的點擊，控制權只留給下面那顆按鈕 */
-.yt-shield{{position:absolute;inset:0;cursor:default}}
-/* 還沒播放時按鈕置中當主要入口，播放後縮到左下角當控制鍵 */
-.yt-btn{{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
- width:72px;height:72px;border-radius:50%;
- border:2.5px solid {ink};background:{accent};color:{ink};cursor:pointer;display:grid;
- place-items:center;padding:0;box-shadow:3px 3px 0 {ink};
- transition:transform .15s ease,box-shadow .15s ease}}
-.yt-btn:hover{{transform:translate(-50%,-50%) scale(1.08)}}
-.yt[data-playing] .yt-btn{{left:14px;top:auto;bottom:14px;transform:none;width:46px;height:46px}}
-.yt-btn svg{{width:30px;height:30px}}
-.yt[data-playing] .yt-btn svg{{width:20px;height:20px}}
-.yt[data-playing] .yt-btn:hover{{transform:translate(-2px,-2px);box-shadow:5px 5px 0 {ink}}}
+.yt-play{{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:72px;height:72px;
+ border-radius:50%;border:2.5px solid {ink};background:{accent};color:{ink};display:grid;
+ place-items:center;box-shadow:3px 3px 0 {ink};transition:transform .15s ease}}
+.yt-play svg{{width:30px;height:30px}}
+.yt-cover:hover .yt-play{{transform:translate(-50%,-50%) scale(1.08)}}
 """
 
 CASE_JS = """<script>
 (function () {
-  document.querySelectorAll('.yt').forEach(function (box) {
-    var btn = box.querySelector('[data-yt-toggle]');
+  var boxes = [].slice.call(document.querySelectorAll('.yt[data-yt]'));
+  if (!boxes.length) return;
+  var apiReady = null;
+
+  // 官方 API 只在使用者按下播放後才載入，進站時完全不打 YouTube
+  function loadApi() {
+    if (apiReady) return apiReady;
+    apiReady = new Promise(function (resolve) {
+      if (window.YT && window.YT.Player) return resolve();
+      var prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = function () {
+        if (typeof prev === 'function') prev();
+        resolve();
+      };
+      var tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(tag);
+    });
+    return apiReady;
+  }
+
+  boxes.forEach(function (box) {
+    var cover = box.querySelector('.yt-cover');
     var vid = box.getAttribute('data-yt');
-    if (!btn || !vid) return;
-    var frame = null, playing = false;
-    var paint = function () {
-      box.querySelector('[data-yt-play]').hidden = playing;
-      box.querySelector('[data-yt-pause]').hidden = !playing;
-      btn.setAttribute('aria-label', playing ? '暫停' : '播放');
-    };
-    var send = function (fn) {
-      if (!frame) return;
-      frame.contentWindow.postMessage(
-        JSON.stringify({ event: 'command', func: fn, args: [] }), '*');
-    };
-    btn.addEventListener('click', function () {
-      if (!frame) {
-        // 使用者點了才載入，所以可以帶聲音自動播放
-        frame = document.createElement('iframe');
-        frame.src = 'https://www.youtube-nocookie.com/embed/' + vid +
-          '?autoplay=1&controls=0&disablekb=1&playsinline=1&rel=0&enablejsapi=1';
-        frame.title = 'YouTube';
-        frame.allow = 'autoplay; encrypted-media; picture-in-picture';
-        box.insertBefore(frame, btn);
-        var shield = document.createElement('span');
-        shield.className = 'yt-shield';
-        shield.addEventListener('click', function () { btn.click(); });
-        box.insertBefore(shield, btn);
-        var poster = box.querySelector('.yt-poster');
-        if (poster) poster.remove();
-        box.setAttribute('data-playing', '');
-        playing = true; paint();
+    if (!cover || !vid) return;
+    var player = null;
+
+    cover.addEventListener('click', function () {
+      if (player) {                       // 放完之後再按一次，從頭播
+        cover.hidden = true;
+        player.seekTo(0); player.playVideo();
         return;
       }
-      playing = !playing;
-      send(playing ? 'playVideo' : 'pauseVideo');
-      paint();
+      var slot = document.createElement('div');
+      box.appendChild(slot);
+      cover.hidden = true;
+      loadApi().then(function () {
+        player = new YT.Player(slot, {
+          host: 'https://www.youtube-nocookie.com',
+          videoId: vid,
+          playerVars: { autoplay: 1, rel: 0, playsinline: 1 },
+          events: {
+            onStateChange: function (e) {
+              // 影片結束就換回封面，推薦影片牆不會出現
+              if (e.data === YT.PlayerState.ENDED) cover.hidden = false;
+            }
+          }
+        });
+      });
     });
   });
 })();
@@ -140,14 +142,13 @@ def md2html(md, depth):
         if my:
             poster, url = my.group(1), my.group(2)
             vid = url.rsplit('/', 1)[-1].split('?')[0]
-            # 先放自家封面，點了才載入 iframe：未播放時畫面上沒有 YouTube 的
-            # 標題列、浮水印與紅色播放鍵，也省下第三方請求
+            # 未播放時只有自家封面，看不到 YouTube 的標題列與頻道頭像；
+            # 點了才載入播放器，控制列（含進度條）交還給 YouTube
             out.append(
                 f'<div class="yt" data-yt="{vid}">'
+                f'<button type="button" class="yt-cover" aria-label="播放影片">'
                 f'<img class="yt-poster" src="{up}{poster}" alt="" loading="lazy" decoding="async" />'
-                f'<button type="button" class="yt-btn" data-yt-toggle aria-label="播放">'
-                f'<span data-yt-play>{_PLAY}</span>'
-                f'<span data-yt-pause hidden>{_PAUSE}</span>'
+                f'<span class="yt-play">{_PLAY}</span>'
                 f'</button></div>'); i += 1; continue
         mv = re.match(r'^!video\[([^\]]*)\]\(([^)]+)\)$', ln.strip())
         if mv:
@@ -213,6 +214,7 @@ SHELL = """<!DOCTYPE html>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
 *{{box-sizing:border-box}}
+[hidden]{{display:none !important}}
 body{{margin:0;background:{bg};color:{ink};font-family:"Noto Sans TC","Space Grotesk",sans-serif;line-height:1.85;-webkit-font-smoothing:antialiased}}
 a{{color:{violet}}}
 header.bar{{position:sticky;top:0;z-index:20;background:rgba(250,247,240,.94);backdrop-filter:blur(10px)}}
