@@ -491,10 +491,10 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
           <h3 style="margin:0;font-size:17px;font-weight:900;line-height:1.5">要不要來一杯</h3>
           <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">部門團購飲料的線上訂餐系統，起於一場會議上的玩笑挑戰。同事實際試用後回報問題，補上同名重複點餐的驗證。</p>
         </div>
-        <div data-href="#" data-title="LiveLingo 即時字幕翻譯" data-desc="Chrome MV3 擴充功能，AudioWorklet 將分頁音訊降為 16kHz PCM16，串接 Deepgram 逐字稿與 DeepL 翻譯。" data-tags="Chrome 擴充|即時語音|AudioWorklet|WebSocket" data-link="示範影片 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
+        <div data-href="#" data-title="LiveLingo 即時字幕翻譯" data-desc="聯合報系 2026 年 9 月邀請新聞設計顧問 Mario García 博士來台，進行內部工作坊與台北漢來大飯店的對外公開演講，現場的即時中文字幕由這套工具產出。技術上是 Chrome MV3 擴充功能，以 AudioWorklet 將分頁音訊降為 16kHz PCM16，串接 Deepgram 逐字稿與 DeepL 翻譯。" data-tags="Chrome 擴充|即時語音|現場導入|AudioWorklet" data-link="示範影片 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
           <div style="position:relative;aspect-ratio:16/10;border-radius:16px;background:#EDE6FF;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center;padding:14px;transition:transform .16s ease"data-hv="h13"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;color:#5A5248">畫面準備中</span></div>
           <h3 style="margin:0;font-size:17px;font-weight:900;line-height:1.5">LiveLingo 即時字幕翻譯</h3>
-          <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">Chrome MV3 擴充功能，AudioWorklet 將分頁音訊降為 16kHz PCM16，串接 Deepgram 逐字稿與 DeepL 翻譯。</p>
+          <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">2026 年 9 月聯合報系邀請 Mario García 博士來台授課，內部工作坊與台北漢來大飯店的對外演講，即時中文字幕都由這套工具產出。</p>
         </div>
         <div data-href="https://miyu0603.github.io/travel-spot-app/" data-title="Travel Spot 景點自動萃取" data-desc="把社群貼文裡的景點資訊自動整理成可用的行程清單，串接 AI 模型，不開放公用。" data-tags="資訊萃取|旅遊|AI 模型串接" data-link="示範影片 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
           <div style="position:relative;aspect-ratio:16/10;border-radius:16px;background:#EDE6FF;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center;padding:14px;transition:transform .16s ease"data-hv="h14"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;color:#5A5248">畫面準備中</span></div>
@@ -542,7 +542,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
             <span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0"><span data-bind="t"></span></span>
           </template>
         </div>
-        <a href="#" data-href-bind="labHref" target="_blank" rel="noopener" style="align-self:flex-start;margin-top:6px;background:#14110F;color:#FAF7F0;border:2px solid #14110F;border-radius:999px;padding:14px 26px;font-weight:700;font-size:15px;box-shadow:4px 4px 0 #FFD34E;transition:transform .15s ease,box-shadow .15s ease"data-hv="h20"><span data-bind="labLink"></span></a>
+        <a href="#" data-href-bind="labHref" data-if="labHasLink" target="_blank" rel="noopener" style="align-self:flex-start;margin-top:6px;background:#14110F;color:#FAF7F0;border:2px solid #14110F;border-radius:999px;padding:14px 26px;font-weight:700;font-size:15px;box-shadow:4px 4px 0 #FFD34E;transition:transform .15s ease,box-shadow .15s ease"data-hv="h20"><span data-bind="labLink"></span></a>
       </div>
     </div>
 
@@ -740,6 +740,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
     labDesc: state.lab ? state.lab.desc : '',
     labLink: state.lab ? state.lab.link : '',
     labHref: state.lab ? state.lab.href : '#',
+    labHasLink: !!(state.lab && state.lab.href && state.lab.href !== '#'),
     labImg: state.lab ? state.lab.img : '',
     labTags: state.lab ? state.lab.tags : [],
     careerBtnLabel: state.careerOpen ? '收合早期經歷 ↑' : '展開完整經歷 ↓',

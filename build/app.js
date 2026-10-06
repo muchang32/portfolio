@@ -25,6 +25,7 @@
     labDesc: state.lab ? state.lab.desc : '',
     labLink: state.lab ? state.lab.link : '',
     labHref: state.lab ? state.lab.href : '#',
+    labHasLink: !!(state.lab && state.lab.href && state.lab.href !== '#'),
     labImg: state.lab ? state.lab.img : '',
     labTags: state.lab ? state.lab.tags : [],
     careerBtnLabel: state.careerOpen ? '收合早期經歷 ↑' : '展開完整經歷 ↓',

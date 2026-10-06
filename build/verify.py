@@ -16,6 +16,9 @@ C = [
   # --- 連結與素材 ---
   ('八個 AI Lab 專案網址', len(re.findall(r'data-href="https://', h)) == 7),
   ('LiveLingo 保持未上架', h.count('data-href="#"') == 1),
+  ('LiveLingo 寫出實際導入的場合', has('Mario García') and has('漢來大飯店')),
+  ('沒有連結的專案不留死按鈕', has('data-href-bind="labHref" data-if="labHasLink"')
+                           and "labHasLink: !!(state.lab" in h),
   ('五篇專欄內頁連結', len(re.findall(r'href="\./writing/\d', h)) == 5),
   ('兩則案例內頁連結', len(re.findall(r'href="\./case/\w+\.html"', h)) == 2),
   ('履歷 PDF', has('assets/resume.pdf', 2)),

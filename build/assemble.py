@@ -615,6 +615,28 @@ body = (body[:_an_start]
         + _img('./assets/case/anfu/cover.jpg', '安否通 未回報優先佇列看板', '16/10')
         + body[_an_end:])
 
+# ---- LiveLingo：改以實際導入的場合開頭，技術細節退到彈窗 ----
+_LL_OLD = ('Chrome MV3 擴充功能，AudioWorklet 將分頁音訊降為 16kHz PCM16，'
+           '串接 Deepgram 逐字稿與 DeepL 翻譯。')
+assert body.count(_LL_OLD) == 2, 'LiveLingo 文案應該出現在卡片與彈窗各一次'
+_LL_MODAL = ('聯合報系 2026 年 9 月邀請新聞設計顧問 Mario García 博士來台，'
+             '進行內部工作坊與台北漢來大飯店的對外公開演講，現場的即時中文字幕由這套工具產出。'
+             '技術上是 Chrome MV3 擴充功能，以 AudioWorklet 將分頁音訊降為 16kHz PCM16，'
+             '串接 Deepgram 逐字稿與 DeepL 翻譯。')
+_LL_CARD = ('2026 年 9 月聯合報系邀請 Mario García 博士來台授課，'
+            '內部工作坊與台北漢來大飯店的對外演講，即時中文字幕都由這套工具產出。')
+body = body.replace(f'data-desc="{_LL_OLD}', f'data-desc="{_LL_MODAL}', 1)
+body = body.replace(_LL_OLD, _LL_CARD, 1)
+assert _LL_OLD not in body
+body = body.replace('data-tags="Chrome 擴充|即時語音|AudioWorklet|WebSocket"',
+                    'data-tags="Chrome 擴充|即時語音|現場導入|AudioWorklet"', 1)
+
+# 還沒有連結的專案，彈窗不要留一顆按下去沒反應的按鈕
+_cta = '<a href="#" data-href-bind="labHref" target="_blank" rel="noopener"'
+assert body.count(_cta) == 1
+body = body.replace(_cta, '<a href="#" data-href-bind="labHref" data-if="labHasLink" '
+                          'target="_blank" rel="noopener"', 1)
+
 # ---- 精選案例卡片：整張卡 hover 就夠，按鈕不要再各自跳一次 ----
 _cs, _ce = body.index('id="case"'), body.index('id="ai-lab"')
 _seg = body[_cs:_ce]
