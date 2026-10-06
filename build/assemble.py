@@ -615,21 +615,27 @@ body = (body[:_an_start]
         + _img('./assets/case/anfu/cover.jpg', '安否通 未回報優先佇列看板', '16/10')
         + body[_an_end:])
 
+# ---- 現職補上 LiveLingo 這條：自己做的東西被實際拿去用 ----
+_after = '<li>導入 AI 工具至實際工作流程並優化 Prompt 設計，讓非工程同仁能真正用於日常業務</li>'
+assert body.count(_after) == 1, '找不到現職的「導入 AI 工具」條目'
+body = body.replace(_after,
+    '<li>自製即時字幕翻譯工具（Chrome 擴充功能），供報系邀請 Mario García 博士來台授課期間使用，'
+    '涵蓋內部工作坊與台北漢來大飯店的對外公開演講</li>' + _after, 1)
+
 # ---- LiveLingo：改以實際導入的場合開頭，技術細節退到彈窗 ----
 _LL_OLD = ('Chrome MV3 擴充功能，AudioWorklet 將分頁音訊降為 16kHz PCM16，'
            '串接 Deepgram 逐字稿與 DeepL 翻譯。')
 assert body.count(_LL_OLD) == 2, 'LiveLingo 文案應該出現在卡片與彈窗各一次'
 _LL_MODAL = ('聯合報系 2026 年 9 月邀請新聞設計顧問 Mario García 博士來台，'
              '進行內部工作坊與台北漢來大飯店的對外公開演講，現場的即時中文字幕由這套工具產出。'
-             '技術上是 Chrome MV3 擴充功能，以 AudioWorklet 將分頁音訊降為 16kHz PCM16，'
-             '串接 Deepgram 逐字稿與 DeepL 翻譯。')
+             'Chrome 擴充功能，串接語音辨識與翻譯服務。')
 _LL_CARD = ('2026 年 9 月聯合報系邀請 Mario García 博士來台授課，'
             '內部工作坊與台北漢來大飯店的對外演講，即時中文字幕都由這套工具產出。')
 body = body.replace(f'data-desc="{_LL_OLD}', f'data-desc="{_LL_MODAL}', 1)
 body = body.replace(_LL_OLD, _LL_CARD, 1)
 assert _LL_OLD not in body
 body = body.replace('data-tags="Chrome 擴充|即時語音|AudioWorklet|WebSocket"',
-                    'data-tags="Chrome 擴充|即時語音|現場導入|AudioWorklet"', 1)
+                    'data-tags="Chrome 擴充|即時字幕|現場導入"', 1)
 
 # 還沒有連結的專案，彈窗不要留一顆按下去沒反應的按鈕
 _cta = '<a href="#" data-href-bind="labHref" target="_blank" rel="noopener"'
