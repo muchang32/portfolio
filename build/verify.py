@@ -99,9 +99,11 @@ C.append(('案例頁的摘要與規格卡',
 C.append(('案例頁沒有星芒分隔線', '2726' not in _anfu))
 C.append(('安否通沒有自我評審那段', '自己的評審' not in _anfu and '86 分' not in _anfu))
 C.append(('正取公司名稱正確', '睿鍶科技' in _anfu and '睿鍇' not in _anfu))
-C.append(('Aicast 影片', 'youtube-nocookie.com/embed/WiEB46Ox8S8'
-          in pathlib.Path('case/aicast.html').read_text(encoding='utf-8')))
-for desc, ok in C[-6:]:
+_ai = pathlib.Path('case/aicast.html').read_text(encoding='utf-8')
+C.append(('Aicast 影片', 'youtube-nocookie.com/embed/WiEB46Ox8S8' in _ai))
+C.append(('影片只保留自家播放／暫停鍵',
+          'controls=0' in _ai and 'data-yt-toggle' in _ai and 'yt-shield' in _ai))
+for desc, ok in C[-7:]:
     (fails if not ok else warns).append(desc) if not ok else None
 
 print(f'檢查 {len(C)} 項')

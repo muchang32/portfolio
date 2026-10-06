@@ -6,6 +6,12 @@ ROOT = pathlib.Path('.')
 PAL = dict(bg='#FAF7F0', ink='#14110F', card='#FFFFFF', accent='#FFD34E',
            violet='#6D4AFF', soft='#FFF6D9', line='#14110F')
 
+_PLAY = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
+         '<path d="M7 4.5v15l13-7.5z"/></svg>')
+_PAUSE = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
+          '<rect x="6" y="4.5" width="4" height="15" rx="1.3"/>'
+          '<rect x="14" y="4.5" width="4" height="15" rx="1.3"/></svg>')
+
 CASE_CSS = """
 .kicker{{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
  letter-spacing:.14em;background:{ink};color:{bg};padding:6px 14px;border-radius:999px;
@@ -42,6 +48,46 @@ main ul li::before{{content:'';position:absolute;left:3px;top:.62em;width:9px;he
 .yt{{position:relative;width:100%;aspect-ratio:16/9;margin:32px 0;border-radius:14px;
  overflow:hidden;background:{ink}}}
 .yt iframe{{position:absolute;inset:0;width:100%;height:100%;border:0}}
+/* 擋住播放器本身的點擊，控制權只留給下面那顆按鈕 */
+.yt-shield{{position:absolute;inset:0;cursor:default}}
+.yt-btn{{position:absolute;left:14px;bottom:14px;z-index:2;width:46px;height:46px;border-radius:50%;
+ border:2.5px solid {ink};background:{accent};color:{ink};cursor:pointer;display:grid;
+ place-items:center;padding:0;box-shadow:3px 3px 0 {ink};
+ transition:transform .15s ease,box-shadow .15s ease}}
+.yt-btn:hover{{transform:translate(-2px,-2px);box-shadow:5px 5px 0 {ink}}}
+.yt-btn:active{{transform:translate(1px,1px);box-shadow:1px 1px 0 {ink}}}
+"""
+
+CASE_JS = """<script>
+(function () {
+  // 只用 postMessage 控制，不載入 YouTube 的 API script
+  document.querySelectorAll('.yt').forEach(function (box) {
+    var frame = box.querySelector('iframe');
+    var btn = box.querySelector('[data-yt-toggle]');
+    if (!frame || !btn) return;
+    var shield = document.createElement('span');
+    shield.className = 'yt-shield';
+    frame.insertAdjacentElement('afterend', shield);
+    btn.hidden = false;
+    var playing = false;
+    var send = function (fn) {
+      frame.contentWindow.postMessage(
+        JSON.stringify({ event: 'command', func: fn, args: [] }), '*');
+    };
+    var paint = function () {
+      box.querySelector('[data-yt-play]').hidden = playing;
+      box.querySelector('[data-yt-pause]').hidden = !playing;
+      btn.setAttribute('aria-label', playing ? '暫停' : '播放');
+    };
+    btn.addEventListener('click', function () {
+      playing = !playing;
+      send(playing ? 'playVideo' : 'pauseVideo');
+      paint();
+    });
+    shield.addEventListener('click', function () { btn.click(); });
+  });
+})();
+</script>
 """
 
 def md2html(md, depth):
@@ -75,10 +121,17 @@ def md2html(md, depth):
         if my:
             vid = my.group(1).rsplit('/', 1)[-1].split('?')[0]
             # nocookie 網域：沒播放前不種追蹤 cookie
-            out.append(f'<div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/{vid}" '
-                       f'title="YouTube" loading="lazy" allowfullscreen '
-                       f'allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture">'
-                       f'</iframe></div>'); i += 1; continue
+            # controls=0 關掉原生控制列；enablejsapi 讓自家按鈕能用 postMessage 控制
+            src = (f'https://www.youtube-nocookie.com/embed/{vid}'
+                   '?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;enablejsapi=1')
+            out.append(
+                f'<div class="yt"><iframe src="{src}" title="YouTube" loading="lazy" '
+                f'allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture">'
+                f'</iframe>'
+                f'<button type="button" class="yt-btn" data-yt-toggle hidden aria-label="播放">'
+                f'<span data-yt-play>{_PLAY}</span>'
+                f'<span data-yt-pause hidden>{_PAUSE}</span>'
+                f'</button></div>'); i += 1; continue
         mv = re.match(r'^!video\[([^\]]*)\]\(([^)]+)\)$', ln.strip())
         if mv:
             poster, src = mv.group(1), mv.group(2)
@@ -191,6 +244,7 @@ hr{{border:0;border-top:1px solid #E3DEF2;margin:44px 0}}
   <a href="{next_href}">{next_label}</a>
 </nav>
 </main>
+{extra_js}
 </body>
 </html>
 """
@@ -205,9 +259,10 @@ def build(md_path, out_path, kicker, back_anchor, back_label, prev, nxt, depth,
     for ln in lines[1:]:
         if ln.startswith('> '): desc = ln[2:].strip(); break
     content = md2html(body_md, depth)
-    extra_css, kicker_html = '', ''
+    extra_css, kicker_html, extra_js = '', '', ''
     if variant == 'case':
         extra_css = CASE_CSS.format(**PAL)
+        extra_js = CASE_JS if '<div class="yt">' in content else ''
         kicker_html = f'<p class="kicker">{html.escape(kicker)}</p>\n'
         # 開頭那句引言是摘要，樣式跟內文中的引言不同
         if content.startswith('<blockquote>'):
@@ -217,6 +272,7 @@ def build(md_path, out_path, kicker, back_anchor, back_label, prev, nxt, depth,
                                 content=content, up='../' * depth, kicker=kicker,
                                 wrap=wrap,
                                 extra_css=extra_css, kicker_html=kicker_html,
+                                extra_js=extra_js,
                                 back_anchor=back_anchor, back_label=back_label,
                                 prev_href=prev[0], prev_label=prev[1],
                                 next_href=nxt[0], next_label=nxt[1], **PAL), encoding='utf-8')
