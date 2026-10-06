@@ -43,6 +43,7 @@ C = [
   ('AI Lab 六張卡片封面',
    len(set(re.findall(r'data-img="\./assets/ai-lab/([\w-]+\.jpg)"', h))) == 6),
   ('彈窗封面已綁定', has('data-img-bind="labImg"') and len(re.findall(r'data-img="', h)) == 6),
+  ('示範影片有標明素材來源', has('非上述活動現場') and has('data-bind="labVCap"')),
   ('LiveLingo 彈窗放示範錄影',
    has('data-video-bind="labVideo"') and has('02-livelingo-demo.mp4')
    and pathlib.Path('assets/ai-lab/02-livelingo-demo.mp4').exists()),

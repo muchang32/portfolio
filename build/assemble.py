@@ -623,7 +623,8 @@ _LL_CARD_KEY = 'data-title="LiveLingo 即時字幕翻譯"'
 assert body.count(_LL_CARD_KEY) == 1
 body = body.replace(_LL_CARD_KEY,
     _LL_CARD_KEY + ' data-video="./assets/ai-lab/02-livelingo-demo.mp4"'
-    ' data-vposter="./assets/ai-lab/02-livelingo-demo-poster.jpg"', 1)
+    ' data-vposter="./assets/ai-lab/02-livelingo-demo-poster.jpg"'
+    ' data-vcap="示範影片為公開直播的主題演講實測畫面，非上述活動現場。"', 1)
 
 # ---- 現職補上 LiveLingo 這條：自己做的東西被實際拿去用 ----
 # 寫成常態能力而不是單一場次——後續其他國際講者的場子也會用到
@@ -714,9 +715,11 @@ _modal_img = ('<img data-img-bind="labImg" alt="" hidden '
 _modal_video = ('<video data-video-bind="labVideo" controls preload="none" playsinline hidden '
                 'style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:14px;'
                 'display:block;background:#14110F"></video>')
+_modal_vcap = ('<p data-bind="labVCap" data-if="labHasVCap" hidden '
+               'style="margin:-6px 0 0;font-size:12.5px;line-height:1.7;color:#6E6A85"></p>')
 _h3row = '<div style="display:flex;gap:14px;align-items:flex-start;justify-content:space-between">'
 _ins = body.index(_h3row, _mi)
-body = body[:_ins] + _close_fixed + _modal_img + _modal_video + body[_ins:]
+body = body[:_ins] + _close_fixed + _modal_img + _modal_video + _modal_vcap + body[_ins:]
 
 # ===== 本輪 H：旅遊系列兩張卡對調，冬富士在前 =====
 # 先改文案：原本冬富士寫「第二次實作、沿用九州版架構」，排到前面會讀起來顛倒。

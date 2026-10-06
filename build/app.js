@@ -29,6 +29,8 @@
     labImg: state.lab && !state.lab.video ? state.lab.img : '',
     labVideo: state.lab ? (state.lab.video || '') : '',
     labVPoster: state.lab ? (state.lab.vposter || '') : '',
+    labVCap: state.lab ? (state.lab.vcap || '') : '',
+    labHasVCap: !!(state.lab && state.lab.vcap),
     labTags: state.lab ? state.lab.tags : [],
     careerBtnLabel: state.careerOpen ? '收合早期經歷 ↑' : '展開完整經歷 ↓',
     copyLabel: state.copied ? '已複製 ✓' : '複製 Email',
@@ -101,7 +103,7 @@
     openLab: e => {
       const d = e.currentTarget.dataset;
       state.lab = { title: d.title, desc: d.desc, href: d.href, link: d.link,
-                   video: d.video, vposter: d.vposter,
+                   video: d.video, vposter: d.vposter, vcap: d.vcap,
                     img: d.img || '', tags: (d.tags || '').split('|').filter(Boolean) };
       render();
       const close = $('[data-on="closeLab"]');
