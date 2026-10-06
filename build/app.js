@@ -26,7 +26,9 @@
     labLink: state.lab ? state.lab.link : '',
     labHref: state.lab ? state.lab.href : '#',
     labHasLink: !!(state.lab && state.lab.href && state.lab.href !== '#'),
-    labImg: state.lab ? state.lab.img : '',
+    labImg: state.lab && !state.lab.video ? state.lab.img : '',
+    labVideo: state.lab ? (state.lab.video || '') : '',
+    labVPoster: state.lab ? (state.lab.vposter || '') : '',
     labTags: state.lab ? state.lab.tags : [],
     careerBtnLabel: state.careerOpen ? '收合早期經歷 ↑' : '展開完整經歷 ↓',
     copyLabel: state.copied ? '已複製 ✓' : '複製 Email',
@@ -42,6 +44,22 @@
     });
     $$('[data-href-bind]').forEach(el => el.setAttribute('href', v[el.dataset.hrefBind] || '#'));
     // 彈窗封面：沒有截圖的專案不顯示圖片區
+    $$('[data-video-bind]').forEach(el => {
+      const src = v[el.dataset.videoBind];
+      if (src) {
+        if (el.getAttribute('src') !== src) {
+          el.setAttribute('src', src);
+          el.setAttribute('poster', v.labVPoster);
+        }
+        el.hidden = false;
+      } else {
+        el.pause();
+        el.removeAttribute('src');
+        el.removeAttribute('poster');
+        el.load();            // 關掉彈窗要停掉下載與播放
+        el.hidden = true;
+      }
+    });
     $$('[data-img-bind]').forEach(el => {
       const src = v[el.dataset.imgBind];
       if (src) { el.setAttribute('src', src); el.hidden = false; }
@@ -83,6 +101,7 @@
     openLab: e => {
       const d = e.currentTarget.dataset;
       state.lab = { title: d.title, desc: d.desc, href: d.href, link: d.link,
+                   video: d.video, vposter: d.vposter,
                     img: d.img || '', tags: (d.tags || '').split('|').filter(Boolean) };
       render();
       const close = $('[data-on="closeLab"]');

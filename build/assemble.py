@@ -574,13 +574,16 @@ def _img(src, alt, ratio, extra=''):
 # F1. AI Lab：逐張把有素材的卡片接上截圖（佔位框以深度配對取代，並標示提示文字）
 _LAB_COVERS = [
     ('https://muchang32.github.io/muchang-order/',              '01-muchang-order.jpg',   '要不要來一杯 點餐系統畫面'),
+    ('LiveLingo 即時字幕翻譯',                                  '02-livelingo.jpg',     'LiveLingo 在演講現場投影即時中文字幕'),
     ('https://miyu0603.github.io/my-finance/',              '05-my-finance.jpg',    '我的財務管家 介面'),
     ('https://muchang32.github.io/ai-treasure-chest/',      '06-treasure-chest.jpg','AI 精選寶箱 介面'),
     ('https://miyu0603.github.io/kyushu-2026/',              '07-kyushu.jpg',        '九州縱斷之旅 2026 介面'),
     ('https://muchang32.github.io/winter-fuji-hakone-2026/','08-winter-fuji.jpg',   '冬富士之旅 2026 介面'),
 ]
 for _href, _file, _alt in _LAB_COVERS:
-    _anchor = f'data-href="{_href}"'
+    # 有專案網址的用網址當 key，沒有的（例如 LiveLingo）改用標題
+    _anchor = (f'data-href="{_href}"' if _href.startswith('http')
+               else f'data-title="{_href}"')
     if _anchor not in body:
         raise SystemExit(f'找不到 AI Lab 卡片：{_href}')
     _c = body.index(_anchor)
@@ -614,6 +617,13 @@ _an_end = _close_of(body, _an_start)
 body = (body[:_an_start]
         + _img('./assets/case/anfu/cover.jpg', '安否通 未回報優先佇列看板', '16/10')
         + body[_an_end:])
+
+# ---- LiveLingo 彈窗：放示範錄影而不是靜態封面 ----
+_LL_CARD_KEY = 'data-title="LiveLingo 即時字幕翻譯"'
+assert body.count(_LL_CARD_KEY) == 1
+body = body.replace(_LL_CARD_KEY,
+    _LL_CARD_KEY + ' data-video="./assets/ai-lab/02-livelingo-demo.mp4"'
+    ' data-vposter="./assets/ai-lab/02-livelingo-demo-poster.jpg"', 1)
 
 # ---- 現職補上 LiveLingo 這條：自己做的東西被實際拿去用 ----
 # 寫成常態能力而不是單一場次——後續其他國際講者的場子也會用到
@@ -700,9 +710,13 @@ _close_fixed = ('<button data-on="closeLab" aria-label="關閉" data-hv="lbclose
 _modal_img = ('<img data-img-bind="labImg" alt="" hidden '
               'style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:14px;'
               'display:block" />')
+# 有示範錄影的專案改放播放器，沒有的仍是靜態封面
+_modal_video = ('<video data-video-bind="labVideo" controls preload="none" playsinline hidden '
+                'style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:14px;'
+                'display:block;background:#14110F"></video>')
 _h3row = '<div style="display:flex;gap:14px;align-items:flex-start;justify-content:space-between">'
 _ins = body.index(_h3row, _mi)
-body = body[:_ins] + _close_fixed + _modal_img + body[_ins:]
+body = body[:_ins] + _close_fixed + _modal_img + _modal_video + body[_ins:]
 
 # ===== 本輪 H：旅遊系列兩張卡對調，冬富士在前 =====
 # 先改文案：原本冬富士寫「第二次實作、沿用九州版架構」，排到前面會讀起來顛倒。
