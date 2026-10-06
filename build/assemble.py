@@ -637,11 +637,11 @@ body = body.replace(_after,
 _LL_OLD = ('Chrome MV3 擴充功能，AudioWorklet 將分頁音訊降為 16kHz PCM16，'
            '串接 Deepgram 逐字稿與 DeepL 翻譯。')
 assert body.count(_LL_OLD) == 2, 'LiveLingo 文案應該出現在卡片與彈窗各一次'
-_LL_MODAL = ('聯合報系 2026 年 9 月邀請新聞設計顧問 Mario García 博士來台，'
-             '進行內部工作坊與台北漢來大飯店的對外公開演講，現場的即時中文字幕由這套工具產出。'
+_LL_MODAL = ('把英文演講即時轉成中文字幕，直接投到會場螢幕上。'
+             '已實際用於聯合報系邀請國際講者來台期間的內部工作坊與對外公開演講。'
              'Chrome 擴充功能，串接語音辨識與翻譯服務。')
-_LL_CARD = ('2026 年 9 月聯合報系邀請 Mario García 博士來台授課，'
-            '內部工作坊與台北漢來大飯店的對外演講，即時中文字幕都由這套工具產出。')
+_LL_CARD = ('把英文演講即時轉成中文字幕投到會場螢幕。'
+            '已用於聯合報系國際講者來台的內部工作坊與對外公開演講。')
 body = body.replace(f'data-desc="{_LL_OLD}', f'data-desc="{_LL_MODAL}', 1)
 body = body.replace(_LL_OLD, _LL_CARD, 1)
 assert _LL_OLD not in body

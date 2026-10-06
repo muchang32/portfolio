@@ -16,9 +16,10 @@ C = [
   # --- 連結與素材 ---
   ('八個 AI Lab 專案網址', len(re.findall(r'data-href="https://', h)) == 7),
   ('LiveLingo 保持未上架', h.count('data-href="#"') == 1),
-  ('LiveLingo 寫出實際導入的場合', has('Mario García') and has('漢來大飯店')),
-  ('現職寫成常態能力，不綁單一場次',
-   has('自製即時字幕翻譯工具') and h.count('Mario García') == 2),
+  ('LiveLingo 寫出實際用在哪些場合',
+   has('已用於聯合報系國際講者來台的內部工作坊與對外公開演講')),
+  ('LiveLingo 不綁單一場次', absent('Mario García') and absent('漢來大飯店')),
+  ('現職寫成常態能力', has('自製即時字幕翻譯工具')),
   ('彈窗不講底層技術', absent('AudioWorklet') and absent('PCM16') and absent('Deepgram')),
   ('沒有連結的專案不留死按鈕', has('data-href-bind="labHref" data-if="labHasLink"')
                            and "labHasLink: !!(state.lab" in h),
