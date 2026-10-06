@@ -86,14 +86,20 @@ main ul li::before{content:'';position:absolute;left:3px;top:.62em;width:9px;hei
 .yt{position:relative;width:100%;aspect-ratio:16/9;margin:32px 0;border-radius:14px;
  overflow:hidden;background:#14110F}
 .yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.yt-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 /* 擋住播放器本身的點擊，控制權只留給下面那顆按鈕 */
 .yt-shield{position:absolute;inset:0;cursor:default}
-.yt-btn{position:absolute;left:14px;bottom:14px;z-index:2;width:46px;height:46px;border-radius:50%;
+/* 還沒播放時按鈕置中當主要入口，播放後縮到左下角當控制鍵 */
+.yt-btn{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
+ width:72px;height:72px;border-radius:50%;
  border:2.5px solid #14110F;background:#FFD34E;color:#14110F;cursor:pointer;display:grid;
  place-items:center;padding:0;box-shadow:3px 3px 0 #14110F;
  transition:transform .15s ease,box-shadow .15s ease}
-.yt-btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 #14110F}
-.yt-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 #14110F}
+.yt-btn:hover{transform:translate(-50%,-50%) scale(1.08)}
+.yt[data-playing] .yt-btn{left:14px;top:auto;bottom:14px;transform:none;width:46px;height:46px}
+.yt-btn svg{width:30px;height:30px}
+.yt[data-playing] .yt-btn svg{width:20px;height:20px}
+.yt[data-playing] .yt-btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 #14110F}
 
 </style>
 </head>

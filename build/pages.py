@@ -48,43 +48,62 @@ main ul li::before{{content:'';position:absolute;left:3px;top:.62em;width:9px;he
 .yt{{position:relative;width:100%;aspect-ratio:16/9;margin:32px 0;border-radius:14px;
  overflow:hidden;background:{ink}}}
 .yt iframe{{position:absolute;inset:0;width:100%;height:100%;border:0}}
+.yt-poster{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}}
 /* 擋住播放器本身的點擊，控制權只留給下面那顆按鈕 */
 .yt-shield{{position:absolute;inset:0;cursor:default}}
-.yt-btn{{position:absolute;left:14px;bottom:14px;z-index:2;width:46px;height:46px;border-radius:50%;
+/* 還沒播放時按鈕置中當主要入口，播放後縮到左下角當控制鍵 */
+.yt-btn{{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
+ width:72px;height:72px;border-radius:50%;
  border:2.5px solid {ink};background:{accent};color:{ink};cursor:pointer;display:grid;
  place-items:center;padding:0;box-shadow:3px 3px 0 {ink};
  transition:transform .15s ease,box-shadow .15s ease}}
-.yt-btn:hover{{transform:translate(-2px,-2px);box-shadow:5px 5px 0 {ink}}}
-.yt-btn:active{{transform:translate(1px,1px);box-shadow:1px 1px 0 {ink}}}
+.yt-btn:hover{{transform:translate(-50%,-50%) scale(1.08)}}
+.yt[data-playing] .yt-btn{{left:14px;top:auto;bottom:14px;transform:none;width:46px;height:46px}}
+.yt-btn svg{{width:30px;height:30px}}
+.yt[data-playing] .yt-btn svg{{width:20px;height:20px}}
+.yt[data-playing] .yt-btn:hover{{transform:translate(-2px,-2px);box-shadow:5px 5px 0 {ink}}}
 """
 
 CASE_JS = """<script>
 (function () {
-  // 只用 postMessage 控制，不載入 YouTube 的 API script
   document.querySelectorAll('.yt').forEach(function (box) {
-    var frame = box.querySelector('iframe');
     var btn = box.querySelector('[data-yt-toggle]');
-    if (!frame || !btn) return;
-    var shield = document.createElement('span');
-    shield.className = 'yt-shield';
-    frame.insertAdjacentElement('afterend', shield);
-    btn.hidden = false;
-    var playing = false;
-    var send = function (fn) {
-      frame.contentWindow.postMessage(
-        JSON.stringify({ event: 'command', func: fn, args: [] }), '*');
-    };
+    var vid = box.getAttribute('data-yt');
+    if (!btn || !vid) return;
+    var frame = null, playing = false;
     var paint = function () {
       box.querySelector('[data-yt-play]').hidden = playing;
       box.querySelector('[data-yt-pause]').hidden = !playing;
       btn.setAttribute('aria-label', playing ? '暫停' : '播放');
     };
+    var send = function (fn) {
+      if (!frame) return;
+      frame.contentWindow.postMessage(
+        JSON.stringify({ event: 'command', func: fn, args: [] }), '*');
+    };
     btn.addEventListener('click', function () {
+      if (!frame) {
+        // 使用者點了才載入，所以可以帶聲音自動播放
+        frame = document.createElement('iframe');
+        frame.src = 'https://www.youtube-nocookie.com/embed/' + vid +
+          '?autoplay=1&controls=0&disablekb=1&playsinline=1&rel=0&enablejsapi=1';
+        frame.title = 'YouTube';
+        frame.allow = 'autoplay; encrypted-media; picture-in-picture';
+        box.insertBefore(frame, btn);
+        var shield = document.createElement('span');
+        shield.className = 'yt-shield';
+        shield.addEventListener('click', function () { btn.click(); });
+        box.insertBefore(shield, btn);
+        var poster = box.querySelector('.yt-poster');
+        if (poster) poster.remove();
+        box.setAttribute('data-playing', '');
+        playing = true; paint();
+        return;
+      }
       playing = !playing;
       send(playing ? 'playVideo' : 'pauseVideo');
       paint();
     });
-    shield.addEventListener('click', function () { btn.click(); });
   });
 })();
 </script>
@@ -117,18 +136,16 @@ def md2html(md, depth):
             out.append('<dl class="meta">' + ''.join(
                 f'<dt>{inline(k)}</dt><dd>{inline(v)}</dd>' for k, v in rows) + '</dl>')
             continue
-        my = re.match(r'^!youtube\(([^)]+)\)$', ln.strip())
+        my = re.match(r'^!youtube\[([^\]]*)\]\(([^)]+)\)$', ln.strip())
         if my:
-            vid = my.group(1).rsplit('/', 1)[-1].split('?')[0]
-            # nocookie 網域：沒播放前不種追蹤 cookie
-            # controls=0 關掉原生控制列；enablejsapi 讓自家按鈕能用 postMessage 控制
-            src = (f'https://www.youtube-nocookie.com/embed/{vid}'
-                   '?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;enablejsapi=1')
+            poster, url = my.group(1), my.group(2)
+            vid = url.rsplit('/', 1)[-1].split('?')[0]
+            # 先放自家封面，點了才載入 iframe：未播放時畫面上沒有 YouTube 的
+            # 標題列、浮水印與紅色播放鍵，也省下第三方請求
             out.append(
-                f'<div class="yt"><iframe src="{src}" title="YouTube" loading="lazy" '
-                f'allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture">'
-                f'</iframe>'
-                f'<button type="button" class="yt-btn" data-yt-toggle hidden aria-label="播放">'
+                f'<div class="yt" data-yt="{vid}">'
+                f'<img class="yt-poster" src="{up}{poster}" alt="" loading="lazy" decoding="async" />'
+                f'<button type="button" class="yt-btn" data-yt-toggle aria-label="播放">'
                 f'<span data-yt-play>{_PLAY}</span>'
                 f'<span data-yt-pause hidden>{_PAUSE}</span>'
                 f'</button></div>'); i += 1; continue
@@ -262,7 +279,7 @@ def build(md_path, out_path, kicker, back_anchor, back_label, prev, nxt, depth,
     extra_css, kicker_html, extra_js = '', '', ''
     if variant == 'case':
         extra_css = CASE_CSS.format(**PAL)
-        extra_js = CASE_JS if '<div class="yt">' in content else ''
+        extra_js = CASE_JS if 'class="yt"' in content else ''
         kicker_html = f'<p class="kicker">{html.escape(kicker)}</p>\n'
         # 開頭那句引言是摘要，樣式跟內文中的引言不同
         if content.startswith('<blockquote>'):

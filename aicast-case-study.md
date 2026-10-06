@@ -19,9 +19,9 @@ Aicast 要解決的就是這件事——**讓多角色配音變得便宜到可�
 
 平台整合三項 AI 能力：將 epub / docx / txt 文件自動拆分章節並轉為劇本型態（支援最長 50 萬字文本）、掃描並解析每句對話角色的名稱、性別、年齡與情緒（角色辨識平均正確率 75–96%），再依角色特質自動配置聲音。產品初期以 8 位 AI 配音員即可演繹橫跨各年齡層的 42 種聲音，多人配音有聲書的製作時間最多可減少 90%。
 
-!youtube(https://youtu.be/WiEB46Ox8S8)
+!youtube[assets/case/aicast/video-poster.jpg](https://youtu.be/WiEB46Ox8S8)
 
-*iF 參賽影片*
+*Aicast iF 設計獎影片*
 
 ---
 
