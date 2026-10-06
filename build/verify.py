@@ -16,6 +16,7 @@ C = [
   # --- 連結與素材 ---
   ('八個 AI Lab 專案網址', len(re.findall(r'data-href="https://', h)) == 7),
   ('LiveLingo 保持未上架', h.count('data-href="#"') == 1),
+  ('按鈕文字與連結相符', len(re.findall(r'data-link="示範影片 →"', h)) == 1),
   ('LiveLingo 寫出實際導入的場合', has('Mario García') and has('漢來大飯店')),
   ('現職不綁單一場次', 'Mario García' not in h[h.index('id="career"'):h.index('id="case"')]),
   ('現職寫成常態能力', has('自製即時字幕翻譯工具')),

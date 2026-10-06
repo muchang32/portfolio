@@ -619,6 +619,16 @@ body = (body[:_an_start]
         + _img('./assets/case/anfu/cover.jpg', '安否通 未回報優先佇列看板', '16/10')
         + body[_an_end:])
 
+# ---- Travel Spot：按鈕寫「示範影片」但實際連到網頁 ----
+_TS = 'data-href="https://miyu0603.github.io/travel-spot-app/"'
+assert body.count(_TS) == 1
+_ts_end = body.index('data-on="openLab"', body.index(_TS))
+_ts_seg = body[body.index(_TS):_ts_end]
+assert 'data-link="示範影片 →"' in _ts_seg, 'Travel Spot 的 CTA 文字不如預期'
+body = (body[:body.index(_TS)]
+        + _ts_seg.replace('data-link="示範影片 →"', 'data-link="開啟網頁 →"', 1)
+        + body[_ts_end:])
+
 # ---- LiveLingo 彈窗：放示範錄影而不是靜態封面 ----
 _LL_CARD_KEY = 'data-title="LiveLingo 即時字幕翻譯"'
 assert body.count(_LL_CARD_KEY) == 1
