@@ -40,10 +40,10 @@ C = [
   ('無殘留死連結', len(re.findall(r'<a [^>]*href="#"', h)) <= 2),
   # --- 圖片 ---
   ('專欄五張封面', len(re.findall(r'assets/writing/[\w-]+/cover\.jpg', h)) == 5),
-  ('AI Lab 六張卡片封面',
-   len(set(re.findall(r'data-img="\./assets/ai-lab/([\w-]+\.jpg)"', h))) == 6),
-  ('彈窗封面已綁定', has('data-img-bind="labImg"') and len(re.findall(r'data-img="', h)) == 6),
-  ('示範影片有標明素材來源', has('非上述活動現場') and has('data-bind="labVCap"')),
+  ('AI Lab 七張卡片封面',
+   len(set(re.findall(r'data-img="\./assets/ai-lab/([\w-]+\.jpg)"', h))) == 7),
+  ('彈窗封面已綁定', has('data-img-bind="labImg"') and len(re.findall(r'data-img="', h)) == 7),
+  ('示範影片有標明素材來源', has('黃仁勳主題演講公開直播') and has('非上述活動現場') and has('data-bind="labVCap"')),
   ('LiveLingo 彈窗放示範錄影',
    has('data-video-bind="labVideo"') and has('02-livelingo-demo.mp4')
    and pathlib.Path('assets/ai-lab/02-livelingo-demo.mp4').exists()),

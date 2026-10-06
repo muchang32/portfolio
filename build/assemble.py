@@ -575,6 +575,7 @@ def _img(src, alt, ratio, extra=''):
 _LAB_COVERS = [
     ('https://muchang32.github.io/muchang-order/',              '01-muchang-order.jpg',   '要不要來一杯 點餐系統畫面'),
     ('LiveLingo 即時字幕翻譯',                                  '02-livelingo.jpg',     'LiveLingo 在演講現場投影即時中文字幕'),
+    ('https://miyu0603.github.io/travel-spot-app/',          '03-travel-spot.jpg',   'Travel Spot 景點清單介面'),
     ('https://miyu0603.github.io/my-finance/',              '05-my-finance.jpg',    '我的財務管家 介面'),
     ('https://muchang32.github.io/ai-treasure-chest/',      '06-treasure-chest.jpg','AI 精選寶箱 介面'),
     ('https://miyu0603.github.io/kyushu-2026/',              '07-kyushu.jpg',        '九州縱斷之旅 2026 介面'),
@@ -624,7 +625,7 @@ assert body.count(_LL_CARD_KEY) == 1
 body = body.replace(_LL_CARD_KEY,
     _LL_CARD_KEY + ' data-video="./assets/ai-lab/02-livelingo-demo.mp4"'
     ' data-vposter="./assets/ai-lab/02-livelingo-demo-poster.jpg"'
-    ' data-vcap="示範影片為公開直播的主題演講實測畫面，非上述活動現場。"', 1)
+    ' data-vcap="示範影片為黃仁勳主題演講公開直播的實測畫面，非上述活動現場。"', 1)
 
 # ---- 現職補上 LiveLingo 這條：自己做的東西被實際拿去用 ----
 # 寫成常態能力而不是單一場次——後續其他國際講者的場子也會用到
