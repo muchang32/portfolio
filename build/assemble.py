@@ -703,8 +703,8 @@ _panel = ('background:#fff;border:2.5px solid #14110F;border-radius:22px;'
 assert _panel in body, '找不到彈窗面板樣式'
 body = body.replace(_panel,
     'position:relative;background:#fff;border:2.5px solid #14110F;border-radius:22px;'
-    'box-shadow:8px 8px 0 #14110F;padding:clamp(22px,3vw,34px);max-width:min(860px,94vw);'
-    'width:100%;max-height:88vh;overflow-y:auto;', 1)
+    'box-shadow:8px 8px 0 #14110F;max-width:min(860px,94vw);'
+    'width:100%;max-height:88vh;', 1)
 
 # G2. 關閉鍵移出標題列，固定於面板右上
 _close_btn = ('<button data-on="closeLab" aria-label="關閉" style="flex:0 0 auto;width:38px;height:38px;'
@@ -714,8 +714,8 @@ assert _close_btn in body, '找不到彈窗關閉鍵'
 body = body.replace(_close_btn, '', 1)
 
 _close_fixed = ('<button data-on="closeLab" aria-label="關閉" data-hv="lbclose" '
-                'style="position:absolute;top:14px;right:14px;z-index:2;width:40px;height:40px;'
-                'border-radius:50%;border:2px solid #14110F;background:#fff;font-size:19px;'
+                'style="position:absolute;top:-14px;right:-14px;z-index:3;width:40px;height:40px;'
+                'border-radius:50%;border:2.5px solid #14110F;background:#FFD34E;font-size:19px;'
                 'line-height:1;cursor:pointer;box-shadow:2px 2px 0 #14110F">×</button>')
 
 # G3. 封面圖插在面板最前，關閉鍵疊在其上
@@ -729,8 +729,17 @@ _modal_video = ('<video data-video-bind="labVideo" controls preload="none" plays
 _modal_vcap = ('<p data-bind="labVCap" data-if="labHasVCap" hidden '
                'style="margin:-6px 0 0;font-size:12.5px;line-height:1.7;color:#6E6A85"></p>')
 _h3row = '<div style="display:flex;gap:14px;align-items:flex-start;justify-content:space-between">'
-_ins = body.index(_h3row, _mi)
-body = body[:_ins] + _close_fixed + _modal_img + _modal_video + _modal_vcap + body[_ins:]
+_panel_start = body.index('<div style="position:relative;background:#fff;', _mi)
+_panel_end = _close_of(body, _panel_start)
+_panel_open_end = body.index('>', _panel_start) + 1
+_inner_open = ('<div data-modal-scroll style="flex:1;min-height:0;overflow-y:auto;'
+               'padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;gap:14px;'
+               'border-radius:20px">')
+_content = body[_panel_open_end:_panel_end - len('</div>')]
+_ins = _content.index(_h3row)
+body = (body[:_panel_open_end] + _close_fixed + _inner_open
+        + _content[:_ins] + _modal_img + _modal_video + _modal_vcap + _content[_ins:]
+        + '</div></div>' + body[_panel_end:])
 
 # ===== 本輪 H：旅遊系列兩張卡對調，冬富士在前 =====
 # 先改文案：原本冬富士寫「第二次實作、沿用九州版架構」，排到前面會讀起來顛倒。
@@ -749,6 +758,13 @@ def _card_span(marker):
     i = body.index(marker)
     start = body.rindex('<div ', 0, i)
     return start, _close_of(body, start)
+
+# Travel Spot 與 AI 精選寶箱對調：網頁工具在前，旅遊相關的排在一起
+_t_start, _t_end = _card_span('data-href="https://miyu0603.github.io/travel-spot-app/"')
+_c_start, _c_end = _card_span('data-href="https://muchang32.github.io/ai-treasure-chest/"')
+assert _t_end <= _c_start, '兩張卡順序不如預期，取消對調以免破壞結構'
+_travel, _mid, _chest = body[_t_start:_t_end], body[_t_end:_c_start], body[_c_start:_c_end]
+body = body[:_t_start] + _chest + _mid + _travel + body[_c_end:]
 
 _k_start, _k_end = _card_span('data-href="https://miyu0603.github.io/kyushu-2026/"')
 _f_start, _f_end = _card_span('data-href="https://muchang32.github.io/winter-fuji-hakone-2026/"')

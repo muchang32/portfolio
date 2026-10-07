@@ -106,6 +106,9 @@
                    video: d.video, vposter: d.vposter, vcap: d.vcap,
                     img: d.img || '', tags: (d.tags || '').split('|').filter(Boolean) };
       render();
+      // 上一次捲到哪裡不該帶到下一張卡
+      const box = $('[data-modal-scroll]');
+      if (box) box.scrollTop = 0;
       const close = $('[data-on="closeLab"]');
       if (close) close.focus();
     },

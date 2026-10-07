@@ -43,6 +43,12 @@ C = [
   ('專欄五張封面', len(re.findall(r'assets/writing/[\w-]+/cover\.jpg', h)) == 5),
   ('AI Lab 七張卡片封面',
    len(set(re.findall(r'data-img="\./assets/ai-lab/([\w-]+\.jpg)"', h))) == 7),
+  ('彈窗外框與捲動層分開', has('data-modal-scroll') and has('top:-14px;right:-14px')),
+  ('換卡時捲回最上方', "box.scrollTop = 0" in h),
+  ('AI Lab 旅遊三張排在最後',
+   (lambda seg: [t for t in re.findall(r'data-title="([^"]*)"', seg)][-3:]
+    == ['Travel Spot 景點自動萃取', '冬富士之旅 2026', '九州縱斷之旅 2026'])
+   (h[h.index('id="ai-lab"'):h.index('id="writing"')])),
   ('彈窗封面已綁定', has('data-img-bind="labImg"') and len(re.findall(r'data-img="', h)) == 7),
   ('示範影片有標明素材來源', has('黃仁勳主題演講公開直播') and has('非上述活動現場') and has('data-bind="labVCap"')),
   ('LiveLingo 彈窗放示範錄影',
