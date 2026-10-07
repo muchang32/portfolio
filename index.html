@@ -172,6 +172,8 @@ a:hover{color:#6D4AFF}
 /* 「看更多」只在手機出現，桌機八張本來就排得下 */
 @media (min-width:641px){[data-lab-more]{display:none !important}}
 [data-lab-more] button:hover{background:#14110F;color:#FAF7F0}
+/* 六格數據在寬螢幕排成一排，少掉一整列的高度 */
+@media (min-width:1120px){[data-stats]{grid-template-columns:repeat(6,1fr) !important}}
 a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:0;clip:auto;
  padding:12px 20px;background:#14110F;color:#FAF7F0;border-radius:999px;font-weight:700;z-index:300}
 </style>
@@ -245,7 +247,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
       </div>
 
       <div style="position:relative;min-width:0;display:flex;justify-content:center;align-items:center;padding:28px 0">
-        <div style="position:relative;width:min(100%,430px);aspect-ratio:1/1.06">
+        <div style="position:relative;width:min(100%,520px);aspect-ratio:1/1.06">
           <div data-hero-ring style="position:absolute;inset:14% 12% 6% 12%;background:#FFD34E;border:2px solid #14110F;border-radius:50%;transform:rotate(-4deg)"></div><img src="./assets/avatar.png" alt="張詩沂" data-hero width="990" height="862" fetchpriority="high" decoding="async" style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:115%;height:auto;max-width:none;display:block;filter:drop-shadow(0 6px 14px rgba(20,17,15,.18))" />
           
 
@@ -264,7 +266,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
       </div>
     </section>
 
-    <section data-ref="statsRef" style="padding:clamp(16px,2.2vw,26px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(16px,2vw,26px)">
+    <section data-ref="statsRef" style="padding:clamp(16px,2.2vw,26px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(16px,2vw,26px)" data-stats="">
       <div style="padding:6px 10px;border-left:1px solid rgba(20,17,15,.2)">
         <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:clamp(26px,3vw,36px);line-height:1.1"><span data-bind="nYears">10</span><span style="font-size:.55em;margin-left:3px">年</span></div>
         <div style="font-size:13px;color:#3B342E;margin-top:7px;line-height:1.7">設計與產品經歷</div>

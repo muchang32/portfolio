@@ -679,6 +679,18 @@ _seg = re.sub(r'\s*data-hv="h(?:9|11)"', '', _seg)
 assert 'data-hv="h9"' not in _seg and 'data-hv="h11"' not in _seg
 body = body[:_cs] + _seg + body[_ce:]
 
+# ---- Hero 收緊：人像舞台放大、數據列併成一排 ----
+# 右欄有 552px，舞台卻卡在 430px，週邊空了一圈；放大後焦點才站得住
+_stage = 'width:min(100%,430px);aspect-ratio:1/1.06'
+assert body.count(_stage) == 1, '找不到 Hero 的人像舞台'
+body = body.replace(_stage, 'width:min(100%,520px);aspect-ratio:1/1.06', 1)
+
+_stats = ('padding:clamp(16px,2.2vw,26px) 0;display:grid;'
+          'grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));'
+          'gap:clamp(16px,2vw,26px)')
+assert body.count(_stats) == 1, '找不到數據列'
+body = body.replace(_stats, _stats + '" data-stats="', 1)
+
 # ---- Hero：放上去背照，站在黃色橢圓上、頭頂與肩膀破出圓形 ----
 _ellipse = ('<div style="position:absolute;inset:6% 4% 0 4%;background:#FFD34E;'
             'border:2px solid #14110F;border-radius:50%;transform:rotate(-4deg)"></div>')
@@ -914,6 +926,8 @@ doc = f"""<!DOCTYPE html>
 /* 「看更多」只在手機出現，桌機八張本來就排得下 */
 @media (min-width:641px){{[data-lab-more]{{display:none !important}}}}
 [data-lab-more] button:hover{{background:#14110F;color:#FAF7F0}}
+/* 六格數據在寬螢幕排成一排，少掉一整列的高度 */
+@media (min-width:1120px){{[data-stats]{{grid-template-columns:repeat(6,1fr) !important}}}}
 a.sr-only:focus{{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:0;clip:auto;
  padding:12px 20px;background:#14110F;color:#FAF7F0;border-radius:999px;font-weight:700;z-index:300}}
 </style>

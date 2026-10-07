@@ -62,6 +62,8 @@ C = [
   ('SKILLS 十個 logo', len(re.findall(r'assets/logos/opt/', h)) == 10),
   ('Hero 去背照', has('./assets/avatar.png') and has('fetchpriority="high"')
                 and pathlib.Path('assets/avatar.png').exists()),
+  ('Hero 人像舞台已放大', has('width:min(100%,520px);aspect-ratio:1/1.06')),
+  ('數據列寬螢幕排成一排', has('[data-stats]{grid-template-columns:repeat(6,1fr) !important}')),
   ('Hero 黃色圓形已縮小', has('inset:14% 12% 6% 12%')
                       and has('[data-hero-ring]{inset:20% 16% 10% 16% !important}')),
   ('Hero 照片在手機不會撐破版面', bool(re.search(r'img\[data-hero\]\{width:\d+% !important\}', h))),
