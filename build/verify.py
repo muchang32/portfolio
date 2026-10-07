@@ -41,15 +41,15 @@ C = [
   ('無殘留死連結', len(re.findall(r'<a [^>]*href="#"', h)) <= 2),
   # --- 圖片 ---
   ('專欄五張封面', len(re.findall(r'assets/writing/[\w-]+/cover\.jpg', h)) == 5),
-  ('AI Lab 七張卡片封面',
-   len(set(re.findall(r'data-img="\./assets/ai-lab/([\w-]+\.jpg)"', h))) == 7),
+  ('AI Lab 八張卡片封面全到齊',
+   len(set(re.findall(r'data-img="\./assets/ai-lab/([\w-]+\.jpg)"', h))) == 8),
   ('彈窗外框與捲動層分開', has('data-modal-scroll') and has('top:-14px;right:-14px')),
   ('換卡時捲回最上方', "box.scrollTop = 0" in h),
   ('AI Lab 旅遊三張排在最後',
    (lambda seg: [t for t in re.findall(r'data-title="([^"]*)"', seg)][-3:]
     == ['Travel Spot 景點自動萃取', '冬富士之旅 2026', '九州縱斷之旅 2026'])
    (h[h.index('id="ai-lab"'):h.index('id="writing"')])),
-  ('彈窗封面已綁定', has('data-img-bind="labImg"') and len(re.findall(r'data-img="', h)) == 7),
+  ('彈窗封面已綁定', has('data-img-bind="labImg"') and len(re.findall(r'data-img="', h)) == 8),
   ('示範影片有標明素材來源', has('黃仁勳主題演講公開直播') and has('非上述活動現場') and has('data-bind="labVCap"')),
   ('LiveLingo 彈窗放示範錄影',
    has('data-video-bind="labVideo"') and has('02-livelingo-demo.mp4')
@@ -75,6 +75,7 @@ C = [
   ('區塊標題無編號', not re.search(r'>0\d\s*/\s*[A-Z]', h)),
   ('無刊物名稱', absent('聯8達')),
   ('無內網位址', absent('10.20.51')),
+  ('首頁沒有佔位框', absent('畫面準備中')),
   ('沒有寫給自己看的素材規格', absent('素材待補') and absent('去背半身照')
                            and absent('示範錄影') and absent('產品截圖')),
   ('無學歷', absent('華梵')),
