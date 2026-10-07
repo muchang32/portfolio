@@ -679,6 +679,17 @@ _seg = re.sub(r'\s*data-hv="h(?:9|11)"', '', _seg)
 assert 'data-hv="h9"' not in _seg and 'data-hv="h11"' not in _seg
 body = body[:_cs] + _seg + body[_ce:]
 
+# ---- Hero：放上去背照，站在黃色橢圓上、頭頂與肩膀破出圓形 ----
+_ellipse = ('<div style="position:absolute;inset:6% 4% 0 4%;background:#FFD34E;'
+            'border:2px solid #14110F;border-radius:50%;transform:rotate(-4deg)"></div>')
+assert body.count(_ellipse) == 1, '找不到 Hero 的黃色橢圓'
+body = body.replace(_ellipse, _ellipse +
+    '<img src="./assets/avatar.png" alt="張詩沂" width="622" height="840" '
+    'fetchpriority="high" decoding="async" '
+    'style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:102%;'
+    'width:auto;max-width:none;object-fit:contain;display:block;'
+    'filter:drop-shadow(0 6px 14px rgba(20,17,15,.18))" />', 1)
+
 # ---- 佔位框：移除寫給自己看的素材規格 ----
 # Hero 的去背照佔位整塊拿掉；黃色橢圓與兩顆標籤本來就是完整的構圖
 _hero_ph = body.find('border:2.5px dashed #14110F;border-radius:24px;'
