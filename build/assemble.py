@@ -684,10 +684,10 @@ _ellipse = ('<div style="position:absolute;inset:6% 4% 0 4%;background:#FFD34E;'
             'border:2px solid #14110F;border-radius:50%;transform:rotate(-4deg)"></div>')
 assert body.count(_ellipse) == 1, '找不到 Hero 的黃色橢圓'
 body = body.replace(_ellipse, _ellipse +
-    '<img src="./assets/avatar.png" alt="張詩沂" width="622" height="840" '
+    '<img src="./assets/avatar.png" alt="張詩沂" data-hero width="960" height="757" '
     'fetchpriority="high" decoding="async" '
-    'style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:102%;'
-    'width:auto;max-width:none;object-fit:contain;display:block;'
+    'style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:112%;'
+    'height:auto;max-width:none;display:block;'
     'filter:drop-shadow(0 6px 14px rgba(20,17,15,.18))" />', 1)
 
 # ---- 佔位框：移除寫給自己看的素材規格 ----
@@ -898,6 +898,8 @@ doc = f"""<!DOCTYPE html>
  [data-carousel] [data-slider] > a{{flex:0 0 86% !important}}
  /* AI Lab 單欄疊起來有 8 張、近 4 個螢幕高，先收到 6 張 */
  [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+7){{display:none !important}}
+ /* 半身照在 375px 下用 112% 會超出畫面，縮一點仍保有破圖效果 */
+ img[data-hero]{{width:106% !important}}
  /* 觸控目標補到 44px */
  [data-copybtn]{{padding:12px !important}}
  /* 主要閱讀段落與小標在手機上太小 */
