@@ -682,11 +682,13 @@ body = body[:_cs] + _seg + body[_ce:]
 # ---- Hero：放上去背照，站在黃色橢圓上、頭頂與肩膀破出圓形 ----
 _ellipse = ('<div style="position:absolute;inset:6% 4% 0 4%;background:#FFD34E;'
             'border:2px solid #14110F;border-radius:50%;transform:rotate(-4deg)"></div>')
+_ellipse_small = _ellipse.replace('inset:6% 4% 0 4%', 'inset:14% 12% 6% 12%')\
+                         .replace('<div style=', '<div data-hero-ring style=')
 assert body.count(_ellipse) == 1, '找不到 Hero 的黃色橢圓'
-body = body.replace(_ellipse, _ellipse +
-    '<img src="./assets/avatar.png" alt="張詩沂" data-hero width="960" height="757" '
+body = body.replace(_ellipse, _ellipse_small +
+    '<img src="./assets/avatar.png" alt="張詩沂" data-hero width="990" height="862" '
     'fetchpriority="high" decoding="async" '
-    'style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:112%;'
+    'style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:115%;'
     'height:auto;max-width:none;display:block;'
     'filter:drop-shadow(0 6px 14px rgba(20,17,15,.18))" />', 1)
 
@@ -899,7 +901,9 @@ doc = f"""<!DOCTYPE html>
  /* AI Lab 單欄疊起來有 8 張、近 4 個螢幕高，先收到 6 張 */
  [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+7){{display:none !important}}
  /* 半身照在 375px 下用 112% 會超出畫面，縮一點仍保有破圖效果 */
- img[data-hero]{{width:106% !important}}
+ img[data-hero]{{width:108% !important}}
+ /* 手機的人像受限於畫面寬度，圓形再縮一點，頭才明顯凸出去 */
+ [data-hero-ring]{{inset:20% 16% 10% 16% !important}}
  /* 觸控目標補到 44px */
  [data-copybtn]{{padding:12px !important}}
  /* 主要閱讀段落與小標在手機上太小 */

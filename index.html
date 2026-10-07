@@ -159,7 +159,9 @@ a:hover{color:#6D4AFF}
  /* AI Lab 單欄疊起來有 8 張、近 4 個螢幕高，先收到 6 張 */
  [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+7){display:none !important}
  /* 半身照在 375px 下用 112% 會超出畫面，縮一點仍保有破圖效果 */
- img[data-hero]{width:106% !important}
+ img[data-hero]{width:108% !important}
+ /* 手機的人像受限於畫面寬度，圓形再縮一點，頭才明顯凸出去 */
+ [data-hero-ring]{inset:20% 16% 10% 16% !important}
  /* 觸控目標補到 44px */
  [data-copybtn]{padding:12px !important}
  /* 主要閱讀段落與小標在手機上太小 */
@@ -244,7 +246,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
 
       <div style="position:relative;min-width:0;display:flex;justify-content:center;align-items:center;padding:28px 0">
         <div style="position:relative;width:min(100%,430px);aspect-ratio:1/1.06">
-          <div style="position:absolute;inset:6% 4% 0 4%;background:#FFD34E;border:2px solid #14110F;border-radius:50%;transform:rotate(-4deg)"></div><img src="./assets/avatar.png" alt="張詩沂" data-hero width="960" height="757" fetchpriority="high" decoding="async" style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:112%;height:auto;max-width:none;display:block;filter:drop-shadow(0 6px 14px rgba(20,17,15,.18))" />
+          <div data-hero-ring style="position:absolute;inset:14% 12% 6% 12%;background:#FFD34E;border:2px solid #14110F;border-radius:50%;transform:rotate(-4deg)"></div><img src="./assets/avatar.png" alt="張詩沂" data-hero width="990" height="862" fetchpriority="high" decoding="async" style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:115%;height:auto;max-width:none;display:block;filter:drop-shadow(0 6px 14px rgba(20,17,15,.18))" />
           
 
           <div style="position:absolute;left:-5%;bottom:2%;background:#fff;border:2px solid #14110F;border-radius:999px;padding:11px 18px;box-shadow:4px 4px 0 #14110F;display:flex;align-items:center;gap:9px;animation:floaty 5.5s ease-in-out infinite">

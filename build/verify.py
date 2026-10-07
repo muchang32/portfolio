@@ -62,7 +62,9 @@ C = [
   ('SKILLS 十個 logo', len(re.findall(r'assets/logos/opt/', h)) == 10),
   ('Hero 去背照', has('./assets/avatar.png') and has('fetchpriority="high"')
                 and pathlib.Path('assets/avatar.png').exists()),
-  ('Hero 照片在手機不會撐破版面', has('img[data-hero]{width:106% !important}')),
+  ('Hero 黃色圓形已縮小', has('inset:14% 12% 6% 12%')
+                      and has('[data-hero-ring]{inset:20% 16% 10% 16% !important}')),
+  ('Hero 照片在手機不會撐破版面', bool(re.search(r'img\[data-hero\]\{width:\d+% !important\}', h))),
   ('站台 logo 與 favicon', has('assets/logo-84.png') and has('assets/favicon.png')),
   ('導覽列沒有用到 512px 原圖', absent('"./assets/logo.png"')),
   ('OG 分享圖為絕對網址', has('og:image" content="https://')),
