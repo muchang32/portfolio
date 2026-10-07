@@ -174,6 +174,9 @@ a:hover{color:#6D4AFF}
 [data-lab-more] button:hover{background:#14110F;color:#FAF7F0}
 /* 六格數據在寬螢幕排成一排，少掉一整列的高度 */
 @media (min-width:1120px){[data-stats]{grid-template-columns:repeat(6,1fr) !important}}
+[data-cta]{display:inline-block;transition:transform .15s ease,box-shadow .15s ease}
+[data-cta]:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #FFD34E}
+[data-cta]:active{transform:translate(1px,1px);box-shadow:3px 3px 0 #FFD34E}
 a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:0;clip:auto;
  padding:12px 20px;background:#14110F;color:#FAF7F0;border-radius:999px;font-weight:700;z-index:300}
 </style>
@@ -240,7 +243,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
           </span>
         </h1>
         <p style="font-size:clamp(15px,1.35vw,18px);line-height:2.05;color:#3B342E;margin:0 0 30px;max-width:30em">10 年設計積累 × PM 實戰 × AI 工具應用，<br />從需求分析到原型實作，都能自己動手。</p>
-        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center"><a href="#case" data-cta style="background:#14110F;color:#FAF7F0;border:2px solid #14110F;border-radius:999px;padding:17px 30px;font-weight:700;font-size:clamp(15px,1.3vw,16.5px);box-shadow:5px 5px 0 #FFD34E;white-space:nowrap">看精選案例 →</a>
           <a href="mailto:mu.chang32@gmail.com" style="background:#FFFFFF;color:#14110F;border-radius:999px;padding:18px 30px;font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:clamp(14px,1.3vw,16px);transition:transform .15s ease;" class="mailfx"data-hv="h1"><span style="--i:0">m</span><span style="--i:1">u</span><span style="--i:2">.</span><span style="--i:3">c</span><span style="--i:4">h</span><span style="--i:5">a</span><span style="--i:6">n</span><span style="--i:7">g</span><span style="--i:8">3</span><span style="--i:9">2</span><span style="--i:10">@</span><span style="--i:11">g</span><span style="--i:12">m</span><span style="--i:13">a</span><span style="--i:14">i</span><span style="--i:15">l</span><span style="--i:16">.</span><span style="--i:17">c</span><span style="--i:18">o</span><span style="--i:19">m</span></a>
           <button data-on="copyEmail" data-copybtn style="border:0;background:none;padding:8px;color:#14110F;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;line-height:0;transition:transform .16s ease,color .16s ease" aria-label="複製 Email" title="複製 Email"><span data-copy-idle><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></span><span data-copy-done hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5.5 5.5L20 7"/></svg></span><span data-bind="copyLabel" class="sr-only"></span></button>
         </div>

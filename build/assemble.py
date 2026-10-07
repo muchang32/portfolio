@@ -679,6 +679,15 @@ _seg = re.sub(r'\s*data-hv="h(?:9|11)"', '', _seg)
 assert 'data-hv="h9"' not in _seg and 'data-hv="h11"' not in _seg
 body = body[:_cs] + _seg + body[_ce:]
 
+# ---- Hero 加上主要行動點：原本整區沒有任何按鈕 ----
+_mail_row = '<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">'
+assert body.count(_mail_row) == 1, 'Hero 的信箱列比對不唯一'
+_cta = ('<a href="#case" data-cta style="background:#14110F;color:#FAF7F0;'
+        'border:2px solid #14110F;border-radius:999px;padding:17px 30px;font-weight:700;'
+        'font-size:clamp(15px,1.3vw,16.5px);box-shadow:5px 5px 0 #FFD34E;'
+        'white-space:nowrap">看精選案例 →</a>')
+body = body.replace(_mail_row, _mail_row + _cta, 1)
+
 # ---- Hero 收緊：人像舞台放大、數據列併成一排 ----
 # 右欄有 552px，舞台卻卡在 430px，週邊空了一圈；放大後焦點才站得住
 _stage = 'width:min(100%,430px);aspect-ratio:1/1.06'
@@ -928,6 +937,9 @@ doc = f"""<!DOCTYPE html>
 [data-lab-more] button:hover{{background:#14110F;color:#FAF7F0}}
 /* 六格數據在寬螢幕排成一排，少掉一整列的高度 */
 @media (min-width:1120px){{[data-stats]{{grid-template-columns:repeat(6,1fr) !important}}}}
+[data-cta]{{display:inline-block;transition:transform .15s ease,box-shadow .15s ease}}
+[data-cta]:hover{{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #FFD34E}}
+[data-cta]:active{{transform:translate(1px,1px);box-shadow:3px 3px 0 #FFD34E}}
 a.sr-only:focus{{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:0;clip:auto;
  padding:12px 20px;background:#14110F;color:#FAF7F0;border-radius:999px;font-weight:700;z-index:300}}
 </style>
