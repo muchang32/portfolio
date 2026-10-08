@@ -830,6 +830,33 @@ _ch = body.index('<div style="min-width:0;flex:1 1 380px">', _ci)
 body = (body[:_ch] + '<div data-chapter="09 / 09" style="min-width:0;flex:1 1 380px">'
         + body[_ch + len('<div style="min-width:0;flex:1 1 380px">'):])
 
+# §9 Credentials：手機改成四個頁籤
+# 網格只有三欄，LANGUAGES 與 SKILLS 擠在第三欄，先把 LANGUAGES 包成獨立區塊
+_li0 = body.index('id="learning"'); _li1 = body.index('<footer', _li0 + 10)
+_lr = body[_li0:_li1]
+_cg = '<div style="display:grid;gap:clamp(18px,2.2vw,28px)" data-grid="creds">'
+assert _lr.count(_cg) == 1, '找不到 Credentials 的網格'
+_SKILLS_BOX = '<div style="min-width:0;margin-top:18px">'
+assert _lr.count(_SKILLS_BOX) == 1
+_col3 = _lr.rindex('<div style="min-width:0">', 0, _lr.index('>LANGUAGES<'))
+_col3_open_end = _lr.index('>', _col3) + 1
+_sk_box = _lr.index(_SKILLS_BOX)
+_lr = (_lr[:_col3_open_end] + '<div data-cred="lang">' + _lr[_col3_open_end:_sk_box]
+       + '</div>' + _lr[_sk_box:])
+_lr = _lr.replace(_SKILLS_BOX, '<div data-cred="skill" style="min-width:0;margin-top:18px">', 1)
+for _key, _label in (('comp', 'COMPETITIONS'), ('cert', 'CERTIFICATIONS')):
+    _n = _lr.index(f'>{_label}<')
+    _cs = _lr.rindex('<div style="min-width:0">', 0, _n)
+    _lr = _lr[:_cs] + f'<div data-cred="{_key}" style="min-width:0">' + _lr[_cs + len('<div style="min-width:0">'):]
+_CRED_TABS = [('comp', '競賽'), ('cert', '證照'), ('lang', '語言'), ('skill', '工具')]
+_tabs = ('<div data-cred-tabs role="tablist" aria-label="學習與認證分類">'
+         + ''.join(f'<button type="button" role="tab" data-cred-tab="{k}" '
+                   f'aria-selected="{"true" if i == 0 else "false"}">{z}</button>'
+                   for i, (k, z) in enumerate(_CRED_TABS))
+         + '</div>')
+_lr = _lr.replace(_cg, _tabs + _cg, 1)
+body = body[:_li0] + _lr + body[_li1:]
+
 # §8 What I Do：04 移到最前，01–03 改摺疊
 _ki0 = body.index('id="skills"'); _ki1 = body.index('<section', _ki0 + 10)
 _sk = body[_ki0:_ki1]
@@ -945,7 +972,8 @@ assert body.count(_cc) == 1, 'Contact 的信箱列比對不唯一'
 body = body.replace(_cc, _cc.replace('<div ', '<div data-contact-cta ', 1), 1)
 
 mobile_css = """
-[data-about-toggle],[data-quote-toggle]{display:none}
+[data-about-toggle],[data-quote-toggle],[data-cred-tabs]{display:none}
+[data-skill-head],[data-job-head],[data-job-body],[data-cred="lang"]{display:contents}
 /* ===================== 手機版重新設計 ===================== */
 @media (max-width:640px){
   /* §1 段落節奏：章節編號 ＋ 細線，標題靠左 */
@@ -1016,7 +1044,9 @@ mobile_css = """
   /* §4 Career：手風琴。拿掉時間軸與圓點，卡片吃滿寬度 */
   #career [data-timeline]{border-left:0!important;padding-left:0!important}
   #career [data-job] > span:first-child{display:none!important}
-  [data-job-head]{position:relative;padding-right:56px;min-height:44px;cursor:pointer}
+  [data-job-head]{display:block!important;position:relative;padding-right:56px;
+    min-height:44px;cursor:pointer}
+  [data-job-body]{display:block!important}
   [data-job-head]::after{content:"+";position:absolute;right:0;top:0;width:44px;height:44px;
     border-radius:50%;border:2px solid #14110F;background:#fff;display:grid;place-items:center;
     font-weight:700;font-size:18px;line-height:1}
@@ -1052,13 +1082,23 @@ mobile_css = """
   [data-skills]{display:flex!important;flex-direction:column;gap:10px!important}
   [data-skills-wrap] > [data-skill="04"]{order:-1;margin:0 0 10px!important}
   [data-skills-wrap] > div[data-chapter]{order:-2}
-  [data-skill-head]{position:relative;padding-right:52px;min-height:44px;cursor:pointer;
-    display:flex;flex-direction:column;justify-content:center}
+  [data-skill-head]{display:flex!important;flex-direction:column;justify-content:center;
+    position:relative;padding-right:52px;min-height:44px;cursor:pointer;gap:6px}
   [data-skill-head]::after{content:"+";position:absolute;right:0;top:50%;
     transform:translateY(-50%);width:44px;height:44px;display:grid;place-items:center;
     font-weight:700;font-size:18px}
   [data-skill].open [data-skill-head]::after{content:"\\2212"}
   [data-skill]:not([data-skill="04"]):not(.open) > div:not([data-skill-head]){display:none!important}
+
+  /* §9 Credentials：四類改頁籤切換 */
+  [data-cred-tabs]{display:grid!important;grid-template-columns:repeat(4,1fr);gap:4px;
+    background:#F3EFE4;border-radius:999px;padding:4px;margin-bottom:22px}
+  [data-cred-tabs] button{height:40px;border:0;border-radius:999px;background:transparent;
+    font-family:inherit;font-weight:700;font-size:13px;color:#14110F;cursor:pointer}
+  [data-cred-tabs] button[aria-selected="true"]{background:#14110F;color:#FAF7F0}
+  [data-cred="lang"]{display:block!important}
+  [data-cred]:not(.active){display:none!important}
+  [data-cred] > p:first-child{display:none!important}
 
   /* §10 Contact：信箱吃滿寬度，複製鍵同列 */
   [data-contact-cta]{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;width:100%}

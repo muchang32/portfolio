@@ -178,7 +178,8 @@ a:hover{color:#6D4AFF}
 [data-cta]:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #FFD34E}
 [data-cta]:active{transform:translate(1px,1px);box-shadow:3px 3px 0 #FFD34E}
 
-[data-about-toggle],[data-quote-toggle]{display:none}
+[data-about-toggle],[data-quote-toggle],[data-cred-tabs]{display:none}
+[data-skill-head],[data-job-head],[data-job-body],[data-cred="lang"]{display:contents}
 /* ===================== 手機版重新設計 ===================== */
 @media (max-width:640px){
   /* §1 段落節奏：章節編號 ＋ 細線，標題靠左 */
@@ -249,7 +250,9 @@ a:hover{color:#6D4AFF}
   /* §4 Career：手風琴。拿掉時間軸與圓點，卡片吃滿寬度 */
   #career [data-timeline]{border-left:0!important;padding-left:0!important}
   #career [data-job] > span:first-child{display:none!important}
-  [data-job-head]{position:relative;padding-right:56px;min-height:44px;cursor:pointer}
+  [data-job-head]{display:block!important;position:relative;padding-right:56px;
+    min-height:44px;cursor:pointer}
+  [data-job-body]{display:block!important}
   [data-job-head]::after{content:"+";position:absolute;right:0;top:0;width:44px;height:44px;
     border-radius:50%;border:2px solid #14110F;background:#fff;display:grid;place-items:center;
     font-weight:700;font-size:18px;line-height:1}
@@ -285,13 +288,23 @@ a:hover{color:#6D4AFF}
   [data-skills]{display:flex!important;flex-direction:column;gap:10px!important}
   [data-skills-wrap] > [data-skill="04"]{order:-1;margin:0 0 10px!important}
   [data-skills-wrap] > div[data-chapter]{order:-2}
-  [data-skill-head]{position:relative;padding-right:52px;min-height:44px;cursor:pointer;
-    display:flex;flex-direction:column;justify-content:center}
+  [data-skill-head]{display:flex!important;flex-direction:column;justify-content:center;
+    position:relative;padding-right:52px;min-height:44px;cursor:pointer;gap:6px}
   [data-skill-head]::after{content:"+";position:absolute;right:0;top:50%;
     transform:translateY(-50%);width:44px;height:44px;display:grid;place-items:center;
     font-weight:700;font-size:18px}
   [data-skill].open [data-skill-head]::after{content:"\2212"}
   [data-skill]:not([data-skill="04"]):not(.open) > div:not([data-skill-head]){display:none!important}
+
+  /* §9 Credentials：四類改頁籤切換 */
+  [data-cred-tabs]{display:grid!important;grid-template-columns:repeat(4,1fr);gap:4px;
+    background:#F3EFE4;border-radius:999px;padding:4px;margin-bottom:22px}
+  [data-cred-tabs] button{height:40px;border:0;border-radius:999px;background:transparent;
+    font-family:inherit;font-weight:700;font-size:13px;color:#14110F;cursor:pointer}
+  [data-cred-tabs] button[aria-selected="true"]{background:#14110F;color:#FAF7F0}
+  [data-cred="lang"]{display:block!important}
+  [data-cred]:not(.active){display:none!important}
+  [data-cred] > p:first-child{display:none!important}
 
   /* §10 Contact：信箱吃滿寬度，複製鍵同列 */
   [data-contact-cta]{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;width:100%}
@@ -779,8 +792,8 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
         <p style="margin:0;font-size:clamp(14.5px,1.3vw,17px);font-weight:700;color:#2C2620;line-height:1.7">學習與認證</p>
       </div>
 
-      <div style="display:grid;gap:clamp(18px,2.2vw,28px)" data-grid="creds">
-        <div style="min-width:0">
+      <div data-cred-tabs role="tablist" aria-label="學習與認證分類"><button type="button" role="tab" data-cred-tab="comp" aria-selected="true">競賽</button><button type="button" role="tab" data-cred-tab="cert" aria-selected="false">證照</button><button type="button" role="tab" data-cred-tab="lang" aria-selected="false">語言</button><button type="button" role="tab" data-cred-tab="skill" aria-selected="false">工具</button></div><div style="display:grid;gap:clamp(18px,2.2vw,28px)" data-grid="creds">
+        <div data-cred="comp" style="min-width:0">
           <p style="margin:0 0 16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;color:#6B635B">COMPETITIONS</p>
           <div style="display:flex;flex-direction:column;gap:18px"><div><div style="display:flex;align-items:baseline;gap:10px;justify-content:space-between;margin:0 0 5px"><h3 style="margin:0;font-size:15px;font-weight:900;line-height:1.6">公民科技協力場　安否通</h3><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B635B;flex:0 0 auto">2026</span></div><p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">數位發展部徵案，兩人團隊提案弱勢機構災情即時回報平台，負責問題定義、流程設計與 UI／UX。</p></div>
             <div>
@@ -794,12 +807,12 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
           </div>
         </div>
 
-        <div style="min-width:0">
+        <div data-cred="cert" style="min-width:0">
           <p style="margin:0 0 16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;color:#6B635B">CERTIFICATIONS</p>
           <div style="display:flex;flex-direction:column;gap:12px"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="display:inline-block;background:#FFD34E;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700">iPAS AI 應用規劃師（初級）</span><span style="font-size:11.5px;color:#6B635B">經濟部產業發展署</span></div><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="display:inline-block;background:#F3EFE4;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700">AI_UX 人工智慧輔助產品體驗設計</span><span style="font-size:11.5px;color:#6B635B">經濟部商業發展署</span></div><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="display:inline-block;background:#F3EFE4;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700">獨角獸設計師養成計劃 Design Jam</span><span style="font-size:11.5px;color:#6B635B">Unblock</span></div><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="display:inline-block;background:#F3EFE4;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700">丙級電腦軟體設計技術士</span><span style="font-size:11.5px;color:#6B635B">勞動部勞動力發展署</span></div><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="display:inline-block;background:#F3EFE4;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700">Illustrator ・ Photoshop 原廠認證</span><span style="font-size:11.5px;color:#6B635B">Adobe</span></div></div>
         </div>
 
-        <div style="min-width:0">
+        <div style="min-width:0"><div data-cred="lang">
           <p style="margin:0 0 16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;color:#6B635B">LANGUAGES</p>
           <div style="display:flex;flex-direction:column;gap:9px">
             <div style="display:flex;align-items:center;gap:10px">
@@ -818,7 +831,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
               <span style="font-size:12.5px;color:#6B635B">中階</span>
             </div>
           </div>
-        <div style="min-width:0;margin-top:18px"><p style="margin:0 0 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;color:#6B635B">SKILLS</p><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:9px;max-width:250px"><span title="Claude" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/claude.png" alt="Claude" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="Gemini" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/gemini.png" alt="Gemini" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="ChatGPT" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/ChatGPT.svg" alt="ChatGPT" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="Google Antigravity" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/antigravity.png" alt="Google Antigravity" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="VS Code" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/VScode.png" alt="VS Code" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="Figma" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/figma.png" alt="Figma" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="Illustrator" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/Adobe_Illustrator.png" alt="Illustrator" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="Photoshop" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/Adobe_Photoshop_CC.png" alt="Photoshop" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="After Effects" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/After_Effects.svg" alt="After Effects" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="Premiere" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/Premiere.svg" alt="Premiere" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span></div></div></div>
+        </div><div data-cred="skill" style="min-width:0;margin-top:18px"><p style="margin:0 0 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;color:#6B635B">SKILLS</p><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:9px;max-width:250px"><span title="Claude" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/claude.png" alt="Claude" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="Gemini" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/gemini.png" alt="Gemini" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="ChatGPT" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/ChatGPT.svg" alt="ChatGPT" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="Google Antigravity" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/antigravity.png" alt="Google Antigravity" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="VS Code" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/VScode.png" alt="VS Code" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="Figma" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/figma.png" alt="Figma" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="Illustrator" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/Adobe_Illustrator.png" alt="Illustrator" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="Photoshop" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/Adobe_Photoshop_CC.png" alt="Photoshop" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="After Effects" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/After_Effects.svg" alt="After Effects" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span><span title="Premiere" style="display:block;aspect-ratio:1;border-radius:11px;overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)"><img src="./assets/logos/opt/Premiere.svg" alt="Premiere" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block" /></span></div></div></div>
       </div>
     </div>
   </section>
@@ -1168,6 +1181,16 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
       });
     });
+
+    // Credentials 頁籤：手機才看得到，桌機四欄照舊
+    const tabs = $$('[data-cred-tab]');
+    const panels = $$('[data-cred]');
+    const pick = key => {
+      tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.credTab === key)));
+      panels.forEach(pn => pn.classList.toggle('active', pn.dataset.cred === key));
+    };
+    tabs.forEach(t => t.addEventListener('click', () => pick(t.dataset.credTab)));
+    if (tabs.length) pick(tabs[0].dataset.credTab);
 
     const quote = $('[data-quote]');
     const qBtn = quote && $('[data-quote-toggle]', quote);

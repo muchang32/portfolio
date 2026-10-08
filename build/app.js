@@ -321,6 +321,16 @@
       });
     });
 
+    // Credentials 頁籤：手機才看得到，桌機四欄照舊
+    const tabs = $$('[data-cred-tab]');
+    const panels = $$('[data-cred]');
+    const pick = key => {
+      tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.credTab === key)));
+      panels.forEach(pn => pn.classList.toggle('active', pn.dataset.cred === key));
+    };
+    tabs.forEach(t => t.addEventListener('click', () => pick(t.dataset.credTab)));
+    if (tabs.length) pick(tabs[0].dataset.credTab);
+
     const quote = $('[data-quote]');
     const qBtn = quote && $('[data-quote-toggle]', quote);
     if (qBtn) {
