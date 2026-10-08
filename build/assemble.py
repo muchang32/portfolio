@@ -830,6 +830,28 @@ _ch = body.index('<div style="min-width:0;flex:1 1 380px">', _ci)
 body = (body[:_ch] + '<div data-chapter="09 / 09" style="min-width:0;flex:1 1 380px">'
         + body[_ch + len('<div style="min-width:0;flex:1 1 380px">'):])
 
+# §8 What I Do：04 移到最前，01–03 改摺疊
+_ki0 = body.index('id="skills"'); _ki1 = body.index('<section', _ki0 + 10)
+_sk = body[_ki0:_ki1]
+_grid = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));'
+assert _sk.count(_grid) == 1, '找不到 What I Do 的卡片網格'
+_sk = _sk.replace(_grid, _grid.replace('<div ', '<div data-skills ', 1), 1)
+for _no in ('01', '02', '03'):
+    _n = _sk.index(f'>{_no}</span>')
+    _cs = _sk.rindex('<div style="position:relative;display:flex;flex-direction:column;gap:11px;', 0, _n)
+    _sk = _sk[:_cs] + f'<div data-skill="{_no}" ' + _sk[_cs + len('<div '):]
+    # 標題與一句話包成可點的標題列
+    _h3 = _sk.index('<h3 ', _cs)
+    _pe = _sk.index('</p>', _h3) + len('</p>')
+    _sk = _sk[:_h3] + '<div data-skill-head>' + _sk[_h3:_pe] + '</div>' + _sk[_pe:]
+_n4 = _sk.index('>04</span>')
+_c4 = _sk.rindex('<div ', 0, _n4)
+_sk = _sk[:_c4] + '<div data-skill="04" ' + _sk[_c4 + len('<div '):]
+_wrap = '<div style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">'
+_wi = _sk.index(_wrap)
+_sk = _sk[:_wi] + '<div data-skills-wrap style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">' + _sk[_wi + len(_wrap):]
+body = body[:_ki0] + _sk + body[_ki1:]
+
 # §5 Case：手機改橫向滑動，長版情境段落收起來
 _si0 = body.index('id="case"'); _si1 = body.index('<section', _si0 + 10)
 _cas = body[_si0:_si1]
@@ -1024,6 +1046,19 @@ mobile_css = """
   #ai-lab [data-lab-grid] > [data-on="openLab"]{gap:8px!important}
   /* 先顯示 6 張的規則在兩欄下改成第 7 張起收起來 */
   [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+7){display:none !important}
+
+  /* §8 What I Do：04 排到最前，01–03 收合 */
+  [data-skills-wrap]{display:flex!important;flex-direction:column}
+  [data-skills]{display:flex!important;flex-direction:column;gap:10px!important}
+  [data-skills-wrap] > [data-skill="04"]{order:-1;margin:0 0 10px!important}
+  [data-skills-wrap] > div[data-chapter]{order:-2}
+  [data-skill-head]{position:relative;padding-right:52px;min-height:44px;cursor:pointer;
+    display:flex;flex-direction:column;justify-content:center}
+  [data-skill-head]::after{content:"+";position:absolute;right:0;top:50%;
+    transform:translateY(-50%);width:44px;height:44px;display:grid;place-items:center;
+    font-weight:700;font-size:18px}
+  [data-skill].open [data-skill-head]::after{content:"\\2212"}
+  [data-skill]:not([data-skill="04"]):not(.open) > div:not([data-skill-head]){display:none!important}
 
   /* §10 Contact：信箱吃滿寬度，複製鍵同列 */
   [data-contact-cta]{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;width:100%}

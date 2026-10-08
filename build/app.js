@@ -300,6 +300,27 @@
       if (h0) h0.setAttribute('aria-expanded', 'true');
     }
 
+    // What I Do 01–03：一次只開一張，預設全部收合
+    const skills = $$('[data-skill-head]');
+    skills.forEach(head => {
+      head.setAttribute('role', 'button');
+      head.setAttribute('tabindex', '0');
+      head.setAttribute('aria-expanded', 'false');
+      const card = head.closest('[data-skill]');
+      const toggle = () => {
+        const open = !card.classList.contains('open');
+        skills.forEach(h => {
+          const c = h.closest('[data-skill]');
+          c.classList.toggle('open', c === card && open);
+          h.setAttribute('aria-expanded', String(c === card && open));
+        });
+      };
+      head.addEventListener('click', toggle);
+      head.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+
     const quote = $('[data-quote]');
     const qBtn = quote && $('[data-quote-toggle]', quote);
     if (qBtn) {
