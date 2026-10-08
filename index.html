@@ -246,6 +246,20 @@ a:hover{color:#6D4AFF}
     gap:12px 10px!important;justify-content:stretch!important}
   #about + section > div > span{font-size:13px!important}
 
+  /* §4 Career：手風琴。拿掉時間軸與圓點，卡片吃滿寬度 */
+  #career [data-timeline]{border-left:0!important;padding-left:0!important}
+  #career [data-job] > span:first-child{display:none!important}
+  [data-job-head]{position:relative;padding-right:56px;min-height:44px;cursor:pointer}
+  [data-job-head]::after{content:"+";position:absolute;right:0;top:0;width:44px;height:44px;
+    border-radius:50%;border:2px solid #14110F;background:#fff;display:grid;place-items:center;
+    font-weight:700;font-size:18px;line-height:1}
+  [data-job].open [data-job-head]::after{content:"\2212"}
+  [data-job]:not(.open) [data-job-body]{display:none!important}
+  /* 技能標籤改單行橫向捲動 */
+  [data-job-body] > div[style*="flex-wrap:wrap;gap:8px"]{flex-wrap:nowrap!important;
+    overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+  [data-job-body] > div[style*="flex-wrap:wrap;gap:8px"]::-webkit-scrollbar{display:none}
+
   /* §10 Contact：信箱吃滿寬度，複製鍵同列 */
   [data-contact-cta]{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;width:100%}
   [data-contact-cta] .mailfx{flex:1;min-width:0;height:52px;display:flex;align-items:center;
@@ -430,82 +444,82 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
         <p style="margin:0;font-size:clamp(15px,1.4vw,19px);font-weight:700;color:#2C2620;line-height:1.7">職涯歷程·從視覺到體驗，再到產品與 AI 落地</p>
       </div>
 
-      <div style="position:relative;padding-left:clamp(20px,3vw,34px);border-left:2px dashed rgba(20,17,15,.25);display:flex;flex-direction:column;gap:clamp(18px,2.4vw,26px)">
-        <article style="position:relative">
+      <div data-timeline style="position:relative;padding-left:clamp(20px,3vw,34px);border-left:2px dashed rgba(20,17,15,.25);display:flex;flex-direction:column;gap:clamp(18px,2.4vw,26px)">
+        <article data-job style="position:relative">
           <span style="position:absolute;left:calc(-1 * clamp(20px,3vw,34px) - 11px);top:26px;width:20px;height:20px;border-radius:50%;background:#FFD34E;border:2.5px solid #14110F;box-shadow:0 0 0 5px #FAF7F0"></span>
-          <div style="background:#FFF9E6;border:2.5px solid #14110F;border-radius:20px;box-shadow:6px 6px 0 #14110F;padding:clamp(20px,2.8vw,32px);transition:transform .15s ease,box-shadow .15s ease"data-hv="h3">
+          <div style="background:#FFF9E6;border:2.5px solid #14110F;border-radius:20px;box-shadow:6px 6px 0 #14110F;padding:clamp(20px,2.8vw,32px);transition:transform .15s ease,box-shadow .15s ease"data-hv="h3"><div data-job-head>
             <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px">
               <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;letter-spacing:.04em">2025/3 – 現在</span>
               <span style="background:#14110F;color:#FAF7F0;font-size:11.5px;font-weight:700;border-radius:999px;padding:4px 12px">現職</span>
             </div>
             <h3 style="margin:0 0 4px;font-size:clamp(19px,2.2vw,26px);font-weight:900;line-height:1.5">資訊管理師</h3>
-            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">聯經數位股份有限公司</p>
+            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">聯經數位股份有限公司</p></div><div data-job-body>
             <ul style="margin:0 0 20px;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:clamp(14px,1.15vw,15.5px);line-height:1.8;color:#2C2620"><li>主導內部「自動配圖」功能改版：功能上線後使用率不如預期，依使用量數據訪談記者與編輯，將回饋歸納為圖像相關度、圖庫廣度、標籤精準度與使用習慣四類，排定優化順序並重新定義圖片排序邏輯（新聞相關度＋時效性＋可用性），改版後使用率回升</li><li>自製即時字幕翻譯工具（Chrome 擴充功能），供報系邀請國際講者來台時使用，涵蓋內部工作坊與對外公開演講</li><li>導入 AI 工具至實際工作流程並優化 Prompt 設計，讓非工程同仁能真正用於日常業務</li><li>推動 AI coding 與 AI 工具的內部分享與實作培訓，降低使用門檻</li><li>於企業內部刊物撰寫 AI 專欄共 5 篇，實測比較四款 AI 網頁生成工具並產出可跟做的實作教學</li><li>跨部門專案溝通，將各單位需求轉化為工程與系統可執行的內容</li></ul>
             <div data-tags-group hidden style="display:flex;flex-wrap:wrap;gap:8px"><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">使用者研究</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">Vibe Coding</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">n8n</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">內部培訓</span></div>
-          </div>
+          </div></div>
         </article>
 
-        <article style="position:relative">
+        <article data-job style="position:relative">
           <span style="position:absolute;left:calc(-1 * clamp(20px,3vw,34px) - 9px);top:26px;width:16px;height:16px;border-radius:50%;background:#fff;border:2.5px solid #14110F;box-shadow:0 0 0 5px #FAF7F0"></span>
-          <div style="background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:4px 4px 0 #14110F;padding:clamp(20px,2.8vw,30px);transition:transform .15s ease,box-shadow .15s ease"data-hv="h4">
+          <div style="background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:4px 4px 0 #14110F;padding:clamp(20px,2.8vw,30px);transition:transform .15s ease,box-shadow .15s ease"data-hv="h4"><div data-job-head>
             <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px">
               <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600">2024/5 – 2025/3</span>
               <span style="background:#CDBCFF;border:1.5px solid #14110F;font-size:11.5px;font-weight:700;border-radius:999px;padding:3px 11px">Aicast</span>
             </div>
             <h3 style="margin:0 0 4px;font-size:clamp(18px,2vw,23px);font-weight:900;line-height:1.5">專案經理</h3>
-            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">聯經數位股份有限公司</p>
+            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">聯經數位股份有限公司</p></div><div data-job-body>
             <ul style="margin:0 0 20px;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:clamp(14px,1.15vw,15.5px);line-height:1.8;color:#2C2620"><li><strong>產品開發與迭代</strong>：主持每週兩次 Aicast 產品開發會議，控管開發進度並排除技術阻礙；依用戶回饋分析測試結果，持續優化操作流程與 UX 體驗</li><li><strong>AI 語音專案落地</strong>：獨立統籌 30 位以上素人配音員的徵選、簽約與錄音審理；自學修音技術優化台灣口音 AI 配音模型，提升語音自然度</li><li><strong>跨國資源與外包管理</strong>：統籌多語系翻譯人員（德、法、日）與平面設計師等外包資源，管理 9–12 人；主導發包並建置涵蓋 720 首音效的資料庫</li><li><strong>國際獎項與視覺統籌</strong>：主導產品品牌視覺與參賽策略，親自設計相關多媒體素材，帶領 Aicast 奪得 2025 年 iF 設計獎</li></ul>
             <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">專案管理</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">UI 設計</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">外包管理</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">使用者體驗</span><a href="#case" style="margin-left:auto;font-size:13.5px;font-weight:700;border-bottom:2px solid #FFD34E">看完整案例 →</a></div>
-          </div>
+          </div></div>
         </article>
 
-        <article style="position:relative">
+        <article data-job style="position:relative">
           <span style="position:absolute;left:calc(-1 * clamp(20px,3vw,34px) - 9px);top:26px;width:16px;height:16px;border-radius:50%;background:#fff;border:2.5px solid #14110F;box-shadow:0 0 0 5px #FAF7F0"></span>
-          <div style="background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:4px 4px 0 #14110F;padding:clamp(20px,2.8vw,30px);transition:transform .15s ease,box-shadow .15s ease"data-hv="h5">
+          <div style="background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:4px 4px 0 #14110F;padding:clamp(20px,2.8vw,30px);transition:transform .15s ease,box-shadow .15s ease"data-hv="h5"><div data-job-head>
             <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px">
               <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600">2022/8 – 2023/7</span>
               
             </div>
             <h3 style="margin:0 0 4px;font-size:clamp(18px,2vw,23px);font-weight:900;line-height:1.5">網頁設計師（UI 設計）</h3>
-            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">盈德網絡服務有限公司</p>
+            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">盈德網絡服務有限公司</p></div><div data-job-body>
             <ul style="margin:0 0 20px;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:clamp(14px,1.15vw,15.5px);line-height:1.8;color:#2C2620"><li>品牌官網行銷活動 Landing Page 網頁視覺設計與圖片素材 Resize</li><li>APP、Web UI 介面設計</li><li>製作廣告行銷用圖與各渠道用圖</li><li>製作行銷影片素材</li></ul>
             <div data-tags-group hidden style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">Figma</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">UI 設計</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">行銷視覺</span></div>
-          </div>
+          </div></div>
         </article>
 
         <div style="display:flex;flex-direction:column;gap:clamp(18px,2.4vw,26px);animation:riseIn .35s ease both" data-if="careerOpen" hidden>
-        <article style="position:relative">
+        <article data-job style="position:relative">
           <span style="position:absolute;left:calc(-1 * clamp(20px,3vw,34px) - 9px);top:26px;width:16px;height:16px;border-radius:50%;background:#fff;border:2.5px solid #14110F;box-shadow:0 0 0 5px #FAF7F0"></span>
-          <div style="background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:4px 4px 0 #14110F;padding:clamp(20px,2.8vw,30px);transition:transform .15s ease,box-shadow .15s ease"data-hv="h6">
+          <div style="background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:4px 4px 0 #14110F;padding:clamp(20px,2.8vw,30px);transition:transform .15s ease,box-shadow .15s ease"data-hv="h6"><div data-job-head>
             <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px">
               <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600">2019/1 – 2022/4</span>
               
             </div>
             <h3 style="margin:0 0 4px;font-size:clamp(18px,2vw,23px);font-weight:900;line-height:1.5">網頁企劃視覺設計</h3>
-            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">維思資訊股份有限公司</p>
+            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">維思資訊股份有限公司</p></div><div data-job-body>
             <ul style="margin:0 0 20px;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:clamp(14px,1.15vw,15.5px);line-height:1.8;color:#2C2620"><li>品牌官網所有視覺設計提案與製作</li><li>活動企劃提案討論、活動素材製作</li><li>廣告素材設計（Facebook、LINE@、Instagram、Google 多媒體）</li><li>平面文宣設計與輸出、簡易網頁維護協助</li></ul>
             <div data-tags-group hidden style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">視覺設計</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">廣告素材</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;background:#FAF7F0">活動企劃</span></div>
-          </div>
+          </div></div>
         </article>
-            <article style="position:relative">
+            <article data-job style="position:relative">
               <span style="position:absolute;left:calc(-1 * clamp(20px,3vw,34px) - 7px);top:26px;width:12px;height:12px;border-radius:50%;background:#FAF7F0;border:2.5px solid #14110F;box-shadow:0 0 0 5px #FAF7F0"></span>
-              <div style="background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:4px 4px 0 rgba(20,17,15,.18);padding:clamp(18px,2.2vw,24px)">
-                <div style="margin-bottom:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;letter-spacing:.04em">2017/2 – 2019/1</span></div><h3 style="margin:0 0 4px;font-size:17px;font-weight:900;line-height:1.5">視覺設計行銷企劃專員</h3><p style="margin:0 0 14px;font-size:14px;color:#3B342E">榭澄有限公司</p>
+              <div style="background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:4px 4px 0 rgba(20,17,15,.18);padding:clamp(18px,2.2vw,24px)"><div data-job-head>
+                <div style="margin-bottom:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;letter-spacing:.04em">2017/2 – 2019/1</span></div><h3 style="margin:0 0 4px;font-size:17px;font-weight:900;line-height:1.5">視覺設計行銷企劃專員</h3><p style="margin:0 0 14px;font-size:14px;color:#3B342E">榭澄有限公司</p></div><div data-job-body>
                 <ul style="margin:10px 0 0;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:14.5px;line-height:1.8;color:#2C2620"><li>品牌官網視覺與維護，在職期間<strong>單獨執行網頁大改版</strong>（Web ＋ 手機版）</li><li>商品拍攝、修圖與合成（單眼／微單拍攝，Lightroom 調光調色、Photoshop 細修）</li><li>商品影片拍攝與剪輯（Premiere），並協助外拍</li><li>FB 粉絲團、LINE@、IG 圖文與影片素材製作；平面文宣設計與季節性活動規劃</li></ul>
-              </div>
+              </div></div>
             </article>
-            <article style="position:relative">
+            <article data-job style="position:relative">
               <span style="position:absolute;left:calc(-1 * clamp(20px,3vw,34px) - 7px);top:26px;width:12px;height:12px;border-radius:50%;background:#FAF7F0;border:2.5px solid #14110F;box-shadow:0 0 0 5px #FAF7F0"></span>
-              <div style="background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:4px 4px 0 rgba(20,17,15,.18);padding:clamp(18px,2.2vw,24px)">
-                <div style="margin-bottom:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;letter-spacing:.04em">2015/7 – 2017/1</span></div><h3 style="margin:0 0 4px;font-size:17px;font-weight:900;line-height:1.5">行銷企劃專員</h3><p style="margin:0 0 14px;font-size:14px;color:#3B342E">橋星企業有限公司</p>
+              <div style="background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:4px 4px 0 rgba(20,17,15,.18);padding:clamp(18px,2.2vw,24px)"><div data-job-head>
+                <div style="margin-bottom:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;letter-spacing:.04em">2015/7 – 2017/1</span></div><h3 style="margin:0 0 4px;font-size:17px;font-weight:900;line-height:1.5">行銷企劃專員</h3><p style="margin:0 0 14px;font-size:14px;color:#3B342E">橋星企業有限公司</p></div><div data-job-body>
                 <ul style="margin:10px 0 0;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:14.5px;line-height:1.8;color:#2C2620"><li><strong>單獨從零架設品牌官網</strong>，使用 Shopline 後台建置網站結構，並自訂 CSS 調整版型</li><li>品牌官網所有視覺設計</li><li>FB 粉絲團與官方 LINE@ 管理，文案撰寫與圖片、影片素材製作</li><li>平面文宣設計、季節性活動規劃與數據概略分析</li></ul>
-              </div>
+              </div></div>
             </article>
-            <article style="position:relative">
+            <article data-job style="position:relative">
               <span style="position:absolute;left:calc(-1 * clamp(20px,3vw,34px) - 7px);top:26px;width:12px;height:12px;border-radius:50%;background:#FAF7F0;border:2.5px solid #14110F;box-shadow:0 0 0 5px #FAF7F0"></span>
-              <div style="background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:4px 4px 0 rgba(20,17,15,.18);padding:clamp(18px,2.2vw,24px)">
-                <div style="margin-bottom:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;letter-spacing:.04em">2014/10 – 2015/6</span></div><h3 style="margin:0 0 4px;font-size:17px;font-weight:900;line-height:1.5">人資專員（兼美編）</h3><p style="margin:0 0 14px;font-size:14px;color:#3B342E">聯興通運股份有限公司・實習</p><ul style="margin:10px 0 0;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:14.5px;line-height:1.8;color:#2C2620"><li>維護人力資源紀錄（員工基本資料、職務輪調、出缺勤與績效評核）</li><li>人員招募、甄選與任用</li><li>薪酬運算與人事管理報表（組織圖、工時規劃、出勤管理）</li><li>公司美編事務（宣傳海報、傳單、活動布置）</li></ul>
-              </div>
+              <div style="background:#fff;border:2px solid #14110F;border-radius:20px;box-shadow:4px 4px 0 rgba(20,17,15,.18);padding:clamp(18px,2.2vw,24px)"><div data-job-head>
+                <div style="margin-bottom:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;letter-spacing:.04em">2014/10 – 2015/6</span></div><h3 style="margin:0 0 4px;font-size:17px;font-weight:900;line-height:1.5">人資專員（兼美編）</h3><p style="margin:0 0 14px;font-size:14px;color:#3B342E">聯興通運股份有限公司・實習</p></div><div data-job-body><ul style="margin:10px 0 0;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:14.5px;line-height:1.8;color:#2C2620"><li>維護人力資源紀錄（員工基本資料、職務輪調、出缺勤與績效評核）</li><li>人員招募、甄選與任用</li><li>薪酬運算與人事管理報表（組織圖、工時規劃、出勤管理）</li><li>公司美編事務（宣傳海報、傳單、活動布置）</li></ul>
+              </div></div>
             </article>
           </div>
       </div>
@@ -1074,6 +1088,33 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
         about.textContent = open ? '收合 ↑' : '繼續閱讀 ↓';
       });
     }
+    // 職涯手風琴：一次只開一張，桌機不受影響（CSS 只在 ≤640px 收合）
+    const jobs = $$('[data-job]');
+    jobs.forEach(card => {
+      const head = $('[data-job-head]', card);
+      if (!head) return;
+      head.setAttribute('role', 'button');
+      head.setAttribute('tabindex', '0');
+      head.setAttribute('aria-expanded', 'false');
+      const toggle = () => {
+        const open = !card.classList.contains('open');
+        jobs.forEach(c => {
+          c.classList.toggle('open', c === card && open);
+          const h = $('[data-job-head]', c);
+          if (h) h.setAttribute('aria-expanded', String(c === card && open));
+        });
+      };
+      head.addEventListener('click', toggle);
+      head.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+    if (jobs[0]) {
+      jobs[0].classList.add('open');
+      const h0 = $('[data-job-head]', jobs[0]);
+      if (h0) h0.setAttribute('aria-expanded', 'true');
+    }
+
     const quote = $('[data-quote]');
     const qBtn = quote && $('[data-quote-toggle]', quote);
     if (qBtn) {

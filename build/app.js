@@ -273,6 +273,33 @@
         about.textContent = open ? '收合 ↑' : '繼續閱讀 ↓';
       });
     }
+    // 職涯手風琴：一次只開一張，桌機不受影響（CSS 只在 ≤640px 收合）
+    const jobs = $$('[data-job]');
+    jobs.forEach(card => {
+      const head = $('[data-job-head]', card);
+      if (!head) return;
+      head.setAttribute('role', 'button');
+      head.setAttribute('tabindex', '0');
+      head.setAttribute('aria-expanded', 'false');
+      const toggle = () => {
+        const open = !card.classList.contains('open');
+        jobs.forEach(c => {
+          c.classList.toggle('open', c === card && open);
+          const h = $('[data-job-head]', c);
+          if (h) h.setAttribute('aria-expanded', String(c === card && open));
+        });
+      };
+      head.addEventListener('click', toggle);
+      head.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+    if (jobs[0]) {
+      jobs[0].classList.add('open');
+      const h0 = $('[data-job-head]', jobs[0]);
+      if (h0) h0.setAttribute('aria-expanded', 'true');
+    }
+
     const quote = $('[data-quote]');
     const qBtn = quote && $('[data-quote-toggle]', quote);
     if (qBtn) {

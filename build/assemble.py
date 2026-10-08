@@ -830,6 +830,36 @@ _ch = body.index('<div style="min-width:0;flex:1 1 380px">', _ci)
 body = (body[:_ch] + '<div data-chapter="09 / 09" style="min-width:0;flex:1 1 380px">'
         + body[_ch + len('<div style="min-width:0;flex:1 1 380px">'):])
 
+# §4 Career：手機改成手風琴，標題列常駐、內容收合
+_ci0 = body.index('id="career"'); _ci1 = body.index('<section', _ci0 + 10)
+_car = body[_ci0:_ci1]
+_tl = ('<div style="position:relative;padding-left:clamp(20px,3vw,34px);'
+       'border-left:2px dashed rgba(20,17,15,.25);')
+assert _car.count(_tl) == 1, '找不到職涯時間軸容器'
+_car = _car.replace(_tl, _tl.replace('<div ', '<div data-timeline ', 1), 1)
+
+_COMPANY = re.compile(r'<p style="margin:0 0 1[48]px;font-size:14(?:\.5)?px;color:#3B342E">[^<]*</p>')
+_parts, _pos = [], [m.start() for m in re.finditer(r'<article', _car)]
+_pos.append(len(_car))
+_out, _done = _car[:_pos[0]], 0
+for _n in range(len(_pos) - 1):
+    _a = _car[_pos[_n]:_pos[_n + 1]]
+    _cs = _a.index('<div style="background:')
+    _ce = _close_of(_a, _cs)
+    _open_end = _a.index('>', _cs) + 1
+    _inner = _a[_open_end:_ce - len('</div>')]
+    _m = _COMPANY.search(_inner)
+    assert _m, f'第 {_n+1} 張卡找不到公司名稱那一行'
+    _head, _rest = _inner[:_m.end()], _inner[_m.end():]
+    _a = (_a[:_pos and 0] + _a[:_open_end]
+          + '<div data-job-head>' + _head + '</div>'
+          + '<div data-job-body>' + _rest + '</div>'
+          + _a[_ce - len('</div>'):])
+    _a = _a.replace('<article ', '<article data-job ', 1)
+    _out += _a; _done += 1
+assert _done == 7, f'預期處理 7 張卡，實際 {_done}'
+body = body[:_ci0] + _out + body[_ci1:]
+
 # §3 About：內文收合、SOP 卡收合
 _ai0 = body.index('id="about"'); _ai1 = body.index('<section', _ai0 + 10)
 _about = body[_ai0:_ai1]
@@ -946,6 +976,20 @@ mobile_css = """
   #about + section > div{display:grid!important;grid-template-columns:1fr 1fr;
     gap:12px 10px!important;justify-content:stretch!important}
   #about + section > div > span{font-size:13px!important}
+
+  /* §4 Career：手風琴。拿掉時間軸與圓點，卡片吃滿寬度 */
+  #career [data-timeline]{border-left:0!important;padding-left:0!important}
+  #career [data-job] > span:first-child{display:none!important}
+  [data-job-head]{position:relative;padding-right:56px;min-height:44px;cursor:pointer}
+  [data-job-head]::after{content:"+";position:absolute;right:0;top:0;width:44px;height:44px;
+    border-radius:50%;border:2px solid #14110F;background:#fff;display:grid;place-items:center;
+    font-weight:700;font-size:18px;line-height:1}
+  [data-job].open [data-job-head]::after{content:"\\2212"}
+  [data-job]:not(.open) [data-job-body]{display:none!important}
+  /* 技能標籤改單行橫向捲動 */
+  [data-job-body] > div[style*="flex-wrap:wrap;gap:8px"]{flex-wrap:nowrap!important;
+    overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+  [data-job-body] > div[style*="flex-wrap:wrap;gap:8px"]::-webkit-scrollbar{display:none}
 
   /* §10 Contact：信箱吃滿寬度，複製鍵同列 */
   [data-contact-cta]{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;width:100%}
