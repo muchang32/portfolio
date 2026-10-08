@@ -830,6 +830,30 @@ _ch = body.index('<div style="min-width:0;flex:1 1 380px">', _ci)
 body = (body[:_ch] + '<div data-chapter="09 / 09" style="min-width:0;flex:1 1 380px">'
         + body[_ch + len('<div style="min-width:0;flex:1 1 380px">'):])
 
+# §3 About：內文收合、SOP 卡收合
+_ai0 = body.index('id="about"'); _ai1 = body.index('<section', _ai0 + 10)
+_about = body[_ai0:_ai1]
+# 「於是，我開始往產品的上游走。」之後的四段收起來
+_mark = '<p style="margin:0;font-weight:700">於是，我開始往產品的上游走。</p>'
+assert _about.count(_mark) == 1, '找不到 About 的分界段'
+_rest = _about[_about.index(_mark) + len(_mark):]
+_more = re.findall(r'<p style="margin:0">', _rest)
+assert len(_more) == 4, f'預期收合四段，實際 {len(_more)}'
+_rest = _rest.replace('<p style="margin:0">', '<p data-about-more style="margin:0">')
+_btn = ('<button type="button" data-about-toggle aria-expanded="false">繼續閱讀 ↓</button>')
+_about = _about[:_about.index(_mark) + len(_mark)] + _btn + _rest
+
+# SOP 卡：手機只露主句，點 ＋ 才展開說明
+_q = '<blockquote style="margin:8px 0 0;background:#FFF6D9;'
+assert _about.count(_q) == 1
+_about = _about.replace(_q, '<blockquote data-quote style="margin:8px 0 0;background:#FFF6D9;', 1)
+_qp = '<p style="margin:0;font-size:clamp(13.5px,1.1vw,15px);line-height:1.85;color:#3B342E">'
+assert _about.count(_qp) == 1
+_about = _about.replace(_qp, '<p data-quote-body style="margin:0;font-size:clamp(13.5px,1.1vw,15px);line-height:1.85;color:#3B342E">', 1)
+_about = _about.replace('</blockquote>',
+    '<button type="button" data-quote-toggle aria-expanded="false" aria-label="展開說明"></button></blockquote>', 1)
+body = body[:_ai0] + _about + body[_ai1:]
+
 # §2 Hero：手機把人像插進標題與副標之間
 _hs = body.index('<section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))')
 body = body[:_hs] + '<section data-hero-section' + body[_hs + len('<section'):]
@@ -855,6 +879,7 @@ assert body.count(_cc) == 1, 'Contact 的信箱列比對不唯一'
 body = body.replace(_cc, _cc.replace('<div ', '<div data-contact-cta ', 1), 1)
 
 mobile_css = """
+[data-about-toggle],[data-quote-toggle]{display:none}
 /* ===================== 手機版重新設計 ===================== */
 @media (max-width:640px){
   /* §1 段落節奏：章節編號 ＋ 細線，標題靠左 */
@@ -888,6 +913,39 @@ mobile_css = """
   [data-stats]{grid-template-columns:repeat(3,1fr)!important;gap:20px 12px!important;
     padding-top:28px!important}
   [data-stats] > div{padding:0!important;border-left:0!important}
+
+  /* §3.1 About 內文收合 */
+  [data-about-toggle]{display:inline-flex!important;align-items:center;align-self:flex-start;
+    height:44px;border:0;background:none;font-family:inherit;color:#14110F;
+    font-weight:700;font-size:14.5px;border-bottom:2px solid #FFD34E;padding:0 4px;cursor:pointer}
+  [data-about-more]:not(.open){display:none!important}
+
+  /* §3.2 轉職鏈三顆要在同一行 */
+  [data-arc]{gap:6px!important}
+  [data-arc] > a,[data-arc] > span[style*="border-radius:999px"]{
+    font-size:12.5px!important;padding:8px 12px!important}
+  [data-arc] > span[style*="IBM Plex Mono"]{font-size:12px!important}
+
+  /* §3.3 SOP 卡：只露主句，＋ 才展開 */
+  [data-quote]{margin:30px 0 0!important;padding:0!important;border-radius:18px!important;
+    box-shadow:4px 4px 0 #14110F!important}
+  [data-quote] > p:first-of-type{display:flex;align-items:center;gap:10px;
+    margin:0!important;padding:16px 12px 16px 18px!important;font-size:17px!important;
+    line-height:1.55!important}
+  [data-quote-toggle]{position:absolute;right:12px;top:14px;width:44px;height:44px;
+    border-radius:50%;background:#FFD34E;border:2px solid #14110F;cursor:pointer;
+    display:grid!important;place-items:center;font-weight:700;font-size:18px;color:#14110F}
+  [data-quote-toggle]::before{content:"+"}
+  [data-quote].open [data-quote-toggle]::before{content:"\\2212"}
+  [data-quote]{position:relative}
+  [data-quote] > p:first-of-type{padding-right:70px!important}
+  [data-quote-body]{padding:0 18px 18px!important;font-size:14px!important}
+  [data-quote]:not(.open) [data-quote-body]{display:none!important}
+
+  /* §3.4 獎項帶 2×2 */
+  #about + section > div{display:grid!important;grid-template-columns:1fr 1fr;
+    gap:12px 10px!important;justify-content:stretch!important}
+  #about + section > div > span{font-size:13px!important}
 
   /* §10 Contact：信箱吃滿寬度，複製鍵同列 */
   [data-contact-cta]{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;width:100%}

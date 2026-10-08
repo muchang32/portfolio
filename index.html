@@ -178,6 +178,7 @@ a:hover{color:#6D4AFF}
 [data-cta]:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #FFD34E}
 [data-cta]:active{transform:translate(1px,1px);box-shadow:3px 3px 0 #FFD34E}
 
+[data-about-toggle],[data-quote-toggle]{display:none}
 /* ===================== 手機版重新設計 ===================== */
 @media (max-width:640px){
   /* §1 段落節奏：章節編號 ＋ 細線，標題靠左 */
@@ -211,6 +212,39 @@ a:hover{color:#6D4AFF}
   [data-stats]{grid-template-columns:repeat(3,1fr)!important;gap:20px 12px!important;
     padding-top:28px!important}
   [data-stats] > div{padding:0!important;border-left:0!important}
+
+  /* §3.1 About 內文收合 */
+  [data-about-toggle]{display:inline-flex!important;align-items:center;align-self:flex-start;
+    height:44px;border:0;background:none;font-family:inherit;color:#14110F;
+    font-weight:700;font-size:14.5px;border-bottom:2px solid #FFD34E;padding:0 4px;cursor:pointer}
+  [data-about-more]:not(.open){display:none!important}
+
+  /* §3.2 轉職鏈三顆要在同一行 */
+  [data-arc]{gap:6px!important}
+  [data-arc] > a,[data-arc] > span[style*="border-radius:999px"]{
+    font-size:12.5px!important;padding:8px 12px!important}
+  [data-arc] > span[style*="IBM Plex Mono"]{font-size:12px!important}
+
+  /* §3.3 SOP 卡：只露主句，＋ 才展開 */
+  [data-quote]{margin:30px 0 0!important;padding:0!important;border-radius:18px!important;
+    box-shadow:4px 4px 0 #14110F!important}
+  [data-quote] > p:first-of-type{display:flex;align-items:center;gap:10px;
+    margin:0!important;padding:16px 12px 16px 18px!important;font-size:17px!important;
+    line-height:1.55!important}
+  [data-quote-toggle]{position:absolute;right:12px;top:14px;width:44px;height:44px;
+    border-radius:50%;background:#FFD34E;border:2px solid #14110F;cursor:pointer;
+    display:grid!important;place-items:center;font-weight:700;font-size:18px;color:#14110F}
+  [data-quote-toggle]::before{content:"+"}
+  [data-quote].open [data-quote-toggle]::before{content:"\2212"}
+  [data-quote]{position:relative}
+  [data-quote] > p:first-of-type{padding-right:70px!important}
+  [data-quote-body]{padding:0 18px 18px!important;font-size:14px!important}
+  [data-quote]:not(.open) [data-quote-body]{display:none!important}
+
+  /* §3.4 獎項帶 2×2 */
+  #about + section > div{display:grid!important;grid-template-columns:1fr 1fr;
+    gap:12px 10px!important;justify-content:stretch!important}
+  #about + section > div > span{font-size:13px!important}
 
   /* §10 Contact：信箱吃滿寬度，複製鍵同列 */
   [data-contact-cta]{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;width:100%}
@@ -363,18 +397,18 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
         <div style="display:flex;flex-direction:column;gap:20px;min-width:0;flex:1.3 1 340px">
           <p style="margin:0">我從平面設計開始，最早做的其實是「釐清需求」——理解品牌想傳達什麼、使用者需要什麼，再把模糊的想法轉換成具體的視覺。</p>
           <p style="margin:0">後來轉往 UI/UX，我開始意識到，很多體驗問題並不真正發生在介面上，而是發生在更前面的決策：這個功能為什麼存在？要解決誰的問題？什麼才是真正需要被解決的問題？</p>
-          <p style="margin:0;font-weight:700">於是，我開始往產品的上游走。</p>
-          <p style="margin:0">從設計，到使用者體驗，再到產品與專案管理，我逐漸參與的不只是「怎麼做」，也開始思考「為什麼做」，以及「做了之後能帶來什麼價值」。</p>
-          <p style="margin:0">而 AI 的出現，讓這條路又往前了一步。過去從想法到驗證，往往需要經過文件、流程圖、Wireframe，再交由工程開發；現在透過 AI Coding，我可以更快把一個想法做成能互動、能操作的 Prototype，直接拿來測試與驗證。</p>
+          <p style="margin:0;font-weight:700">於是，我開始往產品的上游走。</p><button type="button" data-about-toggle aria-expanded="false">繼續閱讀 ↓</button>
+          <p data-about-more style="margin:0">從設計，到使用者體驗，再到產品與專案管理，我逐漸參與的不只是「怎麼做」，也開始思考「為什麼做」，以及「做了之後能帶來什麼價值」。</p>
+          <p data-about-more style="margin:0">而 AI 的出現，讓這條路又往前了一步。過去從想法到驗證，往往需要經過文件、流程圖、Wireframe，再交由工程開發；現在透過 AI Coding，我可以更快把一個想法做成能互動、能操作的 Prototype，直接拿來測試與驗證。</p>
         </div>
         <div style="display:flex;flex-direction:column;gap:20px;min-width:0;flex:1 1 300px">
-          <p style="margin:0">而現在，我的工作是把這件事帶進組織裡——導入 AI 工具到實際的工作流程，設計使用方式與 Prompt，並透過內部分享與實作培訓，讓不寫程式的同事也能真的用起來。</p>
-          <p style="margin:0">十年下來，我在產品的不同層次都留下了足跡：從理解使用者的需求與痛點，到使用者體驗、介面與視覺細節，再到產品規劃、專案執行，以及商業價值與組織決策。</p>
+          <p data-about-more style="margin:0">而現在，我的工作是把這件事帶進組織裡——導入 AI 工具到實際的工作流程，設計使用方式與 Prompt，並透過內部分享與實作培訓，讓不寫程式的同事也能真的用起來。</p>
+          <p data-about-more style="margin:0">十年下來，我在產品的不同層次都留下了足跡：從理解使用者的需求與痛點，到使用者體驗、介面與視覺細節，再到產品規劃、專案執行，以及商業價值與組織決策。</p>
         
-          <blockquote style="margin:8px 0 0;background:#FFF6D9;border:2px solid #14110F;border-radius:20px;box-shadow:5px 5px 0 #14110F;padding:clamp(22px,2.8vw,32px)">
+          <blockquote data-quote style="margin:8px 0 0;background:#FFF6D9;border:2px solid #14110F;border-radius:20px;box-shadow:5px 5px 0 #14110F;padding:clamp(22px,2.8vw,32px)">
             <p style="margin:0 0 12px;font-size:clamp(17px,1.9vw,23px);font-weight:900;line-height:1.65">產品沒有一套可以完美複製的 SOP。</p>
-            <p style="margin:0;font-size:clamp(13.5px,1.1vw,15px);line-height:1.85;color:#3B342E">每一個產品、每一項功能、每一個決策，背後都有不同的使用者、商業目標、技術限制與組織條件。真正的產品工作，是在這些複雜且不斷變動的因素之間，找到當下最適合的解法。</p>
-          </blockquote>
+            <p data-quote-body style="margin:0;font-size:clamp(13.5px,1.1vw,15px);line-height:1.85;color:#3B342E">每一個產品、每一項功能、每一個決策，背後都有不同的使用者、商業目標、技術限制與組織條件。真正的產品工作，是在這些複雜且不斷變動的因素之間，找到當下最適合的解法。</p>
+          <button type="button" data-quote-toggle aria-expanded="false" aria-label="展開說明"></button></blockquote>
         </div>
       </div>
     </div>
@@ -1028,7 +1062,32 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
     maybeStart();
   }
 
+  // ---- 手機版的收合元件 ----
+  // 桌機不顯示這些按鈕，所以不必判斷斷點；展開狀態以 class 表示
+  function initMobileToggles() {
+    const about = $('[data-about-toggle]');
+    if (about) {
+      about.addEventListener('click', () => {
+        const open = about.getAttribute('aria-expanded') !== 'true';
+        $$('[data-about-more]').forEach(el => el.classList.toggle('open', open));
+        about.setAttribute('aria-expanded', String(open));
+        about.textContent = open ? '收合 ↑' : '繼續閱讀 ↓';
+      });
+    }
+    const quote = $('[data-quote]');
+    const qBtn = quote && $('[data-quote-toggle]', quote);
+    if (qBtn) {
+      qBtn.addEventListener('click', () => {
+        const open = qBtn.getAttribute('aria-expanded') !== 'true';
+        quote.classList.toggle('open', open);
+        qBtn.setAttribute('aria-expanded', String(open));
+        qBtn.setAttribute('aria-label', open ? '收合說明' : '展開說明');
+      });
+    }
+  }
+
   collapseTagGroups();
+  initMobileToggles();
   arcCue();
   measure(); render(); countUp(); markActive();
 })();

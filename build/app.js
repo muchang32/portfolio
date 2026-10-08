@@ -261,7 +261,32 @@
     maybeStart();
   }
 
+  // ---- 手機版的收合元件 ----
+  // 桌機不顯示這些按鈕，所以不必判斷斷點；展開狀態以 class 表示
+  function initMobileToggles() {
+    const about = $('[data-about-toggle]');
+    if (about) {
+      about.addEventListener('click', () => {
+        const open = about.getAttribute('aria-expanded') !== 'true';
+        $$('[data-about-more]').forEach(el => el.classList.toggle('open', open));
+        about.setAttribute('aria-expanded', String(open));
+        about.textContent = open ? '收合 ↑' : '繼續閱讀 ↓';
+      });
+    }
+    const quote = $('[data-quote]');
+    const qBtn = quote && $('[data-quote-toggle]', quote);
+    if (qBtn) {
+      qBtn.addEventListener('click', () => {
+        const open = qBtn.getAttribute('aria-expanded') !== 'true';
+        quote.classList.toggle('open', open);
+        qBtn.setAttribute('aria-expanded', String(open));
+        qBtn.setAttribute('aria-label', open ? '收合說明' : '展開說明');
+      });
+    }
+  }
+
   collapseTagGroups();
+  initMobileToggles();
   arcCue();
   measure(); render(); countUp(); markActive();
 })();
