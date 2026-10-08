@@ -807,6 +807,97 @@ assert _k_end <= _f_start, '兩張卡不相鄰，取消對調以免破壞結構'
 _kyushu, _between, _fuji = body[_k_start:_k_end], body[_k_end:_f_start], body[_f_start:_f_end]
 body = body[:_k_start] + _fuji + _between + _kyushu + body[_f_end:]
 
+# ===== 手機版重新設計（mobile-implementation.md）=====
+# 原則：只加 data-* 與極少數包裹元素，桌機外觀不得改變
+
+def _sec(sid):
+    """回傳 section 的起訖位置"""
+    i = body.index(f'id="{sid}"')
+    j = body.index('<section', i) if '<section' in body[i:] else len(body)
+    return i, j
+
+# §1 各段標題加章節編號
+_CHAPTERS = [('about', '02'), ('career', '03'), ('case', '04'), ('ai-lab', '05'),
+             ('writing', '06'), ('skills', '07'), ('learning', '08')]
+for _sid, _no in _CHAPTERS:
+    _i, _j = _sec(_sid)
+    _k = body.index('<div style="text-align:center', _i)
+    assert _k < _j, f'{_sid} 的標題容器超出該段範圍'
+    body = body[:_k] + f'<div data-chapter="{_no} / 09" style="text-align:center' + body[_k + len('<div style="text-align:center'):]
+# contact 沒有置中標題容器，掛在裝 h2 的那一欄
+_ci = body.index('id="contact"')
+_ch = body.index('<div style="min-width:0;flex:1 1 380px">', _ci)
+body = (body[:_ch] + '<div data-chapter="09 / 09" style="min-width:0;flex:1 1 380px">'
+        + body[_ch + len('<div style="min-width:0;flex:1 1 380px">'):])
+
+# §2 Hero：手機把人像插進標題與副標之間
+_hs = body.index('<section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))')
+body = body[:_hs] + '<section data-hero-section' + body[_hs + len('<section'):]
+_hc = body.index('<div style="min-width:0">', _hs)
+body = body[:_hc] + '<div data-hero-copy style="min-width:0">' + body[_hc + len('<div style="min-width:0">'):]
+_ht = body.index('<h1 ', _hs)
+body = body[:_ht] + '<h1 data-hero-title ' + body[_ht + len('<h1 '):]
+_sub = '<p style="font-size:clamp(15px,1.35vw,18px);line-height:2.05;color:#3B342E;margin:0 0 30px;max-width:30em'
+assert body.count(_sub) == 1, 'Hero 副標比對不唯一'
+body = body.replace(_sub, _sub.replace('<p ', '<p data-hero-sub ', 1), 1)
+_hcta = '<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">'
+assert body.count(_hcta) == 1, 'Hero 的 CTA 列比對不唯一'
+body = body.replace(_hcta, '<div data-hero-cta style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">', 1)
+_hp = ('<div style="position:relative;min-width:0;display:flex;justify-content:center;'
+       'align-items:center;padding:28px 0">')
+assert body.count(_hp) == 1, 'Hero 人像欄比對不唯一'
+body = body.replace(_hp, _hp.replace('<div ', '<div data-hero-photo ', 1), 1)
+
+# §10 Contact：信箱列與 Hero 用同一組元件
+_cc = ('<div style="min-width:0;flex:0 1 auto;display:flex;flex-wrap:wrap;gap:12px;'
+       'align-items:center">')
+assert body.count(_cc) == 1, 'Contact 的信箱列比對不唯一'
+body = body.replace(_cc, _cc.replace('<div ', '<div data-contact-cta ', 1), 1)
+
+mobile_css = """
+/* ===================== 手機版重新設計 ===================== */
+@media (max-width:640px){
+  /* §1 段落節奏：章節編號 ＋ 細線，標題靠左 */
+  [data-chapter]{text-align:left!important;max-width:none!important;
+    margin-left:0!important;margin-right:0!important}
+  [data-chapter]::before{content:attr(data-chapter);display:flex;align-items:center;gap:10px;
+    margin-bottom:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;
+    color:#6B635B;
+    background:linear-gradient(rgba(20,17,15,.18),rgba(20,17,15,.18)) no-repeat right center/calc(100% - 64px) 1px}
+  [data-chapter] h2{font-size:34px!important;line-height:1.1!important;margin-bottom:4px!important}
+  [data-chapter] h2 + p{font-size:15px!important}
+
+  /* §2 Hero：Eyebrow → H1 → 人像 → 副標 → CTA → 數據 */
+  [data-hero-section]{display:flex!important;flex-direction:column!important;
+    gap:0!important;align-items:stretch!important}
+  [data-hero-copy]{display:contents}
+  [data-hero-copy] > p:first-child{order:1;line-height:1.8!important;white-space:normal!important}
+  [data-hero-title]{order:2;margin-bottom:0!important}
+  [data-hero-photo]{order:3;margin:6px 0 0!important;padding:0!important}
+  [data-hero-sub]{order:4;margin:22px 0 0!important}
+  [data-hero-cta]{order:5;margin-top:26px}
+  /* 手機不放主按鈕，留信箱＋複製鍵一列 */
+  [data-cta]{display:none!important}
+  [data-hero-cta]{display:flex!important;flex-wrap:nowrap!important;gap:10px!important}
+  [data-hero-cta] .mailfx{flex:1;min-width:0;height:50px;display:flex;align-items:center;
+    justify-content:center;padding:0 14px!important}
+  [data-hero-cta] [data-copybtn]{flex:0 0 50px;height:50px;border-radius:50%;
+    border:2px solid #14110F!important;background:#fff!important}
+
+  /* §2.3 數據六格：3×2，不要分隔線 */
+  [data-stats]{grid-template-columns:repeat(3,1fr)!important;gap:20px 12px!important;
+    padding-top:28px!important}
+  [data-stats] > div{padding:0!important;border-left:0!important}
+
+  /* §10 Contact：信箱吃滿寬度，複製鍵同列 */
+  [data-contact-cta]{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;width:100%}
+  [data-contact-cta] .mailfx{flex:1;min-width:0;height:52px;display:flex;align-items:center;
+    justify-content:center;padding:0 14px!important}
+  [data-contact-cta] [data-copybtn]{flex:0 0 52px;height:52px;border-radius:50%;
+    border:2px solid #14110F!important;background:#fff!important}
+}
+"""
+
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
 <meta name="description" content="10 年設計積累 × PM 實戰 × AI 工具應用。2025 iF 設計獎、iPAS AI 應用規劃師。從需求分析到原型實作，都能自己動手。" />
@@ -897,9 +988,9 @@ doc = f"""<!DOCTYPE html>
 .tip-link .tip-bubble::after,.tip-link .tip-bubble::before{{left:50%;margin-left:-9px}}
 /* 觸控裝置沒有 hover，且窄螢幕放不下對話框；留給輔助技術讀、不佔版面 */
 @media (max-width:640px){{
- .tip-link .tip-bubble{{width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);
+ .tip-bubble{{width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);
   border:0;box-shadow:none;opacity:1;visibility:visible;transform:none}}
- .tip-link .tip-bubble::after,.tip-link .tip-bubble::before{{display:none}}
+ .tip-bubble::after,.tip-bubble::before{{display:none}}
 }}
 
 :focus-visible{{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}}
@@ -940,6 +1031,7 @@ doc = f"""<!DOCTYPE html>
 [data-cta]{{display:inline-block;transition:transform .15s ease,box-shadow .15s ease}}
 [data-cta]:hover{{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #FFD34E}}
 [data-cta]:active{{transform:translate(1px,1px);box-shadow:3px 3px 0 #FFD34E}}
+{mobile_css}
 a.sr-only:focus{{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:0;clip:auto;
  padding:12px 20px;background:#14110F;color:#FAF7F0;border-radius:999px;font-weight:700;z-index:300}}
 </style>

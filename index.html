@@ -134,9 +134,9 @@ a:hover{color:#6D4AFF}
 .tip-link .tip-bubble::after,.tip-link .tip-bubble::before{left:50%;margin-left:-9px}
 /* 觸控裝置沒有 hover，且窄螢幕放不下對話框；留給輔助技術讀、不佔版面 */
 @media (max-width:640px){
- .tip-link .tip-bubble{width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);
+ .tip-bubble{width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);
   border:0;box-shadow:none;opacity:1;visibility:visible;transform:none}
- .tip-link .tip-bubble::after,.tip-link .tip-bubble::before{display:none}
+ .tip-bubble::after,.tip-bubble::before{display:none}
 }
 
 :focus-visible{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}
@@ -177,6 +177,49 @@ a:hover{color:#6D4AFF}
 [data-cta]{display:inline-block;transition:transform .15s ease,box-shadow .15s ease}
 [data-cta]:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #FFD34E}
 [data-cta]:active{transform:translate(1px,1px);box-shadow:3px 3px 0 #FFD34E}
+
+/* ===================== 手機版重新設計 ===================== */
+@media (max-width:640px){
+  /* §1 段落節奏：章節編號 ＋ 細線，標題靠左 */
+  [data-chapter]{text-align:left!important;max-width:none!important;
+    margin-left:0!important;margin-right:0!important}
+  [data-chapter]::before{content:attr(data-chapter);display:flex;align-items:center;gap:10px;
+    margin-bottom:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;
+    color:#6B635B;
+    background:linear-gradient(rgba(20,17,15,.18),rgba(20,17,15,.18)) no-repeat right center/calc(100% - 64px) 1px}
+  [data-chapter] h2{font-size:34px!important;line-height:1.1!important;margin-bottom:4px!important}
+  [data-chapter] h2 + p{font-size:15px!important}
+
+  /* §2 Hero：Eyebrow → H1 → 人像 → 副標 → CTA → 數據 */
+  [data-hero-section]{display:flex!important;flex-direction:column!important;
+    gap:0!important;align-items:stretch!important}
+  [data-hero-copy]{display:contents}
+  [data-hero-copy] > p:first-child{order:1;line-height:1.8!important;white-space:normal!important}
+  [data-hero-title]{order:2;margin-bottom:0!important}
+  [data-hero-photo]{order:3;margin:6px 0 0!important;padding:0!important}
+  [data-hero-sub]{order:4;margin:22px 0 0!important}
+  [data-hero-cta]{order:5;margin-top:26px}
+  /* 手機不放主按鈕，留信箱＋複製鍵一列 */
+  [data-cta]{display:none!important}
+  [data-hero-cta]{display:flex!important;flex-wrap:nowrap!important;gap:10px!important}
+  [data-hero-cta] .mailfx{flex:1;min-width:0;height:50px;display:flex;align-items:center;
+    justify-content:center;padding:0 14px!important}
+  [data-hero-cta] [data-copybtn]{flex:0 0 50px;height:50px;border-radius:50%;
+    border:2px solid #14110F!important;background:#fff!important}
+
+  /* §2.3 數據六格：3×2，不要分隔線 */
+  [data-stats]{grid-template-columns:repeat(3,1fr)!important;gap:20px 12px!important;
+    padding-top:28px!important}
+  [data-stats] > div{padding:0!important;border-left:0!important}
+
+  /* §10 Contact：信箱吃滿寬度，複製鍵同列 */
+  [data-contact-cta]{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;width:100%}
+  [data-contact-cta] .mailfx{flex:1;min-width:0;height:52px;display:flex;align-items:center;
+    justify-content:center;padding:0 14px!important}
+  [data-contact-cta] [data-copybtn]{flex:0 0 52px;height:52px;border-radius:50%;
+    border:2px solid #14110F!important;background:#fff!important}
+}
+
 a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:0;clip:auto;
  padding:12px 20px;background:#14110F;color:#FAF7F0;border-radius:999px;font-weight:700;z-index:300}
 </style>
@@ -232,24 +275,24 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
 
   <main id="top" style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">
 
-    <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,56px);align-items:center;padding:clamp(40px,6vw,84px) 0 clamp(28px,4vw,48px)">
-      <div style="min-width:0">
+    <section data-hero-section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,56px);align-items:center;padding:clamp(40px,6vw,84px) 0 clamp(28px,4vw,48px)">
+      <div data-hero-copy style="min-width:0">
         <p style="font-family:'IBM Plex Mono',monospace;font-size:clamp(10px,1.15vw,12.5px);letter-spacing:.22em;font-weight:500;color:#6B635B;margin:0 0 22px">PRODUCT MANAGER · AI PRACTITIONER · DESIGNER</p>
-        <h1 style="font-size:clamp(40px,7.4vw,86px);line-height:1.14;font-weight:900;letter-spacing:-.02em;margin:0 0 24px;text-wrap:pretty">
+        <h1 data-hero-title style="font-size:clamp(40px,7.4vw,86px);line-height:1.14;font-weight:900;letter-spacing:-.02em;margin:0 0 24px;text-wrap:pretty">
           設計出身的<br />
           <span style="position:relative;display:inline-block">
             <span style="position:absolute;left:-6px;right:-6px;bottom:.1em;height:.34em;background:#FFD34E;border-radius:4px;z-index:0"></span>
             <span style="position:relative;z-index:1">AI 產品人</span>
           </span>
         </h1>
-        <p style="font-size:clamp(15px,1.35vw,18px);line-height:2.05;color:#3B342E;margin:0 0 30px;max-width:30em">10 年設計積累 × PM 實戰 × AI 工具應用，<br />從需求分析到原型實作，都能自己動手。</p>
-        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center"><a href="#case" data-cta style="background:#14110F;color:#FAF7F0;border:2px solid #14110F;border-radius:999px;padding:17px 30px;font-weight:700;font-size:clamp(15px,1.3vw,16.5px);box-shadow:5px 5px 0 #FFD34E;white-space:nowrap">看精選案例 →</a>
+        <p data-hero-sub style="font-size:clamp(15px,1.35vw,18px);line-height:2.05;color:#3B342E;margin:0 0 30px;max-width:30em">10 年設計積累 × PM 實戰 × AI 工具應用，<br />從需求分析到原型實作，都能自己動手。</p>
+        <div data-hero-cta style="display:flex;flex-wrap:wrap;gap:12px;align-items:center"><a href="#case" data-cta style="background:#14110F;color:#FAF7F0;border:2px solid #14110F;border-radius:999px;padding:17px 30px;font-weight:700;font-size:clamp(15px,1.3vw,16.5px);box-shadow:5px 5px 0 #FFD34E;white-space:nowrap">看精選案例 →</a>
           <a href="mailto:mu.chang32@gmail.com" style="background:#FFFFFF;color:#14110F;border-radius:999px;padding:18px 30px;font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:clamp(14px,1.3vw,16px);transition:transform .15s ease;" class="mailfx"data-hv="h1"><span style="--i:0">m</span><span style="--i:1">u</span><span style="--i:2">.</span><span style="--i:3">c</span><span style="--i:4">h</span><span style="--i:5">a</span><span style="--i:6">n</span><span style="--i:7">g</span><span style="--i:8">3</span><span style="--i:9">2</span><span style="--i:10">@</span><span style="--i:11">g</span><span style="--i:12">m</span><span style="--i:13">a</span><span style="--i:14">i</span><span style="--i:15">l</span><span style="--i:16">.</span><span style="--i:17">c</span><span style="--i:18">o</span><span style="--i:19">m</span></a>
           <button data-on="copyEmail" data-copybtn style="border:0;background:none;padding:8px;color:#14110F;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;line-height:0;transition:transform .16s ease,color .16s ease" aria-label="複製 Email" title="複製 Email"><span data-copy-idle><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></span><span data-copy-done hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5.5 5.5L20 7"/></svg></span><span data-bind="copyLabel" class="sr-only"></span></button>
         </div>
       </div>
 
-      <div style="position:relative;min-width:0;display:flex;justify-content:center;align-items:center;padding:28px 0">
+      <div data-hero-photo style="position:relative;min-width:0;display:flex;justify-content:center;align-items:center;padding:28px 0">
         <div style="position:relative;width:min(100%,520px);aspect-ratio:1/1.06">
           <div data-hero-ring style="position:absolute;inset:14% 12% 6% 12%;background:#FFD34E;border:2px solid #14110F;border-radius:50%;transform:rotate(-4deg)"></div><img src="./assets/avatar.png" alt="張詩沂" data-hero width="990" height="862" fetchpriority="high" decoding="async" style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:115%;height:auto;max-width:none;display:block;filter:drop-shadow(0 6px 14px rgba(20,17,15,.18))" />
           
@@ -303,7 +346,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
 
   <section id="about" style="background:#fff;padding:clamp(56px,7vw,100px) 0">
     <div style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">
-      <div style="text-align:center;max-width:46em;margin:0 auto clamp(28px,3.6vw,44px)">
+      <div data-chapter="02 / 09" style="text-align:center;max-width:46em;margin:0 auto clamp(28px,3.6vw,44px)">
         <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.8vw,54px);font-weight:700;letter-spacing:-.02em;margin:0 0 12px;line-height:1.12">About Me</h2>
         <p style="margin:0;font-size:clamp(15px,1.4vw,19px);font-weight:700;color:#2C2620;line-height:1.7">從釐清需求開始的十年</p>
       </div>
@@ -348,7 +391,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
 
   <section id="career" style="padding:clamp(56px,7vw,100px) 0">
     <div style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">
-      <div style="text-align:center;max-width:46em;margin:0 auto clamp(30px,3.8vw,50px)">
+      <div data-chapter="03 / 09" style="text-align:center;max-width:46em;margin:0 auto clamp(30px,3.8vw,50px)">
         <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.8vw,54px);font-weight:700;letter-spacing:-.02em;margin:0 0 12px;line-height:1.12">Work Experience</h2>
         <p style="margin:0;font-size:clamp(15px,1.4vw,19px);font-weight:700;color:#2C2620;line-height:1.7">職涯歷程·從視覺到體驗，再到產品與 AI 落地</p>
       </div>
@@ -441,7 +484,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
 
   <section id="case" style="background:#fff;padding:clamp(56px,7vw,100px) 0">
     <div style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">
-      <div style="text-align:center;max-width:46em;margin:0 auto clamp(28px,3.6vw,46px)">
+      <div data-chapter="04 / 09" style="text-align:center;max-width:46em;margin:0 auto clamp(28px,3.6vw,46px)">
         <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.8vw,54px);font-weight:700;letter-spacing:-.02em;margin:0 0 12px;line-height:1.12">Featured Case</h2>
         <p style="margin:0 0 10px;font-size:clamp(15px,1.4vw,19px);font-weight:700;color:#2C2620;line-height:1.7">精選案例</p>
         
@@ -489,7 +532,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
 
   <section id="ai-lab" style="padding:clamp(56px,7vw,100px) 0">
     <div style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">
-      <div style="text-align:center;max-width:50em;margin:0 auto clamp(28px,3.6vw,46px)">
+      <div data-chapter="05 / 09" style="text-align:center;max-width:50em;margin:0 auto clamp(28px,3.6vw,46px)">
         <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.8vw,54px);font-weight:700;letter-spacing:-.02em;margin:0 0 12px;line-height:1.12">AI Lab</h2>
         
       </div>
@@ -557,7 +600,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
 
   <section id="writing" style="background:#FFF6D9;padding:clamp(56px,7vw,100px) 0">
     <div style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">
-      <div style="text-align:center;max-width:46em;margin:0 auto clamp(28px,3.4vw,44px)">
+      <div data-chapter="06 / 09" style="text-align:center;max-width:46em;margin:0 auto clamp(28px,3.4vw,44px)">
         <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.8vw,54px);font-weight:700;letter-spacing:-.02em;margin:0 0 12px;line-height:1.12">Writing</h2>
         <p style="margin:0;font-size:clamp(15px,1.4vw,19px);font-weight:700;color:#2C2620;line-height:1.7">專欄與內部推廣</p>
       </div>
@@ -605,7 +648,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
 
   <section id="skills" style="padding:clamp(60px,7.5vw,104px) 0">
     <div style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">
-      <div style="text-align:center;max-width:46em;margin:0 auto clamp(34px,4vw,52px)">
+      <div data-chapter="07 / 09" style="text-align:center;max-width:46em;margin:0 auto clamp(34px,4vw,52px)">
         <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.8vw,54px);font-weight:700;letter-spacing:-.02em;margin:0 0 12px;line-height:1.12">What I Do</h2>
         <p style="margin:0;font-size:clamp(15px,1.4vw,19px);font-weight:700;color:#2C2620;line-height:1.7">我能做什麼</p>
       </div>
@@ -650,7 +693,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
 
   <section id="learning" style="background:#fff;padding:clamp(50px,6vw,84px) 0">
     <div style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">
-      <div style="text-align:center;max-width:46em;margin:0 auto clamp(26px,3vw,40px)">
+      <div data-chapter="08 / 09" style="text-align:center;max-width:46em;margin:0 auto clamp(26px,3vw,40px)">
         <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.6vw,40px);font-weight:700;letter-spacing:-.02em;margin:0 0 10px;line-height:1.15">Credentials</h2>
         <p style="margin:0;font-size:clamp(14.5px,1.3vw,17px);font-weight:700;color:#2C2620;line-height:1.7">學習與認證</p>
       </div>
@@ -702,11 +745,11 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
   <footer id="contact" style="background:#F3EFE4;padding:clamp(56px,7vw,96px) 0 clamp(20px,2.4vw,30px)">
     <div style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">
       <div style="display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,56px);align-items:center;justify-content:space-between">
-        <div style="min-width:0;flex:1 1 380px">
+        <div data-chapter="09 / 09" style="min-width:0;flex:1 1 380px">
           <h2 style="margin:0;font-size:clamp(34px,5.4vw,66px);font-weight:900;letter-spacing:-.02em;line-height:1.12">與我聯絡，<br /><span class="mailfx" style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:#FFC400"><span style="--i:0">S</span><span style="--i:1">a</span><span style="--i:2">y</span><span style="--i:3">&nbsp;</span><span style="--i:4">h</span><span style="--i:5">e</span><span style="--i:6">l</span><span style="--i:7">l</span><span style="--i:8">o</span><span style="--i:9">&nbsp;</span><span style="--i:10">w</span><span style="--i:11">i</span><span style="--i:12">t</span><span style="--i:13">h</span><span style="--i:14">&nbsp;</span><span style="--i:15">m</span><span style="--i:16">e</span><span style="--i:17">&nbsp;</span><span style="--i:18">☺</span></span></h2>
         </div>
 
-        <div style="min-width:0;flex:0 1 auto;display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+        <div data-contact-cta style="min-width:0;flex:0 1 auto;display:flex;flex-wrap:wrap;gap:12px;align-items:center">
           <a href="mailto:mu.chang32@gmail.com" style="background:#FFFFFF;color:#14110F;border-radius:999px;padding:17px 30px;font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:clamp(14px,1.3vw,16px);transition:transform .15s ease;" class="mailfx"data-hv="h29"><span style="--i:0">m</span><span style="--i:1">u</span><span style="--i:2">.</span><span style="--i:3">c</span><span style="--i:4">h</span><span style="--i:5">a</span><span style="--i:6">n</span><span style="--i:7">g</span><span style="--i:8">3</span><span style="--i:9">2</span><span style="--i:10">@</span><span style="--i:11">g</span><span style="--i:12">m</span><span style="--i:13">a</span><span style="--i:14">i</span><span style="--i:15">l</span><span style="--i:16">.</span><span style="--i:17">c</span><span style="--i:18">o</span><span style="--i:19">m</span></a>
           <button data-on="copyEmail" data-copybtn style="border:0;background:none;padding:8px;color:#14110F;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;line-height:0;transition:transform .16s ease,color .16s ease" aria-label="複製 Email" title="複製 Email"><span data-copy-idle><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></span><span data-copy-done hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5.5 5.5L20 7"/></svg></span><span data-bind="copyLabel" class="sr-only"></span></button>
         </div>
