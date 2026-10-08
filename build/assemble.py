@@ -830,6 +830,20 @@ _ch = body.index('<div style="min-width:0;flex:1 1 380px">', _ci)
 body = (body[:_ch] + '<div data-chapter="09 / 09" style="min-width:0;flex:1 1 380px">'
         + body[_ch + len('<div style="min-width:0;flex:1 1 380px">'):])
 
+# §5 Case：手機改橫向滑動，長版情境段落收起來
+_si0 = body.index('id="case"'); _si1 = body.index('<section', _si0 + 10)
+_cas = body[_si0:_si1]
+_wrap = '<div style="display:flex;flex-direction:column;gap:clamp(24px,3vw,40px)">'
+assert _cas.count(_wrap) == 1, '找不到精選案例的卡片容器'
+_cas = _cas.replace(_wrap, _wrap.replace('<div ', '<div data-cases ', 1), 1)
+_long = '<p style="margin:0 0 14px;font-size:clamp(14px,1.2vw,16px);lin'
+assert _cas.count(_long) == 2, '長版段落應該有兩段'
+_cas = _cas.replace(_long, _long.replace('<p ', '<p data-case-long ', 1))
+body = body[:_si0] + _cas + body[_si1:]
+
+# §6 AI Lab：彈窗已是置中樣式，手機只需改網格
+# （data-lab-grid 已存在）
+
 # §4 Career：手機改成手風琴，標題列常駐、內容收合
 _ci0 = body.index('id="career"'); _ci1 = body.index('<section', _ci0 + 10)
 _car = body[_ci0:_ci1]
@@ -990,6 +1004,26 @@ mobile_css = """
   [data-job-body] > div[style*="flex-wrap:wrap;gap:8px"]{flex-wrap:nowrap!important;
     overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
   [data-job-body] > div[style*="flex-wrap:wrap;gap:8px"]::-webkit-scrollbar{display:none}
+
+  /* §5 Case：兩張卡改橫向滑動，露出下一張的邊 */
+  [data-cases]{flex-direction:row!important;overflow-x:auto;scroll-snap-type:x mandatory;
+    gap:12px!important;margin:0 -16px!important;padding:4px 16px 12px;
+    scroll-padding:0 16px;scrollbar-width:none;-ms-overflow-style:none}
+  [data-cases]::-webkit-scrollbar{display:none}
+  [data-cases] > article{flex:0 0 82%;scroll-snap-align:start;
+    grid-template-columns:1fr!important;padding:12px 12px 18px!important;
+    gap:14px!important;align-items:start!important}
+  [data-case-long]{display:none!important}
+  [data-cases] h3{font-size:19px!important}
+
+  /* §6 AI Lab：兩欄，只留標題 */
+  #ai-lab [data-lab-grid]{grid-template-columns:1fr 1fr!important;gap:20px 12px!important}
+  #ai-lab [data-lab-grid] img{aspect-ratio:1/1!important;object-fit:cover}
+  #ai-lab [data-lab-grid] p{display:none!important}
+  #ai-lab [data-lab-grid] h3{font-size:14px!important;line-height:1.45!important}
+  #ai-lab [data-lab-grid] > [data-on="openLab"]{gap:8px!important}
+  /* 先顯示 6 張的規則在兩欄下改成第 7 張起收起來 */
+  [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+7){display:none !important}
 
   /* §10 Contact：信箱吃滿寬度，複製鍵同列 */
   [data-contact-cta]{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;width:100%}

@@ -260,6 +260,26 @@ a:hover{color:#6D4AFF}
     overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
   [data-job-body] > div[style*="flex-wrap:wrap;gap:8px"]::-webkit-scrollbar{display:none}
 
+  /* §5 Case：兩張卡改橫向滑動，露出下一張的邊 */
+  [data-cases]{flex-direction:row!important;overflow-x:auto;scroll-snap-type:x mandatory;
+    gap:12px!important;margin:0 -16px!important;padding:4px 16px 12px;
+    scroll-padding:0 16px;scrollbar-width:none;-ms-overflow-style:none}
+  [data-cases]::-webkit-scrollbar{display:none}
+  [data-cases] > article{flex:0 0 82%;scroll-snap-align:start;
+    grid-template-columns:1fr!important;padding:12px 12px 18px!important;
+    gap:14px!important;align-items:start!important}
+  [data-case-long]{display:none!important}
+  [data-cases] h3{font-size:19px!important}
+
+  /* §6 AI Lab：兩欄，只留標題 */
+  #ai-lab [data-lab-grid]{grid-template-columns:1fr 1fr!important;gap:20px 12px!important}
+  #ai-lab [data-lab-grid] img{aspect-ratio:1/1!important;object-fit:cover}
+  #ai-lab [data-lab-grid] p{display:none!important}
+  #ai-lab [data-lab-grid] h3{font-size:14px!important;line-height:1.45!important}
+  #ai-lab [data-lab-grid] > [data-on="openLab"]{gap:8px!important}
+  /* 先顯示 6 張的規則在兩欄下改成第 7 張起收起來 */
+  [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+7){display:none !important}
+
   /* §10 Contact：信箱吃滿寬度，複製鍵同列 */
   [data-contact-cta]{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;width:100%}
   [data-contact-cta] .mailfx{flex:1;min-width:0;height:52px;display:flex;align-items:center;
@@ -538,7 +558,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
         
       </div>
 
-      <div style="display:flex;flex-direction:column;gap:clamp(24px,3vw,40px)">
+      <div data-cases style="display:flex;flex-direction:column;gap:clamp(24px,3vw,40px)">
         <article style="position:relative;background:#fff;border:2.5px solid #14110F;border-radius:24px;box-shadow:7px 7px 0 #14110F;padding:clamp(20px,2.6vw,32px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(20px,2.6vw,36px);align-items:center;transition:transform .16s ease,box-shadow .16s ease"data-hv="h8">
           <div style="min-width:0">
             <div style="position:relative;min-width:0"><img src="./assets/case/aicast/01.jpg" alt="Aicast 有聲內容製作平台 產品畫面" loading="lazy" decoding="async" style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;border-radius:16px;display:block" /><img src="./assets/case/aicast/if-award-2025.png" alt="2025 iF Design Award" loading="lazy" decoding="async" style="position:absolute;right:10px;top:10px;width:clamp(64px,22%,96px);height:auto;display:block;filter:drop-shadow(0 2px 6px rgba(20,17,15,.3))" /></div>
@@ -550,7 +570,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
             </div>
             <h3 style="margin:0 0 8px;font-size:clamp(21px,2.6vw,30px);font-weight:900;line-height:1.45">Aicast 有聲內容製作平台</h3>
             <p style="margin:0 0 18px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#3B342E">AI SaaS ・ 專案經理 ・ 2024/5 – 2025/3</p>
-            <p style="margin:0 0 14px;font-size:clamp(14px,1.2vw,16px);line-height:1.85;color:#2C2620">製作一本多角色有聲書，需要配音員、錄音室與大量協調成本。Aicast 用三項 AI 技術把這件事自動化：初期以 8 位 AI 配音員演繹 42 種聲音，多人配音有聲書的製作時間最多減少 90%。</p>
+            <p data-case-long style="margin:0 0 14px;font-size:clamp(14px,1.2vw,16px);line-height:1.85;color:#2C2620">製作一本多角色有聲書，需要配音員、錄音室與大量協調成本。Aicast 用三項 AI 技術把這件事自動化：初期以 8 位 AI 配音員演繹 42 種聲音，多人配音有聲書的製作時間最多減少 90%。</p>
             <p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">我負責需求定義、UI 規劃、測試驗證與跨職能外包管理，並主導申請 <strong>2025 iF 設計獎</strong>。</p>
             <div data-tags-group hidden style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px"><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">需求定義</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">外包協作管理</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">UI 設計</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">AI 配音員徵選</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">音效資料庫</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">iF 設計獎主導</span></div>
             <a href="./case/aicast.html" style="margin-top:22px;display:inline-block;background:#14110F;color:#FAF7F0;border:2px solid #14110F;border-radius:999px;padding:14px 26px;font-weight:700;font-size:15px;box-shadow:4px 4px 0 #FFD34E;transition:transform .15s ease,box-shadow .15s ease">閱讀完整案例 →</a>
@@ -568,7 +588,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
             </div>
             <h3 style="margin:0 0 8px;font-size:clamp(21px,2.6vw,30px);font-weight:900;line-height:1.45">安否通　弱勢機構災情即時回報平台</h3>
             <p style="margin:0 0 18px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#3B342E">公民科技提案 ・ 產品與專案管理 ・ 2026/8</p>
-            <p style="margin:0 0 14px;font-size:clamp(14px,1.2vw,16px);line-height:1.85;color:#2C2620">震災後，市府得一間一間打電話確認弱勢機構的狀況，全數清查要數小時，應變人力全卡在撥號上。我們把清查方向反轉：系統先點名、機構一鍵回報，市府只處理未回報的那幾家——工作量從機構總數變成異常數。</p>
+            <p data-case-long style="margin:0 0 14px;font-size:clamp(14px,1.2vw,16px);line-height:1.85;color:#2C2620">震災後，市府得一間一間打電話確認弱勢機構的狀況，全數清查要數小時，應變人力全卡在撥號上。我們把清查方向反轉：系統先點名、機構一鍵回報，市府只處理未回報的那幾家——工作量從機構總數變成異常數。</p>
             <p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">兩人團隊提案，通過文件初審並進入<strong>數位發展部徵案決選</strong>。我負責問題定義、流程設計、介面設計與 P0 範圍切分。</p>
             <div data-tags-group hidden style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px"><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">問題定義</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">流程設計</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">P0 範圍切分</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">UI／UX</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">資安與治理規劃</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">兩人團隊</span></div>
             <a href="./case/anfu.html" style="margin-top:22px;display:inline-block;background:#14110F;color:#FAF7F0;border:2px solid #14110F;border-radius:999px;padding:14px 26px;font-weight:700;font-size:15px;box-shadow:4px 4px 0 #CDBCFF;transition:transform .15s ease,box-shadow .15s ease">閱讀完整案例 →</a>
