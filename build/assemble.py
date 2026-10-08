@@ -848,6 +848,8 @@ for _key, _label in (('comp', 'COMPETITIONS'), ('cert', 'CERTIFICATIONS')):
     _n = _lr.index(f'>{_label}<')
     _cs = _lr.rindex('<div style="min-width:0">', 0, _n)
     _lr = _lr[:_cs] + f'<div data-cred="{_key}" style="min-width:0">' + _lr[_cs + len('<div style="min-width:0">'):]
+for _k in ('comp', 'cert', 'lang', 'skill'):
+    _lr = _lr.replace(f'<div data-cred="{_k}"', f'<div data-cred="{_k}" role="tabpanel"', 1)
 _CRED_TABS = [('comp', '競賽'), ('cert', '證照'), ('lang', '語言'), ('skill', '工具')]
 _tabs = ('<div data-cred-tabs role="tablist" aria-label="學習與認證分類">'
          + ''.join(f'<button type="button" role="tab" data-cred-tab="{k}" '
@@ -1043,6 +1045,11 @@ mobile_css = """
 
   /* §4 Career：手風琴。拿掉時間軸與圓點，卡片吃滿寬度 */
   #career [data-timeline]{border-left:0!important;padding-left:0!important}
+  #career [data-timeline]{gap:10px!important}
+  #career [data-job] > div[style*="border-radius:20px"]{padding:16px 16px 14px!important}
+  [data-job-head] > div:first-child{margin-bottom:8px!important}
+  [data-job-head] > p{margin-bottom:0!important}
+  [data-job].open [data-job-head] > p{margin-bottom:14px!important}
   #career [data-job] > span:first-child{display:none!important}
   [data-job-head]{display:block!important;position:relative;padding-right:56px;
     min-height:44px;cursor:pointer}
@@ -1088,7 +1095,10 @@ mobile_css = """
     transform:translateY(-50%);width:44px;height:44px;display:grid;place-items:center;
     font-weight:700;font-size:18px}
   [data-skill].open [data-skill-head]::after{content:"\\2212"}
+  [data-skill]:not([data-skill="04"]):not(.open) > ul,
   [data-skill]:not([data-skill="04"]):not(.open) > div:not([data-skill-head]){display:none!important}
+  [data-skill]{padding:22px 16px 16px!important}
+  [data-skill="04"]{padding:26px 18px 20px!important}
 
   /* §9 Credentials：四類改頁籤切換 */
   [data-cred-tabs]{display:grid!important;grid-template-columns:repeat(4,1fr);gap:4px;
@@ -1170,7 +1180,10 @@ doc = f"""<!DOCTYPE html>
  43%{{transform:translateY(115%);opacity:0}}
  100%{{transform:translateY(0);opacity:1}}
 }}
-@media (prefers-reduced-motion: reduce){{.mailfx:hover span{{animation:none}}}}
+@media (prefers-reduced-motion: reduce){{
+ *,*::before,*::after{{animation-duration:.001ms !important;animation-iteration-count:1 !important;
+  transition-duration:.001ms !important;scroll-behavior:auto !important}}
+}}
 [data-copybtn]:hover{{transform:scale(1.12);color:#6D4AFF}}
 [data-hv="lbclose"]:hover{{transform:translate(-1px,-1px);box-shadow:3px 3px 0 #14110F}}
 [data-copybtn]:active{{transform:scale(.94)}}

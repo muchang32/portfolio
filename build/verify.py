@@ -62,6 +62,19 @@ C = [
   ('SKILLS 十個 logo', len(re.findall(r'assets/logos/opt/', h)) == 10),
   ('Hero 去背照', has('./assets/avatar.png') and has('fetchpriority="high"')
                 and pathlib.Path('assets/avatar.png').exists()),
+  ('手機版樣式區塊存在', has('===================== 手機版重新設計')),
+  ('九段章節編號', len(re.findall(r'data-chapter="\d\d / 09"', h)) == 8),
+  ('Hero 重排用的屬性都在',
+   all(has(k) for k in ['data-hero-section','data-hero-copy','data-hero-title',
+                        'data-hero-sub','data-hero-cta','data-hero-photo'])),
+  ('收合元件齊備',
+   h.count('data-about-more') >= 4 and has('data-quote-toggle')
+   and len(re.findall(r'data-job-head', h)) >= 7
+   and len(re.findall(r'data-skill-head', h)) >= 3
+   and len(re.findall(r'data-cred-tab="', h)) == 4),
+  ('新包裹層在桌機不形成盒子',
+   has('[data-skill-head],[data-job-head],[data-job-body],[data-cred="lang"]{display:contents}')),
+  ('減少動態的全域規則', has('animation-iteration-count:1 !important')),
   ('Hero 有主要行動點', has('href="#case" data-cta') and has('看精選案例 →')
                      and has('[data-cta]:hover')),
   ('Hero 人像舞台已放大', has('width:min(100%,520px);aspect-ratio:1/1.06')),
