@@ -840,13 +840,31 @@ body = body.replace(_LL_CARD_KEY,
     ' data-vposter="./assets/ai-lab/02-livelingo-demo-poster.jpg"'
     ' data-vcap="示範影片為黃仁勳主題演講公開直播的實測畫面，非上述活動現場。"', 1)
 
-# ---- 現職補上 LiveLingo 這條：自己做的東西被實際拿去用 ----
-# 寫成常態能力而不是單一場次——後續其他國際講者的場子也會用到
-_after = '<li>導入 AI 工具至實際工作流程並優化 Prompt 設計，讓非工程同仁能真正用於日常業務</li>'
-assert body.count(_after) == 1, '找不到現職的「導入 AI 工具」條目'
-body = body.replace(_after,
-    '<li>自製即時字幕翻譯工具（Chrome 擴充功能），供報系邀請國際講者來台時使用，'
-    '涵蓋內部工作坊與對外公開演講</li>' + _after, 1)
+# ---- 現職條列重整 ----
+# 原本的「導入 AI 工具至實際工作流程並優化 Prompt」太空泛，而且下面的 n8n 與
+# 培訓兩條已經把它具體說完了，直接換掉。後面四條用粗體小標分類，寫法與 Aicast 一致。
+_VAGUE = '<li>導入 AI 工具至實際工作流程並優化 Prompt 設計，讓非工程同仁能真正用於日常業務</li>'
+assert body.count(_VAGUE) == 1, '找不到現職的「導入 AI 工具」條目'
+body = body.replace(_VAGUE,
+    # 文生圖：訪綱整理出五項洞察、需求分三層、流程從讀稿到入稿，是完整的需求規劃
+    '<li><strong>產品需求規劃</strong>：主導 CMS「AI 文生圖」功能規劃，'
+    '訪談記者與編輯收斂出五項關鍵洞察，將需求分成 P0／P1／P2 三層，'
+    '並定義從稿件讀取、提示詞優化到選圖與入稿的完整流程與工程規格</li>'
+    # LiveLingo：寫成常態能力而不是單一場次，後續其他國際講者的場子也會用到
+    '<li><strong>自製工具落地</strong>：獨立開發 LiveLingo Chrome 擴充功能，'
+    '提供即時字幕翻譯，供報系邀請國際講者來台時使用，'
+    '涵蓋內部工作坊與對外公開演講</li>'
+    # 測試介面那段是重點：讓使用者自己調提示詞，不必每次回來找我改流程
+    '<li><strong>AI 工作流自動化</strong>：以 n8n 串接 Claude，'
+    '為新聞自動摘要建立內容檢核流程，並另做一個測試介面，'
+    '讓編輯不必改動流程或資料就能自行調整提示詞、比較效果；'
+    '另與組內以 Open WebUI 搭公開資料試驗 RAG 查詢</li>', 1)
+
+_TRAIN = '<li>推動 AI coding 與 AI 工具的內部分享與實作培訓，降低使用門檻</li>'
+assert body.count(_TRAIN) == 1, '找不到現職的培訓條目'
+body = body.replace(_TRAIN,
+    '<li><strong>內部推廣與培訓</strong>：推動 AI Coding 培訓與實作工作坊，'
+    '帶非工程背景同仁用 AI 生成工具做出應用原型，降低導入門檻</li>', 1)
 
 # ---- LiveLingo：改以實際導入的場合開頭，技術細節退到彈窗 ----
 _LL_OLD = ('Chrome MV3 擴充功能，AudioWorklet 將分頁音訊降為 16kHz PCM16，'

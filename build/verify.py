@@ -19,7 +19,17 @@ C = [
   ('按鈕文字與連結相符', len(re.findall(r'data-link="示範影片 →"', h)) == 1),
   ('LiveLingo 寫出實際導入的場合', has('Mario García') and has('漢來大飯店')),
   ('現職不綁單一場次', 'Mario García' not in h[h.index('id="career"'):h.index('id="case"')]),
-  ('現職寫成常態能力', has('自製即時字幕翻譯工具')),
+  ('現職的 LiveLingo 寫成常態能力，不綁單一場次',
+   has('獨立開發 LiveLingo Chrome 擴充功能')
+   and has('供報系邀請國際講者來台時使用')
+   and 'García' not in h[h.index('資訊管理師'):h.index('</section>', h.index('資訊管理師'))]),
+  ('現職沒有留下空泛的那條',
+   absent('導入 AI 工具至實際工作流程並優化 Prompt 設計')),
+  ('現職四條分類小標都在',
+   all(f'<strong>{k}</strong>' in h for k in
+       ('產品需求規劃', '自製工具落地', 'AI 工作流自動化', '內部推廣與培訓'))),
+  ('不把內部連結貼到公開頁面',
+   'docs.google.com/spreadsheets/d/10Pyqu' not in h),
   ('彈窗不講底層技術', absent('AudioWorklet') and absent('PCM16') and absent('Deepgram')),
   ('沒有連結的專案不留死按鈕', has('data-href-bind="labHref" data-if="labHasLink"')
                            and "labHasLink: !!(state.lab" in h),
