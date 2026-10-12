@@ -88,8 +88,8 @@ C = [
   # --- 版面結構 ---
   ('Credentials 三欄', has('[data-grid="creds"]')),
   ('精選案例只有整張卡有 hover',
-   len(re.findall(r'data-hv="h\d+"', h[h.index('id="case"'):h.index('id="ai-lab"')])) == 2),
-  ('案例按鈕與內文留有間距', h.count('style="margin-top:22px;display:inline-block;') == 2),
+   len(re.findall(r'data-hv="h\d+"', h[h.index('id="case"'):h.index('id="ai-lab"')])) == 3),
+  ('案例按鈕與內文留有間距', h.count('margin-top:22px;display:inline-block;') == 3),
   ('沒有重複的 style 屬性', not re.search(r'<[a-z]+[^>]*\sstyle="[^"]*"[^>]*\sstyle="', h)),
   ('What I Do 用結構選擇器', has('#skills div[style*="border:2px solid #14110F"]:hover')),
   ('無 hidden 殘留在 SVG', not re.search(r'<svg[^>]*\shidden[^>]*>', h)),
@@ -147,6 +147,45 @@ C.append(('Aicast 影片自架', 'case/aicast/if-video.mp4' in _ai
 C.append(('案例頁完全沒有 YouTube', 'youtube' not in _ai.lower()))
 C.append(('影片用原生控制列',
           _ai.count('<video') == 1 and 'controls' in _ai and 'preload="metadata"' in _ai))
+for desc, ok in C[-7:]:
+    (fails if not ok else warns).append(desc) if not ok else None
+
+# ---- 精選案例卡片的「問題 → 判斷 → 結果」 ----
+_pdo_n = h.count('<dl data-pdo ')
+C.append(('三張案例卡都有問題／判斷／結果', _pdo_n == 3))
+C.append(('每組三行齊全',
+          all(h.count(f'>{lab}</dt>') == 3 for lab in ('問題', '判斷', '結果'))))
+C.append(('卡片不再重複講結果',
+          '通過文件初審並進入' not in h and '並主導申請 <strong>2025 iF' not in h))
+
+# ---- What I Do：04 是核心，桌機也要排在 01 之前 ----
+C.append(('04 排在 01 之前',
+          h.index('data-skill="04"') < h.index('data-skill="01"')))
+C.append(('01–03 有「支撐」的說明',
+          h.count('<p data-skills-sub ') == 1 and h.count('[data-skills-sub]{') == 1))
+C.append(('04 沒留下舊的 margin-top',
+          'data-skill="04" style="position:relative;margin-top:' not in h))
+for desc, ok in C[-6:]:
+    (fails if not ok else warns).append(desc) if not ok else None
+
+# ---- 第三個案例：自動配圖 ----
+_auto = pathlib.Path('case/auto-image.html').read_text(encoding='utf-8')
+C.append(('首頁三張案例卡的順序正確',
+          h.index('Aicast 有聲內容製作平台') < h.index('自動配圖　從編輯的回饋到產品優化')
+          < h.index('安否通　弱勢機構災情即時回報平台')))
+C.append(('自動配圖封面存在', pathlib.Path('assets/case/auto-image/cover.jpg').exists()
+          and 'case/auto-image/cover.jpg' in h))
+C.append(('自動配圖案例頁連回專欄', '../writing/01-auto-image.html' in _auto))
+C.append(('現職那條改成短版並連到案例頁',
+          './case/auto-image.html' in h and '將回饋歸納為圖像相關度' not in h))
+C.append(('沒有自己掰的成效數字',
+          not re.search(r'使用率(回升|提升)\s*\d', h + _auto)))
+C.append(('三張卡都有一句話摘要', h.count('<p data-case-sum ') == 3))
+C.append(('首頁案例卡不再有規格列與定位標籤',
+          'data-case-tags' not in h
+          and 'AI SaaS ・ 專案經理' not in h
+          and '公民科技提案 ・ 產品與專案管理' not in h
+          and '內部產品優化 ・ 主導功能改版' not in h))
 for desc, ok in C[-7:]:
     (fails if not ok else warns).append(desc) if not ok else None
 

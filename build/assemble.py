@@ -557,6 +557,135 @@ body = re.sub(
     '兩人團隊提案，通過文件初審並進入<strong>數位發展部徵案決選</strong>。'
     '我負責問題定義、流程設計、介面設計與 P0 範圍切分。</p>', body, count=1, flags=re.S)
 
+# D3b. 精選案例卡片：把「問題 → 判斷 → 結果」從敘述段落攤開成可掃讀的三行
+#      判斷這一行是卡片原本完全沒有的——也是 PM 最需要被看見的部分
+def _pdo(rows, accent):
+    """rows = [(標籤, 內容), ...]；最後一行視為「結果」，用卡片主色強調"""
+    out = ['<dl data-pdo style="margin:0 0 16px;display:flex;flex-direction:column;'
+           'border-top:1px solid rgba(20,17,15,.13)">']
+    for i, (label, text) in enumerate(rows):
+        last = (i == len(rows) - 1)
+        out.append(
+            '<div style="display:flex;gap:10px;padding:10px 0;'
+            'border-bottom:1px solid rgba(20,17,15,.13)">'
+            "<dt style=\"flex:0 0 auto;width:3.4em;margin:0;"
+            "font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;"
+            "line-height:2.05;font-weight:" + ('700;color:#14110F' if last else '600;color:#6B635B')
+            + '">' + label + '</dt>'
+            '<dd style="margin:0;min-width:0;font-size:14.5px;line-height:1.85;color:#2C2620'
+            + (';font-weight:700' if last else '') + '">'
+            + (f'<span style="display:inline-block;width:8px;height:8px;border-radius:2px;'
+               f'background:{accent};margin-right:8px"></span>' if last else '')
+            + text + '</dd></div>')
+    return ''.join(out) + '</dl>'
+
+_AICAST_LONG = ('<p style="margin:0 0 14px;font-size:clamp(14px,1.2vw,16px);line-height:1.85;'
+                'color:#2C2620">製作一本多角色有聲書，需要配音員、錄音室與大量協調成本。'
+                'Aicast 用三項 AI 技術把這件事自動化：初期以 8 位 AI 配音員演繹 42 種聲音，'
+                '多人配音有聲書的製作時間最多減少 90%。</p>')
+assert body.count(_AICAST_LONG) == 1, '找不到 Aicast 的情境段落'
+body = body.replace(_AICAST_LONG, _pdo([
+    ('問題', '多角色有聲書的配音與錄音成本過高，多數作品只能由單人朗讀完成'),
+    ('判斷', '先把核心的角色辨識與配音修穩，再擴充功能——這一層不可信，周邊做再多都留不住人'),
+    ('結果', '修復 200+ 個問題並建立測試機制，獲 2025 iF 設計獎'),
+], '#FFD34E'), 1)
+
+_ANFU_LONG = ('<p style="margin:0 0 14px;font-size:clamp(14px,1.2vw,16px);line-height:1.85;'
+              'color:#2C2620">震災後，市府得一間一間打電話確認弱勢機構的狀況，全數清查要數小時，'
+              '應變人力全卡在撥號上。我們把清查方向反轉：系統先點名、機構一鍵回報，'
+              '市府只處理未回報的那幾家——工作量從機構總數變成異常數。</p>')
+assert body.count(_ANFU_LONG) == 1, '找不到安否通的情境段落'
+body = body.replace(_ANFU_LONG, _pdo([
+    ('問題', '震災後市府逐一撥號清查全部機構，全數確認預估要數小時'),
+    ('判斷', '把清查方向反轉——系統點名、機構一鍵回報，市府只處理未回報的那幾家'),
+    ('結果', '通過文件初審，進入數位發展部徵案決選'),
+], '#CDBCFF'), 1)
+
+# 「結果」已獨立成一行，原本的責任段落只留責任，避免同一張卡講兩次
+body = body.replace(
+    '我負責需求定義、UI 規劃、測試驗證與跨職能外包管理，並主導申請 '
+    '<strong>2025 iF 設計獎</strong>。',
+    '我負責需求定義、UI 規劃、測試驗證與跨職能外包管理，獎項申請也由我主導。', 1)
+body = body.replace(
+    '兩人團隊提案，通過文件初審並進入<strong>數位發展部徵案決選</strong>。'
+    '我負責問題定義、流程設計、介面設計與 P0 範圍切分。',
+    '兩人團隊提案，我負責問題定義、流程設計、介面設計與 P0 範圍切分。', 1)
+
+# D3c. 第三張案例卡：自動配圖。三個案例各自回答一個不同的問題——
+#      Aicast 怎麼規劃並推進 AI 產品、自動配圖 怎麼從回饋找到問題、安否通 怎麼從需求長出方案
+_AUTO_CARD = (
+    '<article style="position:relative;background:#fff;border:2.5px solid #14110F;'
+    'border-radius:24px;box-shadow:7px 7px 0 #14110F;padding:clamp(20px,2.6vw,32px);'
+    'display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));'
+    'gap:clamp(20px,2.6vw,36px);align-items:center;'
+    'transition:transform .16s ease,box-shadow .16s ease" data-hv="h8">'
+    '<div style="min-width:0">'
+    '<img src="./assets/case/auto-image/cover.jpg" '
+    'alt="自動配圖　調整後的搜尋結果畫面" loading="lazy" decoding="async" '
+    'style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;'
+    'border-radius:16px;display:block" />'
+    '</div>'
+    '<div style="min-width:0">'
+    '<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px">'
+    '<span style="background:#DDEEFF;border-radius:999px;padding:5px 13px;font-size:12px;'
+    'font-weight:700">精選案例</span>'
+    '<span style="font-size:11.5px;color:#3B342E">聯經數位　新聞編務系統</span></div>'
+    '<h3 style="margin:0 0 8px;font-size:clamp(21px,2.6vw,30px);font-weight:900;'
+    'line-height:1.45">自動配圖　從編輯的回饋到產品優化</h3>'
+    '__AUTO_SUMMARY__'
+    + _pdo([
+        ('問題', '自動配圖上線後使用率不如預期，但使用者說的「不好用」不是同一件事'),
+        ('判斷', '先訪談再動手——把回饋歸納成四類，先修產品可信度，再處理曝光與習慣'),
+        ('結果', '排序邏輯重新定義為「相關度＋時效性＋可用性」，改版後使用率回升'),
+    ], '#DDEEFF') +
+    '<p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">'
+    '我負責使用者訪談、問題分類、優化優先順序與圖片排序邏輯定義，技術實作由開發團隊執行。</p>'
+    '<a href="./case/auto-image.html" style="margin-top:22px;display:inline-block;'
+    'background:#14110F;color:#FAF7F0;border:2px solid #14110F;border-radius:999px;'
+    'padding:14px 26px;font-weight:700;font-size:15px;box-shadow:4px 4px 0 #DDEEFF;'
+    'transition:transform .15s ease,box-shadow .15s ease">閱讀完整案例 →</a>'
+    '</div></article>')
+
+# 一句話摘要：首頁只留標題、摘要與問題／判斷／結果，規格與角色留在內頁
+def _summary(text):
+    return (f'<p data-case-sum style="margin:0 0 18px;font-size:clamp(15px,1.35vw,17px);'
+            f'line-height:1.7;color:#2C2620">{text}</p>')
+
+_AUTO_CARD = _AUTO_CARD.replace(
+    '__AUTO_SUMMARY__', _summary('讓編輯的真實回饋，成為產品優化的依據。'))
+
+_anfu_art = body.rindex('<article ', 0, body.index('安否通　弱勢機構災情即時回報平台'))
+body = body[:_anfu_art] + _AUTO_CARD + body[_anfu_art:]
+
+_META = ('<p style="margin:0 0 18px;font-family:\'IBM Plex Mono\',monospace;'
+         'font-size:13px;color:#3B342E">%s</p>')
+for _h3, _sum, _meta in (
+    ('Aicast 有聲內容製作平台',
+     '把內容製作流程，轉化為更有效率的 AI 有聲內容生產體驗。',
+     'AI SaaS ・ 專案經理 ・ 2024/5 – 2025/3'),
+    ('安否通　弱勢機構災情即時回報平台',
+     '從真實的社會需求出發，設計更即時的災情回報方式。',
+     '公民科技提案 ・ 產品與專案管理 ・ 2026/8'),
+):
+    _mark = f'>{_h3}</h3>'
+    assert body.count(_mark) == 1, f'{_h3} 的標題比對不唯一'
+    _old_meta = _META % _meta
+    assert body.count(_old_meta) == 1, f'{_h3} 的規格列比對不唯一'
+    body = body.replace(_old_meta, '', 1)
+    _at = body.index(_mark) + len(_mark)
+    body = body[:_at] + _summary(_sum) + body[_at:]
+
+# D3d. 自動配圖現在有完整案例頁了，現職那條不必再把整段過程講一次
+_OLD_LI = ('<li>主導內部「自動配圖」功能改版：功能上線後使用率不如預期，'
+           '依使用量數據訪談記者與編輯，將回饋歸納為圖像相關度、圖庫廣度、標籤精準度與使用習慣四類，'
+           '排定優化順序並重新定義圖片排序邏輯（新聞相關度＋時效性＋可用性），改版後使用率回升</li>')
+assert body.count(_OLD_LI) == 1, '找不到現職的自動配圖條目'
+body = body.replace(_OLD_LI,
+    '<li>主導內部「自動配圖」功能改版：訪談記者與編輯，把「不好用」歸納成四類問題，'
+    '排定優化順序並重新定義圖片排序邏輯，改版後使用率回升'
+    '　<a href="./case/auto-image.html" style="color:#6D4AFF;font-weight:700;'
+    'white-space:nowrap">完整案例 →</a></li>', 1)
+
 # D4. 要不要來一杯：移除該標籤
 body = body.replace('data-tags="團購|使用者測試|唯一有真實其他使用者的產品"',
                     'data-tags="團購|使用者測試|多人協作"', 1)
@@ -876,6 +1005,20 @@ for _no in ('01', '02', '03'):
 _n4 = _sk.index('>04</span>')
 _c4 = _sk.rindex('<div ', 0, _n4)
 _sk = _sk[:_c4] + '<div data-skill="04" ' + _sk[_c4 + len('<div '):]
+# 04「AI 落地與原型實作」是核心能力，桌機也要排在 01–03 之上（手機早已 order:-1）
+_c4b = _sk.index('<div data-skill="04" ')
+_c4e = _close_of(_sk, _c4b)
+_card4 = _sk[_c4b:_c4e]
+assert '>04</span>' in _card4 and _card4.count('<div data-skill=') == 1, '04 卡片切得不乾淨'
+_sk = _sk[:_c4b] + _sk[_c4e:]
+# 原本靠 margin-top 與上方網格隔開，移到最前面之後不再需要
+_card4 = _card4.replace('margin-top:clamp(26px,3vw,38px);', '', 1)
+_SUB = ('<p data-skills-sub style="margin:clamp(30px,3.4vw,44px) 0 clamp(20px,2.2vw,26px);'
+        "font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;"
+        'color:#6B635B">支撐這件事的三項基本功</p>')
+_gi = _sk.index('<div data-skills ')
+_sk = _sk[:_gi] + _card4 + _SUB + _sk[_gi:]
+
 _wrap = '<div style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">'
 _wi = _sk.index(_wrap)
 _sk = _sk[:_wi] + '<div data-skills-wrap style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">' + _sk[_wi + len(_wrap):]
@@ -887,9 +1030,7 @@ _cas = body[_si0:_si1]
 _wrap = '<div style="display:flex;flex-direction:column;gap:clamp(24px,3vw,40px)">'
 assert _cas.count(_wrap) == 1, '找不到精選案例的卡片容器'
 _cas = _cas.replace(_wrap, _wrap.replace('<div ', '<div data-cases ', 1), 1)
-_long = '<p style="margin:0 0 14px;font-size:clamp(14px,1.2vw,16px);lin'
-assert _cas.count(_long) == 2, '長版段落應該有兩段'
-_cas = _cas.replace(_long, _long.replace('<p ', '<p data-case-long ', 1))
+assert _cas.count('<dl data-pdo ') == 3, '問題／判斷／結果三行應該有三組'
 body = body[:_si0] + _cas + body[_si1:]
 
 # §6 AI Lab：彈窗已是置中樣式，手機只需改網格
@@ -1072,7 +1213,11 @@ mobile_css = """
   [data-cases] > article{flex:0 0 82%;scroll-snap-align:start;
     grid-template-columns:1fr!important;padding:12px 12px 18px!important;
     gap:14px!important;align-items:start!important}
-  [data-case-long]{display:none!important}
+  [data-case-sum]{font-size:14.5px!important;margin:0 0 12px!important}
+  [data-pdo]{margin:0 0 12px!important;font-size:13.5px}
+  [data-pdo] > div{padding:8px 0!important;gap:8px!important}
+  [data-pdo] dt{width:3.3em!important;font-size:11px!important;line-height:2!important}
+  [data-pdo] dd{font-size:13.5px!important;line-height:1.75!important}
   [data-cases] h3{font-size:19px!important}
 
   /* §6 AI Lab：兩欄，只留標題 */
@@ -1089,6 +1234,7 @@ mobile_css = """
   [data-skills]{display:flex!important;flex-direction:column;gap:10px!important}
   [data-skills-wrap] > [data-skill="04"]{order:-1;margin:0 0 10px!important}
   [data-skills-wrap] > div[data-chapter]{order:-2}
+  [data-skills-sub]{margin:16px 0 20px!important;font-size:11px!important}
   [data-skill-head]{display:flex!important;flex-direction:column;justify-content:center;
     position:relative;padding-right:52px;min-height:44px;cursor:pointer;gap:6px}
   [data-skill-head]::after{content:"+";position:absolute;right:0;top:50%;

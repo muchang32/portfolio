@@ -279,7 +279,11 @@ a:hover{color:#6D4AFF}
   [data-cases] > article{flex:0 0 82%;scroll-snap-align:start;
     grid-template-columns:1fr!important;padding:12px 12px 18px!important;
     gap:14px!important;align-items:start!important}
-  [data-case-long]{display:none!important}
+  [data-case-sum]{font-size:14.5px!important;margin:0 0 12px!important}
+  [data-pdo]{margin:0 0 12px!important;font-size:13.5px}
+  [data-pdo] > div{padding:8px 0!important;gap:8px!important}
+  [data-pdo] dt{width:3.3em!important;font-size:11px!important;line-height:2!important}
+  [data-pdo] dd{font-size:13.5px!important;line-height:1.75!important}
   [data-cases] h3{font-size:19px!important}
 
   /* §6 AI Lab：兩欄，只留標題 */
@@ -296,6 +300,7 @@ a:hover{color:#6D4AFF}
   [data-skills]{display:flex!important;flex-direction:column;gap:10px!important}
   [data-skills-wrap] > [data-skill="04"]{order:-1;margin:0 0 10px!important}
   [data-skills-wrap] > div[data-chapter]{order:-2}
+  [data-skills-sub]{margin:16px 0 20px!important;font-size:11px!important}
   [data-skill-head]{display:flex!important;flex-direction:column;justify-content:center;
     position:relative;padding-right:52px;min-height:44px;cursor:pointer;gap:6px}
   [data-skill-head]::after{content:"+";position:absolute;right:0;top:50%;
@@ -511,7 +516,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
             </div>
             <h3 style="margin:0 0 4px;font-size:clamp(19px,2.2vw,26px);font-weight:900;line-height:1.5">資訊管理師</h3>
             <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">聯經數位股份有限公司</p></div><div data-job-body>
-            <ul style="margin:0 0 20px;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:clamp(14px,1.15vw,15.5px);line-height:1.8;color:#2C2620"><li>主導內部「自動配圖」功能改版：功能上線後使用率不如預期，依使用量數據訪談記者與編輯，將回饋歸納為圖像相關度、圖庫廣度、標籤精準度與使用習慣四類，排定優化順序並重新定義圖片排序邏輯（新聞相關度＋時效性＋可用性），改版後使用率回升</li><li>自製即時字幕翻譯工具（Chrome 擴充功能），供報系邀請國際講者來台時使用，涵蓋內部工作坊與對外公開演講</li><li>導入 AI 工具至實際工作流程並優化 Prompt 設計，讓非工程同仁能真正用於日常業務</li><li>推動 AI coding 與 AI 工具的內部分享與實作培訓，降低使用門檻</li><li>於企業內部刊物撰寫 AI 專欄共 5 篇，實測比較四款 AI 網頁生成工具並產出可跟做的實作教學</li><li>跨部門專案溝通，將各單位需求轉化為工程與系統可執行的內容</li></ul>
+            <ul style="margin:0 0 20px;padding-left:1.1em;display:flex;flex-direction:column;gap:9px;font-size:clamp(14px,1.15vw,15.5px);line-height:1.8;color:#2C2620"><li>主導內部「自動配圖」功能改版：訪談記者與編輯，把「不好用」歸納成四類問題，排定優化順序並重新定義圖片排序邏輯，改版後使用率回升　<a href="./case/auto-image.html" style="color:#6D4AFF;font-weight:700;white-space:nowrap">完整案例 →</a></li><li>自製即時字幕翻譯工具（Chrome 擴充功能），供報系邀請國際講者來台時使用，涵蓋內部工作坊與對外公開演講</li><li>導入 AI 工具至實際工作流程並優化 Prompt 設計，讓非工程同仁能真正用於日常業務</li><li>推動 AI coding 與 AI 工具的內部分享與實作培訓，降低使用門檻</li><li>於企業內部刊物撰寫 AI 專欄共 5 篇，實測比較四款 AI 網頁生成工具並產出可跟做的實作教學</li><li>跨部門專案溝通，將各單位需求轉化為工程與系統可執行的內容</li></ul>
             <div data-tags-group hidden style="display:flex;flex-wrap:wrap;gap:8px"><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">使用者研究</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">Vibe Coding</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">n8n</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:500;background:#fff">內部培訓</span></div>
           </div></div>
         </article>
@@ -605,16 +610,16 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
               <span style="background:#FFD34E;border-radius:999px;padding:5px 13px;font-size:12px;font-weight:700">精選案例</span>
               <span style="font-size:11.5px;color:#3B342E">2025 iF 設計獎</span>
             </div>
-            <h3 style="margin:0 0 8px;font-size:clamp(21px,2.6vw,30px);font-weight:900;line-height:1.45">Aicast 有聲內容製作平台</h3>
-            <p style="margin:0 0 18px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#3B342E">AI SaaS ・ 專案經理 ・ 2024/5 – 2025/3</p>
-            <p data-case-long style="margin:0 0 14px;font-size:clamp(14px,1.2vw,16px);line-height:1.85;color:#2C2620">製作一本多角色有聲書，需要配音員、錄音室與大量協調成本。Aicast 用三項 AI 技術把這件事自動化：初期以 8 位 AI 配音員演繹 42 種聲音，多人配音有聲書的製作時間最多減少 90%。</p>
-            <p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">我負責需求定義、UI 規劃、測試驗證與跨職能外包管理，並主導申請 <strong>2025 iF 設計獎</strong>。</p>
+            <h3 style="margin:0 0 8px;font-size:clamp(21px,2.6vw,30px);font-weight:900;line-height:1.45">Aicast 有聲內容製作平台</h3><p data-case-sum style="margin:0 0 18px;font-size:clamp(15px,1.35vw,17px);line-height:1.7;color:#2C2620">把內容製作流程，轉化為更有效率的 AI 有聲內容生產體驗。</p>
+            
+            <dl data-pdo style="margin:0 0 16px;display:flex;flex-direction:column;border-top:1px solid rgba(20,17,15,.13)"><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(20,17,15,.13)"><dt style="flex:0 0 auto;width:3.4em;margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;line-height:2.05;font-weight:600;color:#6B635B">問題</dt><dd style="margin:0;min-width:0;font-size:14.5px;line-height:1.85;color:#2C2620">多角色有聲書的配音與錄音成本過高，多數作品只能由單人朗讀完成</dd></div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(20,17,15,.13)"><dt style="flex:0 0 auto;width:3.4em;margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;line-height:2.05;font-weight:600;color:#6B635B">判斷</dt><dd style="margin:0;min-width:0;font-size:14.5px;line-height:1.85;color:#2C2620">先把核心的角色辨識與配音修穩，再擴充功能——這一層不可信，周邊做再多都留不住人</dd></div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(20,17,15,.13)"><dt style="flex:0 0 auto;width:3.4em;margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;line-height:2.05;font-weight:700;color:#14110F">結果</dt><dd style="margin:0;min-width:0;font-size:14.5px;line-height:1.85;color:#2C2620;font-weight:700"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#FFD34E;margin-right:8px"></span>修復 200+ 個問題並建立測試機制，獲 2025 iF 設計獎</dd></div></dl>
+            <p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">我負責需求定義、UI 規劃、測試驗證與跨職能外包管理，獎項申請也由我主導。</p>
             <div data-tags-group hidden style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px"><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">需求定義</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">外包協作管理</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">UI 設計</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">AI 配音員徵選</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">音效資料庫</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">iF 設計獎主導</span></div>
             <a href="./case/aicast.html" style="margin-top:22px;display:inline-block;background:#14110F;color:#FAF7F0;border:2px solid #14110F;border-radius:999px;padding:14px 26px;font-weight:700;font-size:15px;box-shadow:4px 4px 0 #FFD34E;transition:transform .15s ease,box-shadow .15s ease">閱讀完整案例 →</a>
           </div>
         </article>
 
-        <article style="position:relative;background:#fff;border:2.5px solid #14110F;border-radius:24px;box-shadow:7px 7px 0 #14110F;padding:clamp(20px,2.6vw,32px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(20px,2.6vw,36px);align-items:center;transition:transform .16s ease,box-shadow .16s ease"data-hv="h10">
+        <article style="position:relative;background:#fff;border:2.5px solid #14110F;border-radius:24px;box-shadow:7px 7px 0 #14110F;padding:clamp(20px,2.6vw,32px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(20px,2.6vw,36px);align-items:center;transition:transform .16s ease,box-shadow .16s ease" data-hv="h8"><div style="min-width:0"><img src="./assets/case/auto-image/cover.jpg" alt="自動配圖　調整後的搜尋結果畫面" loading="lazy" decoding="async" style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;border-radius:16px;display:block" /></div><div style="min-width:0"><div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px"><span style="background:#DDEEFF;border-radius:999px;padding:5px 13px;font-size:12px;font-weight:700">精選案例</span><span style="font-size:11.5px;color:#3B342E">聯經數位　新聞編務系統</span></div><h3 style="margin:0 0 8px;font-size:clamp(21px,2.6vw,30px);font-weight:900;line-height:1.45">自動配圖　從編輯的回饋到產品優化</h3><p data-case-sum style="margin:0 0 18px;font-size:clamp(15px,1.35vw,17px);line-height:1.7;color:#2C2620">讓編輯的真實回饋，成為產品優化的依據。</p><dl data-pdo style="margin:0 0 16px;display:flex;flex-direction:column;border-top:1px solid rgba(20,17,15,.13)"><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(20,17,15,.13)"><dt style="flex:0 0 auto;width:3.4em;margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;line-height:2.05;font-weight:600;color:#6B635B">問題</dt><dd style="margin:0;min-width:0;font-size:14.5px;line-height:1.85;color:#2C2620">自動配圖上線後使用率不如預期，但使用者說的「不好用」不是同一件事</dd></div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(20,17,15,.13)"><dt style="flex:0 0 auto;width:3.4em;margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;line-height:2.05;font-weight:600;color:#6B635B">判斷</dt><dd style="margin:0;min-width:0;font-size:14.5px;line-height:1.85;color:#2C2620">先訪談再動手——把回饋歸納成四類，先修產品可信度，再處理曝光與習慣</dd></div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(20,17,15,.13)"><dt style="flex:0 0 auto;width:3.4em;margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;line-height:2.05;font-weight:700;color:#14110F">結果</dt><dd style="margin:0;min-width:0;font-size:14.5px;line-height:1.85;color:#2C2620;font-weight:700"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#DDEEFF;margin-right:8px"></span>排序邏輯重新定義為「相關度＋時效性＋可用性」，改版後使用率回升</dd></div></dl><p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">我負責使用者訪談、問題分類、優化優先順序與圖片排序邏輯定義，技術實作由開發團隊執行。</p><a href="./case/auto-image.html" style="margin-top:22px;display:inline-block;background:#14110F;color:#FAF7F0;border:2px solid #14110F;border-radius:999px;padding:14px 26px;font-weight:700;font-size:15px;box-shadow:4px 4px 0 #DDEEFF;transition:transform .15s ease,box-shadow .15s ease">閱讀完整案例 →</a></div></article><article style="position:relative;background:#fff;border:2.5px solid #14110F;border-radius:24px;box-shadow:7px 7px 0 #14110F;padding:clamp(20px,2.6vw,32px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(20px,2.6vw,36px);align-items:center;transition:transform .16s ease,box-shadow .16s ease"data-hv="h10">
           <div style="min-width:0">
             <img src="./assets/case/anfu/cover.jpg" alt="安否通 未回報優先佇列看板" loading="lazy" decoding="async" style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;border-radius:16px;display:block" />
           </div>
@@ -623,10 +628,10 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
               <span style="background:#CDBCFF;border-radius:999px;padding:5px 13px;font-size:12px;font-weight:700">精選案例</span>
               <span style="font-size:11.5px;color:#3B342E">數位發展部　全國公民科技試驗場域推廣案</span>
             </div>
-            <h3 style="margin:0 0 8px;font-size:clamp(21px,2.6vw,30px);font-weight:900;line-height:1.45">安否通　弱勢機構災情即時回報平台</h3>
-            <p style="margin:0 0 18px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#3B342E">公民科技提案 ・ 產品與專案管理 ・ 2026/8</p>
-            <p data-case-long style="margin:0 0 14px;font-size:clamp(14px,1.2vw,16px);line-height:1.85;color:#2C2620">震災後，市府得一間一間打電話確認弱勢機構的狀況，全數清查要數小時，應變人力全卡在撥號上。我們把清查方向反轉：系統先點名、機構一鍵回報，市府只處理未回報的那幾家——工作量從機構總數變成異常數。</p>
-            <p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">兩人團隊提案，通過文件初審並進入<strong>數位發展部徵案決選</strong>。我負責問題定義、流程設計、介面設計與 P0 範圍切分。</p>
+            <h3 style="margin:0 0 8px;font-size:clamp(21px,2.6vw,30px);font-weight:900;line-height:1.45">安否通　弱勢機構災情即時回報平台</h3><p data-case-sum style="margin:0 0 18px;font-size:clamp(15px,1.35vw,17px);line-height:1.7;color:#2C2620">從真實的社會需求出發，設計更即時的災情回報方式。</p>
+            
+            <dl data-pdo style="margin:0 0 16px;display:flex;flex-direction:column;border-top:1px solid rgba(20,17,15,.13)"><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(20,17,15,.13)"><dt style="flex:0 0 auto;width:3.4em;margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;line-height:2.05;font-weight:600;color:#6B635B">問題</dt><dd style="margin:0;min-width:0;font-size:14.5px;line-height:1.85;color:#2C2620">震災後市府逐一撥號清查全部機構，全數確認預估要數小時</dd></div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(20,17,15,.13)"><dt style="flex:0 0 auto;width:3.4em;margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;line-height:2.05;font-weight:600;color:#6B635B">判斷</dt><dd style="margin:0;min-width:0;font-size:14.5px;line-height:1.85;color:#2C2620">把清查方向反轉——系統點名、機構一鍵回報，市府只處理未回報的那幾家</dd></div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(20,17,15,.13)"><dt style="flex:0 0 auto;width:3.4em;margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;line-height:2.05;font-weight:700;color:#14110F">結果</dt><dd style="margin:0;min-width:0;font-size:14.5px;line-height:1.85;color:#2C2620;font-weight:700"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#CDBCFF;margin-right:8px"></span>通過文件初審，進入數位發展部徵案決選</dd></div></dl>
+            <p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">兩人團隊提案，我負責問題定義、流程設計、介面設計與 P0 範圍切分。</p>
             <div data-tags-group hidden style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px"><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">問題定義</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">流程設計</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">P0 範圍切分</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">UI／UX</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">資安與治理規劃</span><span style="border:1.5px solid #14110F;border-radius:999px;padding:5px 12px;font-size:12.5px;background:#FAF7F0">兩人團隊</span></div>
             <a href="./case/anfu.html" style="margin-top:22px;display:inline-block;background:#14110F;color:#FAF7F0;border:2px solid #14110F;border-radius:999px;padding:14px 26px;font-weight:700;font-size:15px;box-shadow:4px 4px 0 #CDBCFF;transition:transform .15s ease,box-shadow .15s ease">閱讀完整案例 →</a>
           </div>
@@ -758,7 +763,17 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
         <p style="margin:0;font-size:clamp(15px,1.4vw,19px);font-weight:700;color:#2C2620;line-height:1.7">我能做什麼</p>
       </div>
 
-      <div data-skills style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:clamp(18px,2.2vw,26px);align-items:stretch">
+      <div data-skill="04" style="position:relative;background:#FFD34E;border:2px solid #14110F;border-radius:22px;box-shadow:6px 6px 0 #14110F;padding:clamp(28px,3.4vw,40px) clamp(22px,2.6vw,34px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(18px,2.6vw,40px);align-items:start">
+        <span style="position:absolute;top:-18px;left:24px;width:44px;height:44px;border-radius:50%;background:#14110F;color:#FAF7F0;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700">04</span>
+        <div style="min-width:0;display:flex;flex-direction:column;gap:12px">
+          <h3 style="margin:6px 0 0;font-size:clamp(24px,2.8vw,34px);font-weight:900;line-height:1.35">AI 落地與原型實作</h3>
+          <p style="margin:0;font-size:clamp(14.5px,1.3vw,16.5px);font-weight:500;line-height:1.8;color:#3B342E">把 AI 從「聽說很好用」，變成同事每天在用</p>
+        </div>
+        <div style="min-width:0;display:flex;flex-direction:column;gap:16px">
+          <ul style="margin:0;padding-left:1.05em;display:flex;flex-direction:column;gap:7px;font-size:13.5px;line-height:1.75;color:#2C2620"><li>導入 AI 工具至實際工作流程，並設計與優化 Prompt</li><li>推動 AI coding 內部分享與實作培訓，降低非工程人員的門檻</li><li>運用 AI Coding 將想法直接做成可互動的網頁與 PWA 原型</li></ul>
+          <div data-tags-group hidden style="display:flex;flex-wrap:wrap;gap:6px"><span style="background:rgba(255,255,255,.62);border-radius:999px;padding:4px 11px;font-size:11.5px">Vibe Coding</span><span style="background:rgba(255,255,255,.62);border-radius:999px;padding:4px 11px;font-size:11.5px">n8n</span><span style="background:rgba(255,255,255,.62);border-radius:999px;padding:4px 11px;font-size:11.5px">Prompt 設計</span><span style="background:rgba(255,255,255,.62);border-radius:999px;padding:4px 11px;font-size:11.5px">內部培訓</span></div>
+        </div>
+      </div><p data-skills-sub style="margin:clamp(30px,3.4vw,44px) 0 clamp(20px,2.2vw,26px);font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;color:#6B635B">支撐這件事的三項基本功</p><div data-skills style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:clamp(18px,2.2vw,26px);align-items:stretch">
         <div data-skill="01" style="position:relative;display:flex;flex-direction:column;gap:11px;background:#DDEEFF;border:2px solid #14110F;border-radius:20px;box-shadow:5px 5px 0 #14110F;padding:24px 20px 20px">
           <span style="position:absolute;top:-16px;left:18px;width:38px;height:38px;border-radius:50%;background:#14110F;color:#FAF7F0;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700">01</span>
           <div data-skill-head><h3 style="margin:6px 0 0;font-size:clamp(19px,2.1vw,24px);font-weight:900;line-height:1.4">產品規劃</h3>
@@ -782,17 +797,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
         </div>
       </div>
 
-      <div data-skill="04" style="position:relative;margin-top:clamp(26px,3vw,38px);background:#FFD34E;border:2px solid #14110F;border-radius:22px;box-shadow:6px 6px 0 #14110F;padding:clamp(28px,3.4vw,40px) clamp(22px,2.6vw,34px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(18px,2.6vw,40px);align-items:start">
-        <span style="position:absolute;top:-18px;left:24px;width:44px;height:44px;border-radius:50%;background:#14110F;color:#FAF7F0;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700">04</span>
-        <div style="min-width:0;display:flex;flex-direction:column;gap:12px">
-          <h3 style="margin:6px 0 0;font-size:clamp(24px,2.8vw,34px);font-weight:900;line-height:1.35">AI 落地與原型實作</h3>
-          <p style="margin:0;font-size:clamp(14.5px,1.3vw,16.5px);font-weight:500;line-height:1.8;color:#3B342E">把 AI 從「聽說很好用」，變成同事每天在用</p>
-        </div>
-        <div style="min-width:0;display:flex;flex-direction:column;gap:16px">
-          <ul style="margin:0;padding-left:1.05em;display:flex;flex-direction:column;gap:7px;font-size:13.5px;line-height:1.75;color:#2C2620"><li>導入 AI 工具至實際工作流程，並設計與優化 Prompt</li><li>推動 AI coding 內部分享與實作培訓，降低非工程人員的門檻</li><li>運用 AI Coding 將想法直接做成可互動的網頁與 PWA 原型</li></ul>
-          <div data-tags-group hidden style="display:flex;flex-wrap:wrap;gap:6px"><span style="background:rgba(255,255,255,.62);border-radius:999px;padding:4px 11px;font-size:11.5px">Vibe Coding</span><span style="background:rgba(255,255,255,.62);border-radius:999px;padding:4px 11px;font-size:11.5px">n8n</span><span style="background:rgba(255,255,255,.62);border-radius:999px;padding:4px 11px;font-size:11.5px">Prompt 設計</span><span style="background:rgba(255,255,255,.62);border-radius:999px;padding:4px 11px;font-size:11.5px">內部培訓</span></div>
-        </div>
-      </div>
+      
     </div>
   </section>
 

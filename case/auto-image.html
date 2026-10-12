@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>自動配圖　從編輯的回饋到產品優化｜張詩沂</title>
+<meta name="description" content="新聞編務系統的 AI 自動配圖功能，上線後使用率不如預期。我依使用量數據訪談記者與編輯，把「不好用」拆成四類問題，重排優化順序，改版後使用率回升。" />
+<meta property="og:title" content="自動配圖　從編輯的回饋到產品優化｜張詩沂" />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://muchang32.github.io/portfolio/assets/og-cover.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png" />
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+body{margin:0;background:#FAF7F0;color:#14110F;font-family:"Noto Sans TC","Space Grotesk",sans-serif;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:#6D4AFF}
+header.bar{position:sticky;top:0;z-index:20;background:rgba(250,247,240,.94);backdrop-filter:blur(10px)}
+header.bar div{max-width:880px;margin:0 auto;padding:14px clamp(16px,4vw,28px);display:flex;align-items:center}
+.back{font-weight:700;font-size:15px;color:#14110F;text-decoration:none}
+.back:hover{color:#6D4AFF}
+main{max-width:880px;margin:0 auto;padding:clamp(24px,4vw,48px) clamp(16px,4vw,28px) 88px}
+.wrap{max-width:100%;text-align:left}
+h1{font-size:clamp(28px,4.6vw,44px);line-height:1.25;letter-spacing:-.02em;margin:0 0 18px}
+h2{font-size:clamp(20px,2.6vw,27px);margin:52px 0 14px;line-height:1.35}
+h1+p+h2,h1+h2{margin-top:34px}
+h3{font-size:clamp(17px,2vw,20px);margin:36px 0 10px}
+p,li{font-size:16.5px}
+blockquote{margin:26px 0;padding:2px 0 2px 20px;border-left:3px solid #FFD34E;color:#3E3932}
+blockquote p{margin:6px 0}
+figure{margin:32px 0}
+figure img{width:100%;height:auto;border-radius:14px;display:block}
+figure video{width:100%;height:auto;border-radius:14px;display:block;background:#14110F}
+figure+p em{display:block;text-align:left;color:#6E6A85;font-size:14px;margin-top:-22px}
+code{font-family:'IBM Plex Mono',monospace;font-size:14px;background:#FFF6D9;padding:2px 6px;border-radius:5px}
+pre{background:#14110F;color:#FAF7F0;padding:18px 20px;border-radius:14px;overflow-x:auto}
+pre code{background:none;color:inherit;font-size:13.5px;line-height:1.7}
+.tw{overflow-x:auto;margin:24px 0}
+table{border-collapse:collapse;width:100%;min-width:420px}
+th,td{border-bottom:1px solid #E3DEF2;padding:10px 12px;text-align:left;font-size:15px;vertical-align:top}
+th{background:#FFF6D9;font-weight:700}
+hr{border:0;border-top:1px solid #E3DEF2;margin:44px 0}
+.foot{max-width:880px;margin:64px auto 0;padding-top:26px;border-top:1px solid #E3DEF2;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:15px}
+.foot a{font-weight:700;text-decoration:none;color:#14110F}
+.foot a:hover{color:#6D4AFF}
+:focus-visible{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}
+@media (max-width:640px){p,li{font-size:16px}main{padding-bottom:64px}}
+
+.kicker{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+ letter-spacing:.14em;background:#14110F;color:#FAF7F0;padding:6px 14px;border-radius:999px;
+ margin:0 0 18px}
+h2 span{box-shadow:inset 0 -.34em 0 #FFD34E}
+h3{padding-left:13px;border-left:4px solid #FFD34E}
+/* 摘要：無框，左邊一條亮黃直條 */
+blockquote.summary{margin:0 0 26px;padding:4px 0 4px 22px;border-left:0;position:relative;
+ font-size:16px;color:#2C2620}
+blockquote.summary::before{content:'';position:absolute;left:0;top:2px;bottom:2px;width:7px;
+ background:#FFD34E;border-radius:3px}
+/* 其餘引言維持首頁那種卡片 */
+blockquote:not(.summary){margin:30px 0;padding:clamp(20px,2.6vw,28px);background:#FFF6D9;
+ border:2px solid #14110F;border-radius:20px;box-shadow:5px 5px 0 #14110F;color:#2C2620}
+/* 角色／類型：白底圓角框加陰影 */
+dl.meta{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;margin:0 0 34px;
+ padding:clamp(20px,2.4vw,26px);background:#FFFFFF;border:2px solid #14110F;border-radius:20px;
+ box-shadow:5px 5px 0 #14110F}
+dl.meta dt{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;
+ color:#6E6A85;white-space:nowrap;padding-top:4px}
+dl.meta dd{margin:0;font-size:15px;line-height:1.75}
+@media (max-width:480px){dl.meta{grid-template-columns:1fr;gap:3px 0}
+ dl.meta dd{margin-bottom:10px}}
+th{background:#FFD34E;font-weight:700;border-bottom:2px solid #14110F}
+table{border:2px solid #14110F;border-radius:14px;overflow:hidden;border-collapse:separate;
+ border-spacing:0}
+td{border-bottom:1px solid rgba(20,17,15,.12)}
+tbody tr:last-child td{border-bottom:0}
+main ul{list-style:none;padding-left:0}
+main ul li{position:relative;padding-left:24px}
+main ul li::before{content:'';position:absolute;left:3px;top:.62em;width:9px;height:9px;
+ background:#FFD34E;border:1.5px solid #14110F;border-radius:3px}
+/* 影片容器：維持 16:9，播完收回封面 */
+.yt{position:relative;width:100%;aspect-ratio:16/9;margin:32px 0;border-radius:14px;
+ overflow:hidden;background:#14110F}
+.yt video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+</style>
+</head>
+<body>
+<header class="bar"><div>
+  <a class="back" href="../index.html#case">← 回到案例</a>
+</div></header>
+<main><div class="wrap">
+<p class="kicker">精選案例</p>
+<h1>自動配圖　從編輯的回饋到產品優化</h1>
+<blockquote class="summary"><p>新聞編務系統的 AI 自動配圖功能，上線後使用率不如預期。我依使用量數據訪談記者與編輯，把「不好用」拆成四類問題，重排優化順序，改版後使用率回升。</p></blockquote>
+<dl class="meta"><dt>角色</dt><dd>主導功能改版（聯經數位，資訊管理師）</dd><dt>類型</dt><dd>內部產品優化 ・ 新聞編務系統</dd><dt>團隊</dt><dd>跨職能協作，技術由開發團隊執行</dd><dt>負責</dt><dd>使用者訪談 ・ 問題分類 ・ 優化優先順序 ・ 圖片排序邏輯定義</dd></dl>
+<hr />
+<h2><span>問題</span></h2>
+<p>在新聞製作流程裡，配圖一直是耗時的環節。時間壓力下，編輯得到報系新聞資料庫翻找、回自己的圖庫撈，真的找不到就用示意圖硬塞，只為了讓新聞列表有圖。</p>
+<p>2023 年 9 月，編務系統推出第一版「自動配圖」，後來也整合進記者發稿 app。功能做完了，<strong>但整體使用率不如預期。</strong></p>
+<p>這時候最容易做的判斷是「介面不好用，改介面」或「AI 不夠準，調提示詞」。但使用率低可能來自任何一個環節——功能本身、搜尋品質、或根本沒人知道它在哪。在知道問題出在哪之前動手，只是在猜。</p>
+<p>所以我先去問。</p>
+<hr />
+<h2><span>判斷與取捨</span></h2>
+<h3>先訪談，而不是先開規格</h3>
+<p>我依照使用量數據挑選受訪對象，訪談記者與編輯，問的是實際使用情境與放棄的那個瞬間。</p>
+<p>幾場訪談下來，回饋收斂成四類：</p>
+<div class="tw"><table><thead><tr><th>使用者說的</th><th>問題的本質</th></tr></thead><tbody><tr><td>「搜金秀賢結果跑出陳其邁，跟金秀賢完全沒有關係。」</td><td>圖像與新聞主題的相關度不足</td></tr><tr><td>「搜尋結果的圖片太少了，還有很多一樣的照片或限制使用的照片。」</td><td>圖庫廣度與可用性不足</td></tr><tr><td>「我只想搜健保，卻冒出一堆無關標籤，還要一個一個刪掉。」</td><td>標籤精準度不足，反而增加工作量</td></tr><tr><td>「我其實不知道這功能入口在哪。」「我點過一次，覺得速度不快，就回去用典藏了。」</td><td>使用習慣沒有養成</td></tr></tbody></table></div>
+<p>這四類裡，<strong>前三類是產品問題，第四類不是。</strong></p>
+<figure><img src="../assets/writing/01-auto-image/01.jpg" alt="" loading="lazy" /></figure>
+<p><em>調整前：較容易出現與主題不相關的圖片</em></p>
+<h3>先修產品，再談推廣</h3>
+<p>第四類（不知道入口、試過一次就放棄）看起來最好解——辦個教學、發個公告就行，成本最低、最快看到數字。</p>
+<p>但我判斷順序要反過來。「試過一次就放棄」代表他們已經體驗過了，而且不滿意。如果功能本身還沒修好就去推廣，只會讓更多人完成他們的第一次失望，第二次要再把人找回來更難。</p>
+<p>所以優化順序排成：先把搜尋結果修到可信，再處理曝光與習慣。</p>
+<h3>排序不能只看「相關度」</h3>
+<p>重新定義圖片排序邏輯時，最直覺的做法是純粹依新聞相關度排。但訪談裡有一句話改變了我的想法——「<strong>還有很多一樣的照片或限制使用的照片</strong>」。</p>
+<p>對編輯來說，一張相關度很高但版權受限、不能用的圖，跟沒找到是一樣的。相關度高不等於幫上忙。</p>
+<p>所以排序邏輯定成三項並列：<strong>新聞相關度 ＋ 時效性 ＋ 可用性</strong>。可用性之所以進到排序裡，不是技術考量，是因為使用者的任務不是「找到一張相關的圖」，而是「找到一張現在就能用的圖」。</p>
+<figure><img src="../assets/writing/01-auto-image/02.jpg" alt="" loading="lazy" /></figure>
+<p><em>調整後：搜尋結果與主題的相關度明顯提升</em></p>
+<hr />
+<h2><span>執行</span></h2>
+<p>依照排定的順序，開發團隊執行四項調整：</p>
+<ol><li><strong>圖像理解增強</strong>——加入視覺模型，讓系統對圖片內容的判別與分類更精確。</li><li><strong>擴充人臉辨識圖庫</strong>——增加可識別名單，搜尋名人時更準。</li><li><strong>重新設計 AI 標籤機制</strong>——過濾多餘標籤，讓搜尋結果更貼近新聞主題。</li><li><strong>擴充圖片來源與排序邏輯</strong>——來源變多，排序改為新聞相關度＋時效性＋可用性。</li></ol>
+<p>技術實作由開發團隊負責；我負責的是問題定義、優化順序，以及排序邏輯要依據什麼。</p>
+<hr />
+<h2><span>結果</span></h2>
+<p>改版後使用率回升。</p>
+<p>誠實地說，<strong>這裡我沒有可以拿出來的數字。</strong>當時沒有在改版前先把基線與目標定義清楚，所以「回升」是趨勢，不是可驗證的幅度。這是我自己在這個案子上沒做好的部分。</p>
+<p>訪談本身倒是有明確的產出：四類問題、一份排好的優化順序，以及一條可以寫進規格的排序規則。這些在改版結束後仍然可以被引用。</p>
+<hr />
+<h2><span>反思</span></h2>
+<p><strong>「不好用」是一種感受，不是一個問題。</strong></p>
+<p>同樣三個字，在這個案子裡指向四件完全不同的事——有的是模型判別不準，有的是圖庫不夠大，有的是標籤設計增加了工作量，有的根本不是產品問題，是沒人知道它存在。如果當初照字面去「改介面」或「調提示詞」，大概會修到其中一塊，然後繼續不解。</p>
+<p><strong>使用者描述的是症狀，我的工作是找出病灶。</strong>這件事沒有捷徑，只能去問、去歸類、去排序。</p>
+<p>另一個學到的是：<strong>可用性應該和相關度一起被當成排序條件。</strong>產品常把「做得準」當成目標，但使用者要的是「任務能完成」。一張不能用的圖，再準也沒有價值。</p>
+<p>還沒解決的也記在這裡——編輯希望有更多示意圖、希望能整合自己拍的照片與攝影中心素材、也期待 AI 直接生成新聞需要的示意圖。自動配圖目前的定位不是替編輯決定用哪張照片，而是在分秒必爭的發稿現場，讓他們更快找到一張能用的圖。</p>
+<p>這件事後來也寫成了專欄：<a href="../writing/01-auto-image.html">自動配圖升級！那些編輯說的話，變成了我們的最佳化</a></p>
+</div>
+<nav class="foot">
+  <a href="../index.html#case">← 回到案例</a>
+  <a href="../case/anfu.html">安否通 →</a>
+</nav>
+</main>
+
+</body>
+</html>

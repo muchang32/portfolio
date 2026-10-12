@@ -237,10 +237,13 @@ for i, a in enumerate(ARTS):
     t = build(f'writing/{a}.md', f'writing/{a}.html', '企業內部刊物專欄', 'writing', '回到專欄', prev, nxt, 1)
     print('writing/', a, '→', t)
 
-CASES = [('aicast-case-study.md','case/aicast.html','Aicast'), ('anfu-case-study.md','case/anfu.html','安否通')]
-for i,(src,dst,name) in enumerate(CASES):
-    other = CASES[1-i]
+# 三個案例各自回答一個問題，順序與首頁一致
+CASES = [('aicast-case-study.md', 'case/aicast.html', 'Aicast'),
+         ('auto-image-case-study.md', 'case/auto-image.html', '自動配圖'),
+         ('anfu-case-study.md', 'case/anfu.html', '安否通')]
+for i, (src, dst, name) in enumerate(CASES):
+    nxt = CASES[(i + 1) % len(CASES)]
     t = build(src, dst, '精選案例', 'case', '回到案例',
-              ('../index.html#case','← 回到案例'), (f'../{other[1]}', f'{other[2]} →'), 1,
+              ('../index.html#case', '← 回到案例'), (f'../{nxt[1]}', f'{nxt[2]} →'), 1,
               variant='case')
     print(dst, '→', t)
