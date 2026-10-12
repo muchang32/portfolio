@@ -205,8 +205,8 @@ C.append(('舊版 About 文字已清乾淨',
           '於是，我開始往產品的上游走' not in h
           and '產品沒有一套可以完美複製的 SOP' not in h
           and '十年下來' not in h))
-C.append(('產品理念卡換成新的定位句',
-          '我是一個 PM，只是工具箱比一般 PM 更完整。' in h
+C.append(('產品理念卡換成新的主張句',
+          '讓產品思維，串起設計、技術與 AI。' in h
           and 'data-quote-body' in h))
 for desc, ok in C[-4:]:
     (fails if not ok else warns).append(desc) if not ok else None
