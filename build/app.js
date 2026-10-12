@@ -7,9 +7,9 @@
   const state = {
     menuOpen: false, careerOpen: false, designOpen: false, showTop: false, narrow: false,
     copied: false, lab: null, labMore: false,
-    n: { years: 10, mvp: 1, voice: 30, product: 8 }
+    n: { years: 10, mvp: 1, partners: 11, product: 8 }
   };
-  const TARGETS = { years: 10, mvp: 1, voice: 30, product: 8 };
+  const TARGETS = { years: 10, mvp: 1, partners: 11, product: 8 };
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const derive = () => ({
@@ -34,7 +34,7 @@
     labTags: state.lab ? state.lab.tags : [],
     careerBtnLabel: state.careerOpen ? '收合早期經歷 ↑' : '展開完整經歷 ↓',
     copyLabel: state.copied ? '已複製 ✓' : '複製 Email',
-    nYears: state.n.years, nMvp: state.n.mvp, nVoice: state.n.voice, nProduct: state.n.product
+    nYears: state.n.years, nMvp: state.n.mvp, nPartners: state.n.partners, nProduct: state.n.product
   });
 
   function render() {

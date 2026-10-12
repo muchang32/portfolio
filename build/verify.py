@@ -45,10 +45,15 @@ C = [
    len(set(re.findall(r'data-img="\./assets/ai-lab/([\w-]+\.jpg)"', h))) == 8),
   ('彈窗外框與捲動層分開', has('data-modal-scroll') and has('top:-14px;right:-14px')),
   ('換卡時捲回最上方', "box.scrollTop = 0" in h),
-  ('AI Lab 旅遊三張排在最後',
-   (lambda seg: [t for t in re.findall(r'data-title="([^"]*)"', seg)][-3:]
-    == ['Travel Spot 景點自動萃取', '冬富士之旅 2026', '九州縱斷之旅 2026'])
+  ('AI Lab 兩層分組與順序正確',
+   (lambda seg: re.findall(r'data-title="([^"]*)"', seg) == [
+       'LiveLingo 即時字幕翻譯', 'AI 精選寶箱', 'Video AI 分析展示平台',
+       'Travel Spot 景點自動萃取',
+       '要不要來一杯', '我的財務管家', '冬富士之旅 2026', '九州縱斷之旅 2026'])
    (h[h.index('id="ai-lab"'):h.index('id="writing"')])),
+  ('AI Lab 兩行分組標題', h.count('<p data-lab-head ') == 2),
+  ('手機先顯示 6 張的序數已隨標題後推',
+   'openLab"]:nth-child(n+9)' in h and 'openLab"]:nth-child(n+7)' not in h),
   ('彈窗封面已綁定', has('data-img-bind="labImg"') and len(re.findall(r'data-img="', h)) == 8),
   ('示範影片有標明素材來源', has('黃仁勳主題演講公開直播') and has('非上述活動現場') and has('data-bind="labVCap"')),
   ('LiveLingo 彈窗放示範錄影',

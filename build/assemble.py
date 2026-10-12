@@ -73,11 +73,37 @@ for _label, _href, _id, _desc in _ARC:
         f'font-size:14px;font-weight:700;color:#14110F;text-decoration:none">{_label}'
         f'<span class="tip-bubble" id="{_id}" role="tooltip">{_desc}</span></a>'), 1)
 
+# ---- About 精簡：刪掉與前後重複的那一段，並把收尾的列舉縮短 ----
+# 「為什麼做／做了帶來什麼價值」前一段已經用更具體的問句講過，這段是同義重述
+_DUP = ('<p style="margin:0">從設計，到使用者體驗，再到產品與專案管理，'
+        '我逐漸參與的不只是「怎麼做」，也開始思考「為什麼做」，'
+        '以及「做了之後能帶來什麼價值」。</p>')
+assert body.count(_DUP) == 1, '找不到 About 要刪的重複段'
+body = body.replace(_DUP, '', 1)
+
+_LONG_TAIL = ('十年下來，我在產品的不同層次都留下了足跡：從理解使用者的需求與痛點，'
+              '到使用者體驗、介面與視覺細節，再到產品規劃、專案執行，以及商業價值與組織決策。')
+assert body.count(_LONG_TAIL) == 1, '找不到 About 的收尾段'
+body = body.replace(_LONG_TAIL,
+                    '十年下來，從使用者的需求與痛點，到介面與視覺細節，'
+                    '再到產品規劃與專案執行，我在不同層次都留下了足跡。', 1)
+
 # ---- 職涯歷程容器寬度對齊其他區塊 ----
 body = body.replace('max-width:940px', 'max-width:1240px')
 
+# 第四格原本是「30+ 位 AI 配音員徵選與訓練」——那是執行力，不是產品力。
+# 換成跨職能協作的人數（翻譯 5、工讀 3、平面 3，見 Aicast 案例）
+_OLD_STAT = ('<span data-bind="nVoice"></span>'
+             '<span style="font-size:.55em;margin-left:3px">+ 位</span>')
+assert body.count(_OLD_STAT) == 1, '找不到第四格數據'
+body = body.replace(_OLD_STAT,
+                    '<span data-bind="nPartners"></span>'
+                    '<span style="font-size:.55em;margin-left:3px">位</span>', 1)
+assert body.count('AI 配音員徵選與訓練') == 1, '第四格標籤比對不唯一'
+body = body.replace('AI 配音員徵選與訓練', '跨職能協作夥伴', 1)
+
 # 靜態數字：JS 未執行時仍顯示正確值
-for k, v in {'nYears':'10','nMvp':'1','nVoice':'30','nProduct':'8'}.items():
+for k, v in {'nYears':'10','nMvp':'1','nPartners':'11','nProduct':'8'}.items():
     body = body.replace(f'<span data-bind="{k}"></span>', f'<span data-bind="{k}">{v}</span>')
 
 # ---- 標籤收進「詳細」：職涯歷程與精選案例的標籤預設不顯示 ----
@@ -923,18 +949,53 @@ def _card_span(marker):
     start = body.rindex('<div ', 0, i)
     return start, _close_of(body, start)
 
-# Travel Spot 與 AI 精選寶箱對調：網頁工具在前，旅遊相關的排在一起
-_t_start, _t_end = _card_span('data-href="https://miyu0603.github.io/travel-spot-app/"')
-_c_start, _c_end = _card_span('data-href="https://muchang32.github.io/ai-treasure-chest/"')
-assert _t_end <= _c_start, '兩張卡順序不如預期，取消對調以免破壞結構'
-_travel, _mid, _chest = body[_t_start:_t_end], body[_t_end:_c_start], body[_c_start:_c_end]
-body = body[:_t_start] + _chest + _mid + _travel + body[_c_end:]
+# AI Lab 分成兩層：前四張是用 AI 做出以前做不到的事，後四張是做完整、自己天天在用的
+# （同時取代原本 Travel Spot↔精選寶箱、九州↔冬富士 的兩次對調）
+_LAB_GROUPS = [
+    ('AI EXPERIMENTS　AI 能力實驗', [
+        'LiveLingo 即時字幕翻譯',
+        'AI 精選寶箱',
+        'Video AI 分析展示平台',
+        'Travel Spot 景點自動萃取',
+    ]),
+    ('PERSONAL PRODUCTS　自製產品', [
+        '要不要來一杯',
+        '我的財務管家',
+        '冬富士之旅 2026',
+        '九州縱斷之旅 2026',
+    ]),
+]
 
-_k_start, _k_end = _card_span('data-href="https://miyu0603.github.io/kyushu-2026/"')
-_f_start, _f_end = _card_span('data-href="https://muchang32.github.io/winter-fuji-hakone-2026/"')
-assert _k_end <= _f_start, '兩張卡不相鄰，取消對調以免破壞結構'
-_kyushu, _between, _fuji = body[_k_start:_k_end], body[_k_end:_f_start], body[_f_start:_f_end]
-body = body[:_k_start] + _fuji + _between + _kyushu + body[_f_end:]
+def _lab_head(text, first):
+    return (f'<p data-lab-head style="grid-column:1/-1;'
+            f'margin:{"0" if first else "clamp(18px,2vw,26px)"} 0 0;'
+            "font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;"
+            f'color:#6B635B">{text}</p>')
+
+_lg0 = body.index('<div data-lab-grid ')
+_lg1 = _close_of(body, _lg0)
+_inner0 = body.index('>', _lg0) + 1
+_grid = body[_inner0:_lg1 - len('</div>')]
+
+# 以標題定位每張卡，順便確認八張卡剛好鋪滿整個網格（中間只有空白）
+_spans = {}
+for _, _titles in _LAB_GROUPS:
+    for _t in _titles:
+        _h = _grid.index(f'>{_t}</h3>')
+        _st = _grid.rindex('<div ', 0, _h)
+        _spans[_t] = (_st, _close_of(_grid, _st))
+assert len(_spans) == 8, 'AI Lab 應該有八張卡'
+_sorted = sorted(_spans.values())
+assert _sorted[0][0] == 0 or not _grid[:_sorted[0][0]].strip(), '網格開頭有非預期內容'
+for _a, _b in zip(_sorted, _sorted[1:]):
+    assert not _grid[_a[1]:_b[0]].strip(), '卡片之間有非預期內容，取消重排'
+assert not _grid[_sorted[-1][1]:].strip(), '網格結尾有非預期內容'
+
+_out = []
+for _i, (_label, _titles) in enumerate(_LAB_GROUPS):
+    _out.append(_lab_head(_label, _i == 0))
+    _out += [_grid[slice(*_spans[_t])] for _t in _titles]
+body = body[:_inner0] + ''.join(_out) + body[_lg1 - len('</div>'):]
 
 # ===== 手機版重新設計（mobile-implementation.md）=====
 # 原則：只加 data-* 與極少數包裹元素，桌機外觀不得改變
@@ -1069,12 +1130,12 @@ body = body[:_ci0] + _out + body[_ci1:]
 # §3 About：內文收合、SOP 卡收合
 _ai0 = body.index('id="about"'); _ai1 = body.index('<section', _ai0 + 10)
 _about = body[_ai0:_ai1]
-# 「於是，我開始往產品的上游走。」之後的四段收起來
+# 「於是，我開始往產品的上游走。」之後的三段收起來
 _mark = '<p style="margin:0;font-weight:700">於是，我開始往產品的上游走。</p>'
 assert _about.count(_mark) == 1, '找不到 About 的分界段'
 _rest = _about[_about.index(_mark) + len(_mark):]
 _more = re.findall(r'<p style="margin:0">', _rest)
-assert len(_more) == 4, f'預期收合四段，實際 {len(_more)}'
+assert len(_more) == 3, f'預期收合三段，實際 {len(_more)}'
 _rest = _rest.replace('<p style="margin:0">', '<p data-about-more style="margin:0">')
 _btn = ('<button type="button" data-about-toggle aria-expanded="false">繼續閱讀 ↓</button>')
 _about = _about[:_about.index(_mark) + len(_mark)] + _btn + _rest
@@ -1227,7 +1288,7 @@ mobile_css = """
   #ai-lab [data-lab-grid] h3{font-size:14px!important;line-height:1.45!important}
   #ai-lab [data-lab-grid] > [data-on="openLab"]{gap:8px!important}
   /* 先顯示 6 張的規則在兩欄下改成第 7 張起收起來 */
-  [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+7){display:none !important}
+  [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+9){display:none !important}
 
   /* §8 What I Do：04 排到最前，01–03 收合 */
   [data-skills-wrap]{display:flex!important;flex-direction:column}
@@ -1381,7 +1442,7 @@ doc = f"""<!DOCTYPE html>
  [data-carousel] [data-slider]{{order:-1;flex:1 0 100% !important}}
  [data-carousel] [data-slider] > a{{flex:0 0 86% !important}}
  /* AI Lab 單欄疊起來有 8 張、近 4 個螢幕高，先收到 6 張 */
- [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+7){{display:none !important}}
+ [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+9){{display:none !important}}
  /* 半身照在 375px 下用 112% 會超出畫面，縮一點仍保有破圖效果 */
  img[data-hero]{{width:108% !important}}
  /* 手機的人像受限於畫面寬度，圓形再縮一點，頭才明顯凸出去 */
