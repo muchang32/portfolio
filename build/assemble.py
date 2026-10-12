@@ -73,20 +73,66 @@ for _label, _href, _id, _desc in _ARC:
         f'font-size:14px;font-weight:700;color:#14110F;text-decoration:none">{_label}'
         f'<span class="tip-bubble" id="{_id}" role="tooltip">{_desc}</span></a>'), 1)
 
-# ---- About 精簡：刪掉與前後重複的那一段，並把收尾的列舉縮短 ----
-# 「為什麼做／做了帶來什麼價值」前一段已經用更具體的問句講過，這段是同義重述
-_DUP = ('<p style="margin:0">從設計，到使用者體驗，再到產品與專案管理，'
-        '我逐漸參與的不只是「怎麼做」，也開始思考「為什麼做」，'
-        '以及「做了之後能帶來什麼價值」。</p>')
-assert body.count(_DUP) == 1, '找不到 About 要刪的重複段'
-body = body.replace(_DUP, '', 1)
+# ---- About 改寫：從職涯自傳改成三段「來源 → 工作方式 → 差異化」----
+_ABOUT_SECTIONS = [
+    ('01', '從設計走向產品', [
+        '我從平面設計開始，最早學會的不是怎麼把畫面做得漂亮，而是先釐清需求：'
+        '對方想傳達什麼？使用者真正需要什麼？',
+        '轉向 UI/UX 後，我逐漸發現，很多體驗問題並不在介面本身，而是更前面的產品決策：'
+        '為什麼做、為誰做，以及怎麼判斷這件事有沒有真正解決問題？'
+        '這也讓我開始從設計走向產品與專案管理。',
+    ]),
+    ('02', '不只定義問題，也動手驗證', [
+        '現在，我會從問題釐清、需求整理與跨部門協作開始，推進產品開發，'
+        '再透過測試與使用者回饋持續迭代。',
+        'AI 工具與 Vibe Coding 也擴展了我的工作方式。除了文件、流程圖與 Wireframe，'
+        '我還能更快把想法做成可互動的 Prototype，讓團隊更具體地討論、測試與驗證。',
+    ]),
+    ('03', '把想法推進到真正可用', [
+        '我在意的不只是功能有沒有完成，而是它是否真的解決問題、流程是否順暢，'
+        '以及最後交到使用者手上的體驗是否完整。',
+        '從使用者需求、UX 與視覺細節，到產品規劃、專案執行與 AI 工具導入，'
+        '我習慣多想一步，讓想法不只停留在討論，而是能被實際使用。',
+    ]),
+]
 
-_LONG_TAIL = ('十年下來，我在產品的不同層次都留下了足跡：從理解使用者的需求與痛點，'
-              '到使用者體驗、介面與視覺細節，再到產品規劃、專案執行，以及商業價值與組織決策。')
-assert body.count(_LONG_TAIL) == 1, '找不到 About 的收尾段'
-body = body.replace(_LONG_TAIL,
-                    '十年下來，從使用者的需求與痛點，到介面與視覺細節，'
-                    '再到產品規劃與專案執行，我在不同層次都留下了足跡。', 1)
+def _about_sec(no, title, paras):
+    return (f'<div data-about-sec="{no}" style="display:flex;flex-direction:column;gap:11px">'
+            '<h3 style="margin:0;font-size:clamp(16px,1.5vw,19px);font-weight:900;'
+            'line-height:1.5;display:flex;align-items:baseline;gap:10px">'
+            "<span style=\"font-family:'IBM Plex Mono',monospace;font-size:12.5px;"
+            f'font-weight:600;color:#9E968B;letter-spacing:.06em">{no}</span>{title}</h3>'
+            + ''.join(f'<p style="margin:0">{t}</p>' for t in paras)
+            + '</div>')
+
+# 左欄放 01、02，右欄放 03 與產品理念卡，維持原本的兩欄比例
+_COL_A = '<div style="display:flex;flex-direction:column;gap:20px;min-width:0;flex:1.3 1 340px">'
+_COL_B = '<div style="display:flex;flex-direction:column;gap:20px;min-width:0;flex:1 1 300px">'
+assert body.count(_COL_A) == 1 and body.count(_COL_B) == 1, 'About 兩欄容器比對不唯一'
+_a0 = body.index(_COL_A); _a1 = _close_of(body, _a0)
+_b0 = body.index(_COL_B); _b1 = _close_of(body, _b0)
+assert _a1 <= _b0, 'About 兩欄順序不如預期'
+
+# 右欄的產品理念卡要原樣保留，只換裡面的文字
+_q0 = body.index('<blockquote ', _b0)
+_qe = body.index('</blockquote>', _q0) + len('</blockquote>')
+assert '<div' not in body[_q0:_qe], '理念卡內含 div，不能用簡單比對取出'
+_quote = body[_q0:_qe]
+assert '產品沒有一套可以完美複製的 SOP。' in _quote, '找不到產品理念卡'
+
+body = (body[:_a0]
+        + _COL_A + ''.join(_about_sec(*x) for x in _ABOUT_SECTIONS[:2]) + '</div>'
+        + _COL_B + _about_sec(*_ABOUT_SECTIONS[2]) + _quote + '</div>'
+        + body[_b1:])
+
+# 產品理念卡：從「沒有 SOP」的觀察，改成講自己的定位
+body = body.replace('產品沒有一套可以完美複製的 SOP。',
+                    '我是一個 PM，只是工具箱比一般 PM 更完整。', 1)
+body = body.replace(
+    '每一個產品、每一項功能、每一個決策，背後都有不同的使用者、商業目標、技術限制與組織條件。'
+    '真正的產品工作，是在這些複雜且不斷變動的因素之間，找到當下最適合的解法。',
+    '我不只思考產品該怎麼做，也能從設計、使用者體驗到 AI 原型實作，'
+    '找到更適合的方式把問題往前推進。', 1)
 
 # ---- 職涯歷程容器寬度對齊其他區塊 ----
 body = body.replace('max-width:940px', 'max-width:1240px')
@@ -1130,15 +1176,15 @@ body = body[:_ci0] + _out + body[_ci1:]
 # §3 About：內文收合、SOP 卡收合
 _ai0 = body.index('id="about"'); _ai1 = body.index('<section', _ai0 + 10)
 _about = body[_ai0:_ai1]
-# 「於是，我開始往產品的上游走。」之後的三段收起來
-_mark = '<p style="margin:0;font-weight:700">於是，我開始往產品的上游走。</p>'
-assert _about.count(_mark) == 1, '找不到 About 的分界段'
-_rest = _about[_about.index(_mark) + len(_mark):]
-_more = re.findall(r'<p style="margin:0">', _rest)
-assert len(_more) == 3, f'預期收合三段，實際 {len(_more)}'
-_rest = _rest.replace('<p style="margin:0">', '<p data-about-more style="margin:0">')
-_btn = ('<button type="button" data-about-toggle aria-expanded="false">繼續閱讀 ↓</button>')
-_about = _about[:_about.index(_mark) + len(_mark)] + _btn + _rest
+# 手機只露第一段，02 與 03 收起來
+_s1 = _about.index('<div data-about-sec="01"')
+_s1e = _close_of(_about, _s1)
+_btn = '<button type="button" data-about-toggle aria-expanded="false">繼續閱讀 ↓</button>'
+_about = _about[:_s1e] + _btn + _about[_s1e:]
+for _no in ('02', '03'):
+    _m = f'<div data-about-sec="{_no}" '
+    assert _about.count(_m) == 1, f'找不到 About 第 {_no} 段'
+    _about = _about.replace(_m, f'<div data-about-sec="{_no}" data-about-more ', 1)
 
 # SOP 卡：手機只露主句，點 ＋ 才展開說明
 _q = '<blockquote style="margin:8px 0 0;background:#FFF6D9;'

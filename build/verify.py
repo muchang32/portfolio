@@ -194,6 +194,23 @@ C.append(('首頁案例卡不再有規格列與定位標籤',
 for desc, ok in C[-7:]:
     (fails if not ok else warns).append(desc) if not ok else None
 
+# ---- About 三段式 ----
+C.append(('About 三段都在',
+          all(f'data-about-sec="{n}"' in h for n in ('01', '02', '03'))))
+C.append(('手機收合 02、03，01 常駐',
+          h.count('data-about-sec="01" style') == 1
+          and h.count('data-about-more') >= 2
+          and 'data-about-sec="01" data-about-more' not in h))
+C.append(('舊版 About 文字已清乾淨',
+          '於是，我開始往產品的上游走' not in h
+          and '產品沒有一套可以完美複製的 SOP' not in h
+          and '十年下來' not in h))
+C.append(('產品理念卡換成新的定位句',
+          '我是一個 PM，只是工具箱比一般 PM 更完整。' in h
+          and 'data-quote-body' in h))
+for desc, ok in C[-4:]:
+    (fails if not ok else warns).append(desc) if not ok else None
+
 print(f'檢查 {len(C)} 項')
 if fails:
     print(f'\n✗ 失敗 {len(fails)} 項：')
