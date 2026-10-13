@@ -193,8 +193,10 @@ C.append(('自動配圖封面存在', pathlib.Path('assets/case/auto-image/cover
 C.append(('自動配圖案例頁連回專欄', '../writing/01-auto-image.html' in _auto))
 C.append(('現職那條改成短版並連到案例頁',
           './case/auto-image.html' in h and '將回饋歸納為圖像相關度' not in h))
-C.append(('沒有自己掰的成效數字',
-          not re.search(r'使用率(回升|提升)\s*\d', h + _auto)))
+C.append(('自動配圖的成效數字三處一致',
+          h.count('使用率從 3% 提升到 42%') == 2          # 首頁：案例卡 ＋ 現職
+          and '使用率只有 3%' in _auto and '提升到 42%' in _auto
+          and '這裡我沒有可以拿出來的數字' not in _auto))
 C.append(('三張卡都有一句話摘要', h.count('<p data-case-sum ') == 3))
 C.append(('首頁案例卡不再有規格列與定位標籤',
           'data-case-tags' not in h

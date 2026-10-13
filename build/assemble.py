@@ -131,9 +131,9 @@ body = body.replace('產品沒有一套可以完美複製的 SOP。',
 body = body.replace(
     '每一個產品、每一項功能、每一個決策，背後都有不同的使用者、商業目標、技術限制與組織條件。'
     '真正的產品工作，是在這些複雜且不斷變動的因素之間，找到當下最適合的解法。',
-    '我相信好的產品工作，不只是在定義需求與規劃功能，也包含理解使用者、'
-    '整合跨部門資源，並善用合適的工具，讓想法能被快速驗證、持續迭代，'
-    '最後真正解決問題。', 1)
+    '我習慣從使用者需求出發，結合產品規劃、跨部門協作與 AI 工具，'
+    '把想法轉化成可測試的原型，再透過回饋持續改善，'
+    '讓解法真正融入工作流程。', 1)
 
 # ---- 職涯歷程容器寬度對齊其他區塊 ----
 body = body.replace('max-width:940px', 'max-width:1240px')
@@ -310,12 +310,33 @@ import re as _re
 body = _re.sub(r'<p style="margin:0;font-size:clamp\(15px,1\.4vw,19px\);font-weight:700;'
                r'color:#2C2620;line-height:1\.7">用 AI 工具動手做出來的產品</p>', '', body, count=1)
 
-# 4. 英文 初階 → 中階（補一顆實心點）
-_en = body.index('>英文<')
-_seg_end = body.index('</div>', body.index('初階', _en))
-_seg = body[_en:_seg_end]
-_seg = _seg.replace('<span style="width:12px;height:12px;border-radius:50%;background:transparent;border:1.5px solid #14110F"></span>', '<span style="width:12px;height:12px;border-radius:50%;background:#FFD34E;border:1.5px solid #14110F"></span>', 1).replace('初階', '中階')
-body = body[:_en] + _seg + body[_seg_end:]
+# 4. 語言程度：三顆圓點改成五格長條，吃滿欄寬，左右邊界與其他欄對齊
+_LANGS = [('中文', 5, '母語'), ('日文', 4, '中上'), ('英文', 3, '中等')]
+
+def _lang_row(name, level, label):
+    _cells = ''.join(
+        '<span style="height:10px;border-radius:4px;border:1.5px solid #14110F;'
+        + ('background:#FFD34E' if i < level else 'background:transparent')
+        + '"></span>' for i in range(5))
+    return ('<div>'
+            '<div style="display:flex;align-items:baseline;justify-content:space-between;'
+            'gap:10px;margin:0 0 7px">'
+            f'<span style="font-size:14.5px;font-weight:700">{name}</span>'
+            f'<span style="font-size:12.5px;color:#6B635B">{label}</span></div>'
+            '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px">'
+            + _cells + '</div></div>')
+
+_lang_eyebrow = body.index('>LANGUAGES</p>')
+_l0 = body.index('<div ', _lang_eyebrow)
+_l1 = _close_of(body, _l0)
+_old_lang = body[_l0:_l1]
+assert _old_lang.count('border-radius:50%') == 9, f'預期九顆圓點，實際 {_old_lang.count("border-radius:50%")}'
+assert '母語' in _old_lang and '初階' in _old_lang, '語言區塊比對不如預期'
+body = (body[:_l0]
+        + '<div data-langs style="display:flex;flex-direction:column;gap:14px">'
+        + ''.join(_lang_row(*x) for x in _LANGS)
+        + '</div>'
+        + body[_l1:])
 
 # 5. 關於我：拿掉「與 Vibe Coding」
 body = body.replace('現在透過 AI Coding 與 Vibe Coding，', '現在透過 AI Coding，', 1)
@@ -709,7 +730,7 @@ _AUTO_CARD = (
     + _pdo([
         ('問題', '自動配圖上線後使用率不如預期，但使用者說的「不好用」不是同一件事'),
         ('判斷', '先訪談再動手——把回饋歸納成四類，先修產品可信度，再處理曝光與習慣'),
-        ('結果', '排序邏輯重新定義為「相關度＋時效性＋可用性」，改版後使用率回升'),
+        ('結果', '排序邏輯重新定義為「相關度＋時效性＋可用性」，使用率從 3% 提升到 42%'),
     ], '#DDEEFF') +
     '<p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">'
     '我負責使用者訪談、問題分類、優化優先順序與圖片排序邏輯定義，技術實作由開發團隊執行。</p>'
@@ -755,7 +776,7 @@ _OLD_LI = ('<li>主導內部「自動配圖」功能改版：功能上線後使�
 assert body.count(_OLD_LI) == 1, '找不到現職的自動配圖條目'
 body = body.replace(_OLD_LI,
     '<li>主導內部「自動配圖」功能改版：訪談記者與編輯，把「不好用」歸納成四類問題，'
-    '排定優化順序並重新定義圖片排序邏輯，改版後使用率回升'
+    '排定優化順序並重新定義圖片排序邏輯，使用率從 3% 提升到 42%'
     '　<a href="./case/auto-image.html" style="color:#6D4AFF;font-weight:700;'
     'white-space:nowrap">完整案例 →</a></li>', 1)
 
