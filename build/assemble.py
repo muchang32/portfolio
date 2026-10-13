@@ -314,20 +314,18 @@ body = _re.sub(r'<p style="margin:0;font-size:clamp\(15px,1\.4vw,19px\);font-wei
 _LANGS = [('中文', 5, '母語'), ('日文', 4, '中上'), ('英文', 3, '中等')]
 
 def _lang_row(name, level, label):
-    # 一條外框，裡面用分隔線切成五格；寬度與下方 SKILLS 的 logo 列對齊
+    # 語言名、量表、程度排成一列：整列 250px 與下方 SKILLS 對齊，量表本身窄一條
     _cells = ''.join(
         '<span style="'
         + ('background:#FFD34E' if i < level else 'background:transparent')
         + ('' if i == 4 else ';border-right:1.5px solid #14110F')
         + '"></span>' for i in range(5))
-    return ('<div style="max-width:250px">'
-            '<div style="display:flex;align-items:baseline;justify-content:space-between;'
-            'gap:10px;margin:0 0 7px">'
-            f'<span style="font-size:14.5px;font-weight:700">{name}</span>'
-            f'<span style="font-size:12.5px;color:#6B635B">{label}</span></div>'
-            '<div style="display:grid;grid-template-columns:repeat(5,1fr);height:13px;'
-            'border:1.5px solid #14110F;border-radius:5px;overflow:hidden">'
-            + _cells + '</div></div>')
+    return ('<div style="display:flex;align-items:center;gap:10px">'
+            f'<span style="flex:0 0 auto;font-size:13.5px;font-weight:700">{name}</span>'
+            '<div style="flex:1;min-width:0;display:grid;grid-template-columns:repeat(5,1fr);'
+            'height:9px;border:1.5px solid #14110F;border-radius:4px;overflow:hidden">'
+            + _cells + '</div>'
+            f'<span style="flex:0 0 auto;font-size:11.5px;color:#6B635B">{label}</span></div>')
 
 _lang_eyebrow = body.index('>LANGUAGES</p>')
 _l0 = body.index('<div ', _lang_eyebrow)
@@ -336,7 +334,7 @@ _old_lang = body[_l0:_l1]
 assert _old_lang.count('border-radius:50%') == 9, f'預期九顆圓點，實際 {_old_lang.count("border-radius:50%")}'
 assert '母語' in _old_lang and '初階' in _old_lang, '語言區塊比對不如預期'
 body = (body[:_l0]
-        + '<div data-langs style="display:flex;flex-direction:column;gap:14px">'
+        + '<div data-langs style="display:flex;flex-direction:column;gap:9px;max-width:250px">'
         + ''.join(_lang_row(*x) for x in _LANGS)
         + '</div>'
         + body[_l1:])
@@ -589,12 +587,12 @@ _SKILLS = [
 ]
 
 def _logo(label, fn):
-    # logo 吃滿整個框：三個原本留白的檔案已裁到內容邊界，其餘本來就是滿版圖示
+    # 統一容器：自帶色底的 logo 會填滿，透明底的 logo 也因此有可見邊界
     return (f'<span title="{label}" style="display:block;aspect-ratio:1;border-radius:11px;'
             f'overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)">'
             f'<img src="./assets/logos/opt/{fn}" alt="{label}" '
             f'loading="lazy" decoding="async" '
-            f'style="width:100%;height:100%;object-fit:cover;display:block" /></span>')
+            f'style="width:100%;height:100%;object-fit:contain;display:block" /></span>')
 
 _skills_block = (
     '<div style="min-width:0;margin-top:18px">'
