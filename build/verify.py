@@ -99,8 +99,9 @@ C = [
   ('OG 分享圖為絕對網址', has('og:image" content="https://')),
   # --- 版面結構 ---
   ('Credentials 三欄', has('[data-grid="creds"]')),
-  ('精選案例只有整張卡有 hover',
-   len(re.findall(r'data-hv="h\d+"', h[h.index('id="case"'):h.index('id="ai-lab"')])) == 3),
+  ('精選案例只有整張卡有 hover（另加兩顆手機用的箭頭）',
+   (lambda seg: re.findall(r'data-hv="(h\d+)"', seg) == ['h21', 'h8', 'h8', 'h10', 'h27'])
+   (h[h.index('id="case"'):h.index('id="ai-lab"')])),
   ('案例按鈕與內文留有間距', h.count('margin-top:22px;display:inline-block;') == 3),
   ('沒有重複的 style 屬性', not re.search(r'<[a-z]+[^>]*\sstyle="[^"]*"[^>]*\sstyle="', h)),
   ('What I Do 用結構選擇器', has('#skills div[style*="border:2px solid #14110F"]:hover')),
@@ -218,6 +219,29 @@ C.append(('產品理念卡換成新的主張句',
           '讓產品思維，串起設計、技術與 AI。' in h
           and 'data-quote-body' in h))
 for desc, ok in C[-4:]:
+    (fails if not ok else warns).append(desc) if not ok else None
+
+# ---- 手機版的 11 項調整 ----
+C.append(('章節編號已移除', 'content:attr(data-chapter)' not in h))
+C.append(('Hero 標題在手機吃滿寬度', '[data-hero-title]{order:2;margin-bottom:0!important;font-size:70px' in h))
+C.append(('副標不強制斷行', '[data-hero-sub] br{display:none}' in h))
+C.append(('人像膠囊收進畫面', '[data-hero-pill="exp"]{left:2%!important}' in h
+          and '[data-hero-pill="cert"]{right:2%!important}' in h))
+C.append(('∞ 可點開', ".tip:not(.tip-link).open .tip-bubble" in h
+          and "inf.classList.toggle('open')" in h))
+C.append(('轉職鏈在手機靠左', 'justify-content:flex-start!important' in h))
+C.append(('理念卡加號收合時置中',
+          '[data-quote]:not(.open) [data-quote-toggle]{top:50%!important' in h))
+C.append(('兩個輪播都有左右箭頭',
+          h.count('data-on="casePrev"') == 1 and h.count('data-on="caseNext"') == 1
+          and h.count('data-on="writingPrev"') == 1
+          and h.count('data-carousel') >= 2))
+C.append(('案例與專欄的卡片在手機吃滿寬度',
+          '[data-cases] > article{flex:0 0 100%' in h
+          and '#writing [data-slider] > a{flex:0 0 100% !important}' in h))
+C.append(('桌機看不到案例區的箭頭',
+          '@media (min-width:641px){#case [data-carousel] > button{display:none !important}}' in h))
+for desc, ok in C[-10:]:
     (fails if not ok else warns).append(desc) if not ok else None
 
 print(f'檢查 {len(C)} 項')

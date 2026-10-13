@@ -98,8 +98,10 @@
     toggleLabMore: () => { state.labMore = true; render(); },
     closeDesign: () => { state.designOpen = false; render(); },
     scrollTop: () => scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }),
-    writingNext: () => scrollWriting(1),
-    writingPrev: () => scrollWriting(-1),
+    writingNext: () => scrollSlider('writingRef', 1),
+    writingPrev: () => scrollSlider('writingRef', -1),
+    caseNext: () => scrollSlider('casesRef', 1),
+    casePrev: () => scrollSlider('casesRef', -1),
     openLab: e => {
       const d = e.currentTarget.dataset;
       state.lab = { title: d.title, desc: d.desc, href: d.href, link: d.link,
@@ -122,8 +124,8 @@
     }
   };
 
-  function scrollWriting(dir) {
-    const el = $('[data-ref="writingRef"]');
+  function scrollSlider(ref, dir) {
+    const el = $(`[data-ref="${ref}"]`);
     if (!el) return;
     const card = el.firstElementChild;
     const step = card ? card.getBoundingClientRect().width + 20 : el.clientWidth * 0.9;
@@ -264,6 +266,19 @@
   // ---- 手機版的收合元件 ----
   // 桌機不顯示這些按鈕，所以不必判斷斷點；展開狀態以 class 表示
   function initMobileToggles() {
+    // 「已解決的問題」在觸控裝置上沒有 hover，點一下展開、再點或點別處收起
+    const inf = $('.tip:not(.tip-link)');
+    if (inf) {
+      inf.addEventListener('click', e => {
+        e.stopPropagation();
+        inf.classList.toggle('open');
+      });
+      document.addEventListener('click', () => inf.classList.remove('open'));
+      inf.addEventListener('keydown', e => {
+        if (e.key === 'Escape') inf.classList.remove('open');
+      });
+    }
+
     const about = $('[data-about-toggle]');
     if (about) {
       about.addEventListener('click', () => {

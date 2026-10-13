@@ -936,6 +936,13 @@ _cta = ('<a href="#case" data-cta style="background:#14110F;color:#FAF7F0;'
         'white-space:nowrap">看精選案例 →</a>')
 body = body.replace(_mail_row, _mail_row + _cta, 1)
 
+# ---- 人像兩側的膠囊加上標記，手機版要單獨調位置與內距 ----
+for _key, _mark in (('bottom:2%', 'exp'), ('top:12%', 'cert')):
+    _old = f'<div style="position:absolute;left:-5%;{_key}' if _mark == 'exp' \
+        else f'<div style="position:absolute;right:-3%;{_key}'
+    assert body.count(_old) == 1, f'找不到膠囊 {_mark}'
+    body = body.replace(_old, _old.replace('<div ', f'<div data-hero-pill="{_mark}" ', 1), 1)
+
 # ---- Hero 收緊：人像舞台放大、數據列併成一排 ----
 # 右欄有 552px，舞台卻卡在 430px，週邊空了一圈；放大後焦點才站得住
 _stage = 'width:min(100%,430px);aspect-ratio:1/1.06'
@@ -1145,6 +1152,11 @@ _wi = _sk.index(_wrap)
 _sk = _sk[:_wi] + '<div data-skills-wrap style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">' + _sk[_wi + len(_wrap):]
 body = body[:_ki0] + _sk + body[_ki1:]
 
+# 專欄的輪播容器原本沒有識別屬性，手機版要把箭頭排到標題旁邊，先補上
+_WR = '<div style="display:flex;align-items:center;gap:clamp(10px,1.6vw,20px)">'
+assert body.count(_WR) == 1, '找不到專欄的輪播容器'
+body = body.replace(_WR, _WR.replace('<div ', '<div data-carousel ', 1), 1)
+
 # §5 Case：手機改橫向滑動，長版情境段落收起來
 _si0 = body.index('id="case"'); _si1 = body.index('<section', _si0 + 10)
 _cas = body[_si0:_si1]
@@ -1152,6 +1164,32 @@ _wrap = '<div style="display:flex;flex-direction:column;gap:clamp(24px,3vw,40px)
 assert _cas.count(_wrap) == 1, '找不到精選案例的卡片容器'
 _cas = _cas.replace(_wrap, _wrap.replace('<div ', '<div data-cases ', 1), 1)
 assert _cas.count('<dl data-pdo ') == 3, '問題／判斷／結果三行應該有三組'
+
+# 手機版的左右箭頭：沿用專欄那組的樣式，只是換成捲案例的 slider
+_cas = _cas.replace('<div data-cases ', '<div data-ref="casesRef" data-cases ', 1)
+
+def _arrow(action, label, bg, hv, path):
+    return (f'<button data-on="{action}" aria-label="{label}" '
+            'style="flex:0 0 auto;width:48px;height:48px;border-radius:50%;'
+            f'border:2.5px solid #14110F;background:{bg};font-size:18px;font-weight:700;'
+            'line-height:1;cursor:pointer;display:grid;place-items:center;'
+            'box-shadow:3px 3px 0 #14110F;'
+            f'transition:transform .15s ease,box-shadow .15s ease" data-hv="{hv}">'
+            '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#14110F" '
+            'stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" '
+            f'aria-hidden="true">{path}</svg></button>')
+
+_ci = _cas.index('<div data-ref="casesRef" data-cases ')
+_ce = _close_of(_cas, _ci)
+_cas = (_cas[:_ci]
+        + '<div data-carousel style="display:flex;align-items:center;gap:12px">'
+        + _arrow('casePrev', '上一個案例', '#fff', 'h21',
+                 '<path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>')
+        + _cas[_ci:_ce]
+        + _arrow('caseNext', '下一個案例', '#FFD34E', 'h27',
+                 '<path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>')
+        + '</div>'
+        + _cas[_ce:])
 body = body[:_si0] + _cas + body[_si1:]
 
 # §6 AI Lab：彈窗已是置中樣式，手機只需改網格
@@ -1237,16 +1275,17 @@ body = body.replace(_cc, _cc.replace('<div ', '<div data-contact-cta ', 1), 1)
 
 mobile_css = """
 [data-about-toggle],[data-quote-toggle],[data-cred-tabs]{display:none}
+/* 案例區的左右箭頭只在手機出現；桌機讓外層容器不產生盒子 */
+#case [data-carousel]{display:contents !important}
+@media (min-width:641px){#case [data-carousel] > button{display:none !important}}
 [data-skill-head],[data-job-head],[data-job-body],[data-cred="lang"]{display:contents}
 /* ===================== 手機版重新設計 ===================== */
 @media (max-width:640px){
   /* §1 段落節奏：章節編號 ＋ 細線，標題靠左 */
   [data-chapter]{text-align:left!important;max-width:none!important;
     margin-left:0!important;margin-right:0!important}
-  [data-chapter]::before{content:attr(data-chapter);display:flex;align-items:center;gap:10px;
-    margin-bottom:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;
-    color:#6B635B;
-    background:linear-gradient(rgba(20,17,15,.18),rgba(20,17,15,.18)) no-repeat right center/calc(100% - 64px) 1px}
+  [data-chapter]::before{content:"";display:block;height:1px;margin-bottom:16px;
+    background:rgba(20,17,15,.18)}
   [data-chapter] h2{font-size:34px!important;line-height:1.1!important;margin-bottom:4px!important}
   [data-chapter] h2 + p{font-size:15px!important}
 
@@ -1255,7 +1294,19 @@ mobile_css = """
     gap:0!important;align-items:stretch!important}
   [data-hero-copy]{display:contents}
   [data-hero-copy] > p:first-child{order:1;line-height:1.8!important;white-space:normal!important}
-  [data-hero-title]{order:2;margin-bottom:0!important}
+  /* 標題放到吃滿整個寬度：「設計出身的」五個字剛好鋪滿 358px */
+  [data-hero-title]{order:2;margin-bottom:0!important;font-size:70px!important;
+    line-height:1.1!important;letter-spacing:-.03em!important}
+  /* 副標不要硬斷行，讓它自己排滿 */
+  [data-hero-sub] br{display:none}
+  [data-hero-sub]{max-width:none!important}
+  /* 人像兩側的膠囊：收進畫面內、外框縮一點，字級不變 */
+  [data-hero-pill]{padding:8px 14px!important;box-shadow:3px 3px 0 #14110F!important}
+  [data-hero-pill="exp"]{left:2%!important}
+  [data-hero-pill="cert"]{right:2%!important}
+  /* 圓點在手機上多餘，拿掉 */
+  [data-hero-pill="exp"] > span:first-child{display:none!important}
+  [data-hero-pill="exp"]{gap:0!important}
   [data-hero-photo]{order:3;margin:6px 0 0!important;padding:0!important}
   [data-hero-sub]{order:4;margin:22px 0 0!important}
   [data-hero-cta]{order:5;margin-top:26px}
@@ -1279,7 +1330,7 @@ mobile_css = """
   [data-about-more]:not(.open){display:none!important}
 
   /* §3.2 轉職鏈三顆要在同一行 */
-  [data-arc]{gap:6px!important}
+  [data-arc]{gap:6px!important;justify-content:flex-start!important}
   [data-arc] > a,[data-arc] > span[style*="border-radius:999px"]{
     font-size:12.5px!important;padding:8px 12px!important}
   [data-arc] > span[style*="IBM Plex Mono"]{font-size:12px!important}
@@ -1299,6 +1350,8 @@ mobile_css = """
   [data-quote] > p:first-of-type{padding-right:70px!important}
   [data-quote-body]{padding:0 18px 18px!important;font-size:14px!important}
   [data-quote]:not(.open) [data-quote-body]{display:none!important}
+  /* 收合時卡片只有主句那一段，加號要對著它的中線 */
+  [data-quote]:not(.open) [data-quote-toggle]{top:50%!important;transform:translateY(-50%)}
 
   /* §3.4 獎項帶 2×2 */
   #about + section > div{display:grid!important;grid-template-columns:1fr 1fr;
@@ -1331,7 +1384,7 @@ mobile_css = """
     gap:12px!important;margin:0 -16px!important;padding:4px 16px 12px;
     scroll-padding:0 16px;scrollbar-width:none;-ms-overflow-style:none}
   [data-cases]::-webkit-scrollbar{display:none}
-  [data-cases] > article{flex:0 0 82%;scroll-snap-align:start;
+  [data-cases] > article{flex:0 0 100%;scroll-snap-align:start;
     grid-template-columns:1fr!important;padding:12px 12px 18px!important;
     gap:14px!important;align-items:start!important}
   [data-case-sum]{font-size:14.5px!important;margin:0 0 12px!important}
@@ -1376,6 +1429,13 @@ mobile_css = """
   [data-cred="lang"]{display:block!important}
   [data-cred]:not(.active){display:none!important}
   [data-cred] > p:first-child{display:none!important}
+
+  /* §9.1 Credentials：各頁籤的內容吃滿寬度，不再被 250px 綁住 */
+  [data-langs]{max-width:none!important}
+  [data-cred="skill"] > div[style*="repeat(5,1fr)"]{max-width:none!important}
+
+  /* §10 Contact：標題放大到吃滿寬度 */
+  #contact h2{font-size:39px!important;line-height:1.14!important}
 
   /* §10 Contact：信箱吃滿寬度，複製鍵同列 */
   [data-contact-cta]{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;width:100%}
@@ -1480,9 +1540,15 @@ doc = f"""<!DOCTYPE html>
 .tip-link .tip-bubble::after,.tip-link .tip-bubble::before{{left:50%;margin-left:-9px}}
 /* 觸控裝置沒有 hover，且窄螢幕放不下對話框；留給輔助技術讀、不佔版面 */
 @media (max-width:640px){{
- .tip-bubble{{width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);
+ /* 轉職鏈的兩顆膠囊：觸控沒有 hover，留給輔助技術讀、不佔版面 */
+ .tip-link .tip-bubble{{width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);
   border:0;box-shadow:none;opacity:1;visibility:visible;transform:none}}
- .tip-bubble::after,.tip-bubble::before{{display:none}}
+ .tip-link .tip-bubble::after,.tip-link .tip-bubble::before{{display:none}}
+ /* ∞ 在六格的最後一格，對話框靠左會衝出畫面，改成貼右邊 */
+ .tip:not(.tip-link) .tip-bubble{{left:auto;right:0;max-width:calc(100vw - 32px)}}
+ .tip:not(.tip-link) .tip-bubble::after,
+ .tip:not(.tip-link) .tip-bubble::before{{left:auto;right:22px}}
+ .tip:not(.tip-link).open .tip-bubble{{opacity:1;visibility:visible;transform:translateY(0)}}
 }}
 
 :focus-visible{{outline:3px solid #6D4AFF;outline-offset:3px;border-radius:4px}}
@@ -1498,10 +1564,23 @@ doc = f"""<!DOCTYPE html>
 /* ===== 手機最佳化 =====
    這個站幾乎全靠 inline style，樣式表要蓋過它一律得 !important */
 @media (max-width:640px){{
- /* 專欄輪播：箭頭移到下方，卡片吃滿整個寬度（原本只剩 200px） */
- [data-carousel]{{flex-wrap:wrap;justify-content:center;gap:14px}}
- [data-carousel] [data-slider]{{order:-1;flex:1 0 100% !important}}
- [data-carousel] [data-slider] > a{{flex:0 0 86% !important}}
+ /* 精選案例與專欄：箭頭移到標題右側並與標題垂直置中，卡片吃滿整個寬度 */
+ #case > div,#writing > div{{display:grid;grid-template-columns:1fr 48px 48px;
+  column-gap:10px;align-items:center}}
+ #case [data-carousel],#writing [data-carousel]{{display:contents !important}}
+ #case [data-chapter],#writing [data-chapter]{{grid-column:1;grid-row:1}}
+ /* 章節細線也算在標題方塊裡，整列置中會讓箭頭偏高，往下補回一半的線高 */
+ #case [data-carousel] > button,#writing [data-carousel] > button{{
+  display:grid !important;grid-row:1;margin-top:7px}}
+ #case [data-carousel] > button:first-child,
+ #writing [data-carousel] > button:first-child{{grid-column:2}}
+ #case [data-carousel] > button:last-child,
+ #writing [data-carousel] > button:last-child{{grid-column:3}}
+ /* 標題的下邊距改掛在輪播上，箭頭才會對準標題的中線而不是整列的中線 */
+ #case [data-chapter],#writing [data-chapter]{{margin-bottom:0 !important}}
+ #case [data-cases]{{grid-column:1/-1;grid-row:2;margin:26px -16px 0 !important}}
+ #writing [data-slider]{{grid-column:1/-1;grid-row:2;margin-top:20px !important}}
+ #writing [data-slider] > a{{flex:0 0 100% !important}}
  /* AI Lab 單欄疊起來有 8 張、近 4 個螢幕高，先收到 6 張 */
  [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+7){{display:none !important}}
  /* 半身照在 375px 下用 112% 會超出畫面，縮一點仍保有破圖效果 */
