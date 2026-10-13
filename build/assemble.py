@@ -314,16 +314,19 @@ body = _re.sub(r'<p style="margin:0;font-size:clamp\(15px,1\.4vw,19px\);font-wei
 _LANGS = [('中文', 5, '母語'), ('日文', 4, '中上'), ('英文', 3, '中等')]
 
 def _lang_row(name, level, label):
+    # 一條外框，裡面用分隔線切成五格；寬度與下方 SKILLS 的 logo 列對齊
     _cells = ''.join(
-        '<span style="height:10px;border-radius:4px;border:1.5px solid #14110F;'
+        '<span style="'
         + ('background:#FFD34E' if i < level else 'background:transparent')
+        + ('' if i == 4 else ';border-right:1.5px solid #14110F')
         + '"></span>' for i in range(5))
-    return ('<div>'
+    return ('<div style="max-width:250px">'
             '<div style="display:flex;align-items:baseline;justify-content:space-between;'
             'gap:10px;margin:0 0 7px">'
             f'<span style="font-size:14.5px;font-weight:700">{name}</span>'
             f'<span style="font-size:12.5px;color:#6B635B">{label}</span></div>'
-            '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px">'
+            '<div style="display:grid;grid-template-columns:repeat(5,1fr);height:13px;'
+            'border:1.5px solid #14110F;border-radius:5px;overflow:hidden">'
             + _cells + '</div></div>')
 
 _lang_eyebrow = body.index('>LANGUAGES</p>')
@@ -586,12 +589,12 @@ _SKILLS = [
 ]
 
 def _logo(label, fn):
-    # 統一容器：自帶色底的 logo 會填滿，透明底的 logo 也因此有可見邊界
+    # logo 吃滿整個框：三個原本留白的檔案已裁到內容邊界，其餘本來就是滿版圖示
     return (f'<span title="{label}" style="display:block;aspect-ratio:1;border-radius:11px;'
             f'overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)">'
             f'<img src="./assets/logos/opt/{fn}" alt="{label}" '
             f'loading="lazy" decoding="async" '
-            f'style="width:100%;height:100%;object-fit:contain;display:block" /></span>')
+            f'style="width:100%;height:100%;object-fit:cover;display:block" /></span>')
 
 _skills_block = (
     '<div style="min-width:0;margin-top:18px">'
@@ -730,7 +733,7 @@ _AUTO_CARD = (
     + _pdo([
         ('問題', '自動配圖上線後使用率不如預期，但使用者說的「不好用」不是同一件事'),
         ('判斷', '先訪談再動手——把回饋歸納成四類，先修產品可信度，再處理曝光與習慣'),
-        ('結果', '排序邏輯重新定義為「相關度＋時效性＋可用性」，使用率從 3% 提升到 42%'),
+        ('結果', '排序邏輯重新定義為「相關度＋時效性＋可用性」，搜尋後實際匯入稿單的比例從 3% 提升到 42%'),
     ], '#DDEEFF') +
     '<p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">'
     '我負責使用者訪談、問題分類、優化優先順序與圖片排序邏輯定義，技術實作由開發團隊執行。</p>'
@@ -776,7 +779,7 @@ _OLD_LI = ('<li>主導內部「自動配圖」功能改版：功能上線後使�
 assert body.count(_OLD_LI) == 1, '找不到現職的自動配圖條目'
 body = body.replace(_OLD_LI,
     '<li>主導內部「自動配圖」功能改版：訪談記者與編輯，把「不好用」歸納成四類問題，'
-    '排定優化順序並重新定義圖片排序邏輯，使用率從 3% 提升到 42%'
+    '排定優化順序並重新定義圖片排序邏輯，搜尋後實際匯入稿單的比例從 3% 提升到 42%'
     '　<a href="./case/auto-image.html" style="color:#6D4AFF;font-weight:700;'
     'white-space:nowrap">完整案例 →</a></li>', 1)
 
