@@ -1152,6 +1152,22 @@ _wi = _sk.index(_wrap)
 _sk = _sk[:_wi] + '<div data-skills-wrap style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">' + _sk[_wi + len(_wrap):]
 body = body[:_ki0] + _sk + body[_ki1:]
 
+# ---- What I Do 04：從「幫公司導入 AI」改成「判斷 → 規格 → 實作」----
+# 原本三條裡有兩條加上副標都在講企業導入，但那件事職涯歷程已經有獨立一條；
+# 這張卡要講的是能帶去下一份工作的能力。
+_S04 = '把 AI 從「聽說很好用」，變成同事每天在用'
+assert body.count(_S04) == 1, '找不到 04 的副標'
+body = body.replace(_S04, '判斷 AI 該用在哪，然後自己把它做出來', 1)
+
+_UL04 = ('<li>導入 AI 工具至實際工作流程，並設計與優化 Prompt</li>'
+         '<li>推動 AI coding 內部分享與實作培訓，降低非工程人員的門檻</li>'
+         '<li>運用 AI Coding 將想法直接做成可互動的網頁與 PWA 原型</li>')
+assert body.count(_UL04) == 1, '找不到 04 的三條'
+body = body.replace(_UL04,
+    '<li>評估 AI 適用的環節與邊界，並設計與優化 Prompt</li>'
+    '<li>將 AI 功能轉化為可執行的產品規格，涵蓋提示詞優化、生成流程與排序邏輯</li>'
+    '<li>運用 AI Coding 將想法直接做成可互動的網頁與 PWA 原型，用於快速驗證</li>', 1)
+
 # 04 排在 01 前面，編號就跟閱讀順序打架了。這張卡本來就不是序列裡的一項，
 # 改成直接標「核心」，下面三張維持 01／02／03，跟「支撐這件事的三項基本功」對上
 _B04 = "'Space Grotesk',sans-serif;font-size:17px;font-weight:700\">04</span>"
