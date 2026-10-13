@@ -323,7 +323,7 @@ def _lang_row(name, level, label):
     return ('<div style="display:flex;align-items:center;gap:10px">'
             f'<span style="flex:0 0 auto;font-size:13.5px;font-weight:700">{name}</span>'
             '<div style="flex:1;min-width:0;display:grid;grid-template-columns:repeat(5,1fr);'
-            'height:9px;border:1.5px solid #14110F;border-radius:4px;overflow:hidden">'
+            'height:20px;border:1.5px solid #14110F;border-radius:999px;overflow:hidden">'
             + _cells + '</div>'
             f'<span style="flex:0 0 auto;font-size:11.5px;color:#6B635B">{label}</span></div>')
 
@@ -1431,7 +1431,6 @@ mobile_css = """
 
   /* §9.1 Credentials：各頁籤的內容吃滿寬度，不再被 250px 綁住 */
   [data-langs]{max-width:none!important}
-  [data-langs] > div > div{height:14px!important;border-radius:5px!important}
   /* logo 列吃滿寬度，但方塊本身維持 48px 置中，不然會被拉成 64px */
   [data-cred="skill"] > div[style*="repeat(5,1fr)"]{max-width:none!important;
     gap:14px 0!important;justify-items:center}
