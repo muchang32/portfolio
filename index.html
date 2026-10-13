@@ -211,8 +211,7 @@ a:hover{color:#6D4AFF}
   /* §1 段落節奏：章節編號 ＋ 細線，標題靠左 */
   [data-chapter]{text-align:left!important;max-width:none!important;
     margin-left:0!important;margin-right:0!important}
-  [data-chapter]::before{content:"";display:block;height:1px;margin-bottom:16px;
-    background:rgba(20,17,15,.18)}
+  [data-chapter]::before{content:none}
   [data-chapter] h2{font-size:34px!important;line-height:1.1!important;margin-bottom:4px!important}
   [data-chapter] h2 + p{font-size:15px!important}
 
@@ -359,7 +358,11 @@ a:hover{color:#6D4AFF}
 
   /* §9.1 Credentials：各頁籤的內容吃滿寬度，不再被 250px 綁住 */
   [data-langs]{max-width:none!important}
-  [data-cred="skill"] > div[style*="repeat(5,1fr)"]{max-width:none!important}
+  [data-langs] > div > div{height:14px!important;border-radius:5px!important}
+  /* logo 列吃滿寬度，但方塊本身維持 48px 置中，不然會被拉成 64px */
+  [data-cred="skill"] > div[style*="repeat(5,1fr)"]{max-width:none!important;
+    gap:14px 0!important;justify-items:center}
+  [data-cred="skill"] > div[style*="repeat(5,1fr)"] > span{width:48px}
 
   /* §10 Contact：標題放大到吃滿寬度 */
   #contact h2{font-size:39px!important;line-height:1.14!important}
