@@ -92,7 +92,8 @@ a:hover{color:#6D4AFF}
 [data-if="labOpen"] > div{scrollbar-width:none;-ms-overflow-style:none}
 [data-if="labOpen"] > div::-webkit-scrollbar{display:none}
 /* Credentials 四區：桌機 4 欄、平板 2 欄、手機 1 欄 */
-[data-grid="creds"]{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}
+/* 第三欄的內容固定 250px，等分會在右邊留一塊空白；改成把多的寬度給文字最長的競賽欄 */
+[data-grid="creds"]{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) 260px;align-items:start}
 @media (max-width:900px){[data-grid="creds"]{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){[data-grid="creds"]{grid-template-columns:1fr}}
 /* 信箱 hover：逐字由上往下重新落位 */
