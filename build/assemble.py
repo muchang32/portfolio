@@ -1139,7 +1139,9 @@ _tabs = ('<div data-cred-tabs role="tablist" aria-label="學習與認證分類">
                    f'aria-selected="{"true" if i == 0 else "false"}">{z}</button>'
                    for i, (k, z) in enumerate(_CRED_TABS))
          + '</div>')
-_lr = _lr.replace(_cg, _tabs + _cg, 1)
+_CG_WIDE = ('<div style="display:grid;row-gap:clamp(18px,2.2vw,28px);'
+            'column-gap:clamp(20px,3.2vw,46px)" data-grid="creds">')
+_lr = _lr.replace(_cg, _tabs + _CG_WIDE, 1)
 body = body[:_li0] + _lr + body[_li1:]
 
 # §8 What I Do：04 移到最前，01–03 改摺疊
@@ -1468,7 +1470,7 @@ doc = f"""<!DOCTYPE html>
 [data-if="labOpen"] > div::-webkit-scrollbar{{display:none}}
 /* Credentials 四區：桌機 4 欄、平板 2 欄、手機 1 欄 */
 /* 第三欄的內容固定 250px，等分會在右邊留一塊空白；改成把多的寬度給文字最長的競賽欄 */
-[data-grid="creds"]{{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) 260px;align-items:start}}
+[data-grid="creds"]{{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr) 260px;align-items:start}}
 @media (max-width:900px){{[data-grid="creds"]{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}
 @media (max-width:560px){{[data-grid="creds"]{{grid-template-columns:1fr}}}}
 /* 信箱 hover：逐字由上往下重新落位 */

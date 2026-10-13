@@ -93,7 +93,7 @@ a:hover{color:#6D4AFF}
 [data-if="labOpen"] > div::-webkit-scrollbar{display:none}
 /* Credentials 四區：桌機 4 欄、平板 2 欄、手機 1 欄 */
 /* 第三欄的內容固定 250px，等分會在右邊留一塊空白；改成把多的寬度給文字最長的競賽欄 */
-[data-grid="creds"]{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) 260px;align-items:start}
+[data-grid="creds"]{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr) 260px;align-items:start}
 @media (max-width:900px){[data-grid="creds"]{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){[data-grid="creds"]{grid-template-columns:1fr}}
 /* 信箱 hover：逐字由上往下重新落位 */
@@ -788,7 +788,7 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
         <p style="margin:0;font-size:clamp(14.5px,1.3vw,17px);font-weight:700;color:#2C2620;line-height:1.7">學習與認證</p>
       </div>
 
-      <div data-cred-tabs role="tablist" aria-label="學習與認證分類"><button type="button" role="tab" data-cred-tab="comp" aria-selected="true">競賽</button><button type="button" role="tab" data-cred-tab="cert" aria-selected="false">證照</button><button type="button" role="tab" data-cred-tab="lang" aria-selected="false">語言</button><button type="button" role="tab" data-cred-tab="skill" aria-selected="false">工具</button></div><div style="display:grid;gap:clamp(18px,2.2vw,28px)" data-grid="creds">
+      <div data-cred-tabs role="tablist" aria-label="學習與認證分類"><button type="button" role="tab" data-cred-tab="comp" aria-selected="true">競賽</button><button type="button" role="tab" data-cred-tab="cert" aria-selected="false">證照</button><button type="button" role="tab" data-cred-tab="lang" aria-selected="false">語言</button><button type="button" role="tab" data-cred-tab="skill" aria-selected="false">工具</button></div><div style="display:grid;row-gap:clamp(18px,2.2vw,28px);column-gap:clamp(20px,3.2vw,46px)" data-grid="creds">
         <div data-cred="comp" role="tabpanel" style="min-width:0">
           <p style="margin:0 0 16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;color:#6B635B">COMPETITIONS</p>
           <div style="display:flex;flex-direction:column;gap:18px"><div><div style="display:flex;align-items:baseline;gap:10px;justify-content:space-between;margin:0 0 5px"><h3 style="margin:0;font-size:15px;font-weight:900;line-height:1.6">公民科技協力場　安否通</h3><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B635B;flex:0 0 auto">2026</span></div><p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">數位發展部徵案，兩人團隊提案弱勢機構災情即時回報平台，負責問題定義、流程設計與 UI／UX。</p></div>
