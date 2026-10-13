@@ -161,7 +161,7 @@ a:hover{color:#6D4AFF}
  [data-carousel] [data-slider]{order:-1;flex:1 0 100% !important}
  [data-carousel] [data-slider] > a{flex:0 0 86% !important}
  /* AI Lab 單欄疊起來有 8 張、近 4 個螢幕高，先收到 6 張 */
- [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+9){display:none !important}
+ [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+7){display:none !important}
  /* 半身照在 375px 下用 112% 會超出畫面，縮一點仍保有破圖效果 */
  img[data-hero]{width:108% !important}
  /* 手機的人像受限於畫面寬度，圓形再縮一點，頭才明顯凸出去 */
@@ -294,7 +294,7 @@ a:hover{color:#6D4AFF}
   #ai-lab [data-lab-grid] h3{font-size:14px!important;line-height:1.45!important}
   #ai-lab [data-lab-grid] > [data-on="openLab"]{gap:8px!important}
   /* 先顯示 6 張的規則在兩欄下改成第 7 張起收起來 */
-  [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+9){display:none !important}
+  [data-lab-grid]:not([data-expanded]) > [data-on="openLab"]:nth-child(n+7){display:none !important}
 
   /* §8 What I Do：04 排到最前，01–03 收合 */
   [data-skills-wrap]{display:flex!important;flex-direction:column}
@@ -636,39 +636,48 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
         
       </div>
 
-      <div data-lab-grid style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:clamp(18px,2.4vw,32px) clamp(16px,2vw,26px)"><p data-lab-head style="grid-column:1/-1;margin:0 0 0;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;color:#6B635B">AI EXPERIMENTS　AI 能力實驗</p><div data-href="#" data-title="LiveLingo 即時字幕翻譯" data-video="./assets/ai-lab/02-livelingo-demo.mp4" data-vposter="./assets/ai-lab/02-livelingo-demo-poster.jpg" data-vcap="示範影片為黃仁勳主題演講公開直播的實測畫面，非上述活動現場。" data-img="./assets/ai-lab/02-livelingo.jpg" data-desc="聯合報系 2026 年 9 月邀請新聞設計顧問 Mario García 博士來台，進行內部工作坊與台北漢來大飯店的對外公開演講，現場的即時中文字幕由這套工具產出。Chrome 擴充功能，串接語音辨識與翻譯服務。" data-tags="Chrome 擴充|即時字幕|現場導入" data-link="示範影片 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
-          <img src="./assets/ai-lab/02-livelingo.jpg" alt="LiveLingo 在演講現場投影即時中文字幕" loading="lazy" decoding="async" data-hv="h13" style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;border-radius:16px;display:block" />
-          <h3 style="margin:0;font-size:17px;font-weight:900;line-height:1.5">LiveLingo 即時字幕翻譯</h3>
-          <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">2026 年 9 月聯合報系邀請 Mario García 博士來台授課，內部工作坊與台北漢來大飯店的對外演講，即時中文字幕都由這套工具產出。</p>
-        </div><div data-href="https://muchang32.github.io/ai-treasure-chest/" data-img="./assets/ai-lab/06-treasure-chest.jpg" data-title="AI 精選寶箱" data-desc="整理實際用得上的 AI 工具，依使用情境而非工具類別分類，可快速搜尋篩選。" data-tags="工具整理|AI|情境分類" data-link="開啟網頁 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
-          <img src="./assets/ai-lab/06-treasure-chest.jpg" alt="AI 精選寶箱 介面" loading="lazy" decoding="async" data-hv="h17" style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;border-radius:16px;display:block" />
-          <h3 style="margin:0;font-size:17px;font-weight:900;line-height:1.5">AI 精選寶箱</h3>
-          <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">整理實際用得上的 AI 工具，依使用情境而非工具類別分類，可快速搜尋篩選。</p>
-        </div><div data-href="https://muchang32.github.io/video-ai-platform/" data-title="Video AI 分析展示平台" data-img="./assets/ai-lab/04-video-ai.jpg" data-desc="展示 AI 影片分析能力的示範平台，影片內容自動摘要與標記。" data-tags="影音 AI|Demo|內容摘要" data-link="開啟網頁 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
-          <img src="./assets/ai-lab/04-video-ai.jpg" alt="Video AI 分析展示平台 影片庫介面" loading="lazy" decoding="async" data-hv="h15" style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;border-radius:16px;display:block" />
-          <h3 style="margin:0;font-size:17px;font-weight:900;line-height:1.5">Video AI 分析展示平台</h3>
-          <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">展示 AI 影片分析能力的示範平台，影片內容自動摘要與標記。</p>
-        </div><div data-href="https://miyu0603.github.io/travel-spot-app/" data-img="./assets/ai-lab/03-travel-spot.jpg" data-title="Travel Spot 景點自動萃取" data-desc="把社群貼文裡的景點資訊自動整理成可用的行程清單，串接 AI 模型，不開放公用。" data-tags="資訊萃取|旅遊|AI 模型串接" data-link="開啟網頁 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
-          <img src="./assets/ai-lab/03-travel-spot.jpg" alt="Travel Spot 景點清單介面" loading="lazy" decoding="async" data-hv="h14" style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;border-radius:16px;display:block" />
-          <h3 style="margin:0;font-size:17px;font-weight:900;line-height:1.5">Travel Spot 景點自動萃取</h3>
-          <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">把社群貼文裡的景點資訊自動整理成可用的行程清單，串接 AI 模型，不開放公用。</p>
-        </div><p data-lab-head style="grid-column:1/-1;margin:clamp(18px,2vw,26px) 0 0;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;color:#6B635B">PERSONAL PRODUCTS　自製產品</p><div data-href="https://muchang32.github.io/muchang-order/" data-img="./assets/ai-lab/01-muchang-order.jpg" data-title="要不要來一杯" data-desc="部門團購飲料的線上訂餐系統，起於一場會議上的玩笑挑戰。同事實際試用後回報問題，補上同名重複點餐的驗證。" data-tags="團購|使用者測試|多人協作" data-link="開啟網頁 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
+      <div data-lab-grid style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:clamp(18px,2.4vw,32px) clamp(16px,2vw,26px)">
+        <div data-href="https://muchang32.github.io/muchang-order/" data-img="./assets/ai-lab/01-muchang-order.jpg" data-title="要不要來一杯" data-desc="部門團購飲料的線上訂餐系統，起於一場會議上的玩笑挑戰。同事實際試用後回報問題，補上同名重複點餐的驗證。" data-tags="團購|使用者測試|多人協作" data-link="開啟網頁 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
           <img src="./assets/ai-lab/01-muchang-order.jpg" alt="要不要來一杯 點餐系統畫面" loading="lazy" decoding="async" data-hv="h12" style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;border-radius:16px;display:block" />
           <h3 style="margin:0;font-size:17px;font-weight:900;line-height:1.5">要不要來一杯</h3>
           <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">部門團購飲料的線上訂餐系統，起於一場會議上的玩笑挑戰。同事實際試用後回報問題，補上同名重複點餐的驗證。</p>
-        </div><div data-href="https://miyu0603.github.io/my-finance/" data-img="./assets/ai-lab/05-my-finance.jpg" data-title="我的財務管家" data-desc="記錄收支與資產配置的個人理財工具，資料存於本機不上傳。" data-tags="個人工具|理財|本機儲存" data-link="開啟網頁 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
+        </div>
+        <div data-href="#" data-title="LiveLingo 即時字幕翻譯" data-video="./assets/ai-lab/02-livelingo-demo.mp4" data-vposter="./assets/ai-lab/02-livelingo-demo-poster.jpg" data-vcap="示範影片為黃仁勳主題演講公開直播的實測畫面，非上述活動現場。" data-img="./assets/ai-lab/02-livelingo.jpg" data-desc="聯合報系 2026 年 9 月邀請新聞設計顧問 Mario García 博士來台，進行內部工作坊與台北漢來大飯店的對外公開演講，現場的即時中文字幕由這套工具產出。Chrome 擴充功能，串接語音辨識與翻譯服務。" data-tags="Chrome 擴充|即時字幕|現場導入" data-link="示範影片 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
+          <img src="./assets/ai-lab/02-livelingo.jpg" alt="LiveLingo 在演講現場投影即時中文字幕" loading="lazy" decoding="async" data-hv="h13" style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;border-radius:16px;display:block" />
+          <h3 style="margin:0;font-size:17px;font-weight:900;line-height:1.5">LiveLingo 即時字幕翻譯</h3>
+          <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">2026 年 9 月聯合報系邀請 Mario García 博士來台授課，內部工作坊與台北漢來大飯店的對外演講，即時中文字幕都由這套工具產出。</p>
+        </div>
+        <div data-href="https://muchang32.github.io/ai-treasure-chest/" data-img="./assets/ai-lab/06-treasure-chest.jpg" data-title="AI 精選寶箱" data-desc="整理實際用得上的 AI 工具，依使用情境而非工具類別分類，可快速搜尋篩選。" data-tags="工具整理|AI|情境分類" data-link="開啟網頁 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
+          <img src="./assets/ai-lab/06-treasure-chest.jpg" alt="AI 精選寶箱 介面" loading="lazy" decoding="async" data-hv="h17" style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;border-radius:16px;display:block" />
+          <h3 style="margin:0;font-size:17px;font-weight:900;line-height:1.5">AI 精選寶箱</h3>
+          <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">整理實際用得上的 AI 工具，依使用情境而非工具類別分類，可快速搜尋篩選。</p>
+        </div>
+        <div data-href="https://muchang32.github.io/video-ai-platform/" data-title="Video AI 分析展示平台" data-img="./assets/ai-lab/04-video-ai.jpg" data-desc="展示 AI 影片分析能力的示範平台，影片內容自動摘要與標記。" data-tags="影音 AI|Demo|內容摘要" data-link="開啟網頁 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
+          <img src="./assets/ai-lab/04-video-ai.jpg" alt="Video AI 分析展示平台 影片庫介面" loading="lazy" decoding="async" data-hv="h15" style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;border-radius:16px;display:block" />
+          <h3 style="margin:0;font-size:17px;font-weight:900;line-height:1.5">Video AI 分析展示平台</h3>
+          <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">展示 AI 影片分析能力的示範平台，影片內容自動摘要與標記。</p>
+        </div>
+        <div data-href="https://miyu0603.github.io/my-finance/" data-img="./assets/ai-lab/05-my-finance.jpg" data-title="我的財務管家" data-desc="記錄收支與資產配置的個人理財工具，資料存於本機不上傳。" data-tags="個人工具|理財|本機儲存" data-link="開啟網頁 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
           <img src="./assets/ai-lab/05-my-finance.jpg" alt="我的財務管家 介面" loading="lazy" decoding="async" data-hv="h16" style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;border-radius:16px;display:block" />
           <h3 style="margin:0;font-size:17px;font-weight:900;line-height:1.5">我的財務管家</h3>
           <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">記錄收支與資產配置的個人理財工具，資料存於本機不上傳。</p>
-        </div><div data-href="https://muchang32.github.io/winter-fuji-hakone-2026/" data-img="./assets/ai-lab/08-winter-fuji.jpg" data-title="冬富士之旅 2026" data-desc="冬季富士山與箱根行程，依天候與交通調整安排，並附中日雙語地名對照。" data-tags="旅遊|PWA|離線瀏覽" data-link="開啟網頁 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
+        </div>
+        <div data-href="https://miyu0603.github.io/travel-spot-app/" data-img="./assets/ai-lab/03-travel-spot.jpg" data-title="Travel Spot 景點自動萃取" data-desc="把社群貼文裡的景點資訊自動整理成可用的行程清單，串接 AI 模型，不開放公用。" data-tags="資訊萃取|旅遊|AI 模型串接" data-link="開啟網頁 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
+          <img src="./assets/ai-lab/03-travel-spot.jpg" alt="Travel Spot 景點清單介面" loading="lazy" decoding="async" data-hv="h14" style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;border-radius:16px;display:block" />
+          <h3 style="margin:0;font-size:17px;font-weight:900;line-height:1.5">Travel Spot 景點自動萃取</h3>
+          <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">把社群貼文裡的景點資訊自動整理成可用的行程清單，串接 AI 模型，不開放公用。</p>
+        </div>
+        <div data-href="https://muchang32.github.io/winter-fuji-hakone-2026/" data-img="./assets/ai-lab/08-winter-fuji.jpg" data-title="冬富士之旅 2026" data-desc="冬季富士山與箱根行程，依天候與交通調整安排，並附中日雙語地名對照。" data-tags="旅遊|PWA|離線瀏覽" data-link="開啟網頁 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
           <img src="./assets/ai-lab/08-winter-fuji.jpg" alt="冬富士之旅 2026 介面" loading="lazy" decoding="async" data-hv="h19" style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;border-radius:16px;display:block" />
           <h3 style="margin:0;font-size:17px;font-weight:900;line-height:1.5">冬富士之旅 2026</h3>
           <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">冬季富士山與箱根行程，依天候與交通調整安排，並附中日雙語地名對照。</p>
-        </div><div data-href="https://miyu0603.github.io/kyushu-2026/" data-img="./assets/ai-lab/07-kyushu.jpg" data-title="九州縱斷之旅 2026" data-desc="自助旅行的行程規劃與離線查閱工具，依日程自動排列景點與交通。這是系列的第一版，冬富士沿用了同一套架構並簡化操作流程。" data-tags="旅遊|PWA|離線瀏覽" data-link="開啟網頁 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
+        </div>
+        <div data-href="https://miyu0603.github.io/kyushu-2026/" data-img="./assets/ai-lab/07-kyushu.jpg" data-title="九州縱斷之旅 2026" data-desc="自助旅行的行程規劃與離線查閱工具，依日程自動排列景點與交通。這是系列的第一版，冬富士沿用了同一套架構並簡化操作流程。" data-tags="旅遊|PWA|離線瀏覽" data-link="開啟網頁 →" data-on="openLab" style="display:flex;flex-direction:column;gap:11px;min-width:0;cursor:pointer">
           <img src="./assets/ai-lab/07-kyushu.jpg" alt="九州縱斷之旅 2026 介面" loading="lazy" decoding="async" data-hv="h18" style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;border-radius:16px;display:block" />
           <h3 style="margin:0;font-size:17px;font-weight:900;line-height:1.5">九州縱斷之旅 2026</h3>
           <p style="margin:0;font-size:13.5px;line-height:1.8;color:#3B342E">自助旅行的行程規劃與離線查閱工具，依日程自動排列景點與交通。這是系列的第一版，冬富士沿用了同一套架構並簡化操作流程。</p>
-        </div></div><div data-lab-more data-if="showLabMore" hidden style="display:flex;justify-content:center;margin-top:24px"><button data-on="toggleLabMore" style="border:2px solid #14110F;background:transparent;color:#14110F;border-radius:999px;padding:14px 28px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .16s ease,color .16s ease">看更多作品 ↓</button></div>
+        </div>
+      </div><div data-lab-more data-if="showLabMore" hidden style="display:flex;justify-content:center;margin-top:24px"><button data-on="toggleLabMore" style="border:2px solid #14110F;background:transparent;color:#14110F;border-radius:999px;padding:14px 28px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .16s ease,color .16s ease">看更多作品 ↓</button></div>
     </div>
   </section>
 
