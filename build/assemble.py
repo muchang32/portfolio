@@ -323,7 +323,7 @@ def _lang_row(name, level, label):
     return ('<div style="display:flex;align-items:center;gap:10px">'
             f'<span style="flex:0 0 auto;font-size:13.5px;font-weight:700">{name}</span>'
             '<div style="flex:1;min-width:0;display:grid;grid-template-columns:repeat(5,1fr);'
-            'height:20px;border:1.5px solid #14110F;border-radius:999px;overflow:hidden">'
+            'height:16px;border:1.5px solid #14110F;border-radius:999px;overflow:hidden">'
             + _cells + '</div>'
             f'<span style="flex:0 0 auto;font-size:11.5px;color:#6B635B">{label}</span></div>')
 
@@ -1152,6 +1152,14 @@ _wi = _sk.index(_wrap)
 _sk = _sk[:_wi] + '<div data-skills-wrap style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">' + _sk[_wi + len(_wrap):]
 body = body[:_ki0] + _sk + body[_ki1:]
 
+# 04 排在 01 前面，編號就跟閱讀順序打架了。這張卡本來就不是序列裡的一項，
+# 改成直接標「核心」，下面三張維持 01／02／03，跟「支撐這件事的三項基本功」對上
+_B04 = "'Space Grotesk',sans-serif;font-size:17px;font-weight:700\">04</span>"
+assert body.count(_B04) == 1, '找不到 04 的編號圓章'
+body = body.replace(_B04,
+    "'Noto Sans TC',sans-serif;font-size:13.5px;font-weight:900;"
+    "letter-spacing:.02em\">核心</span>", 1)
+
 # 專欄的輪播容器原本沒有識別屬性，手機版要把箭頭排到標題旁邊，先補上
 _WR = '<div style="display:flex;align-items:center;gap:clamp(10px,1.6vw,20px)">'
 assert body.count(_WR) == 1, '找不到專欄的輪播容器'
@@ -1404,8 +1412,8 @@ mobile_css = """
 
   /* §8 What I Do：04 排到最前，01–03 收合 */
   [data-skills-wrap]{display:flex!important;flex-direction:column}
-  [data-skills]{display:flex!important;flex-direction:column;gap:10px!important}
-  [data-skills-wrap] > [data-skill="04"]{order:-1;margin:0 0 10px!important}
+  [data-skills]{display:flex!important;flex-direction:column;gap:26px!important}
+  [data-skills-wrap] > [data-skill="04"]{order:-1;margin:0 0 18px!important}
   [data-skills-wrap] > div[data-chapter]{order:-2}
   [data-skills-sub]{margin:16px 0 20px!important;font-size:11px!important}
   [data-skill-head]{display:flex!important;flex-direction:column;justify-content:center;
