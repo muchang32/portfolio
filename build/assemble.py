@@ -573,33 +573,39 @@ body = re.sub(
     body)
 
 # ===== 本輪 C：Credentials 版面 + SKILLS 工具 logo（使用者提供的檔案）=====
+# tile = 自帶圓角色塊的 app 圖示，自己就有邊界，不需要外框
+# mark = 透明底的線條／漸層圖示，要靠白底方框才看得出邊界
 _SKILLS = [
-    ('Claude',           'claude.png'),
-    ('Gemini',           'gemini.png'),
-    ('ChatGPT',          'ChatGPT.svg'),
-    ('Google Antigravity','antigravity.png'),
-    ('VS Code',          'VScode.png'),
-    ('Figma',            'figma.png'),
-    ('Illustrator',      'Adobe_Illustrator.png'),
-    ('Photoshop',        'Adobe_Photoshop_CC.png'),
-    ('After Effects',    'After_Effects.svg'),
-    ('Premiere',         'Premiere.svg'),
+    ('Claude',           'claude.png',             'tile'),
+    ('Gemini',           'gemini.png',             'mark'),
+    ('ChatGPT',          'ChatGPT.svg',            'tile'),
+    ('Google Antigravity','antigravity.png',       'mark'),
+    ('VS Code',          'VScode.png',             'mark'),
+    ('Figma',            'figma.png',              'tile'),
+    ('Illustrator',      'Adobe_Illustrator.png',  'tile'),
+    ('Photoshop',        'Adobe_Photoshop_CC.png', 'tile'),
+    ('After Effects',    'After_Effects.svg',      'tile'),
+    ('Premiere',         'Premiere.svg',           'tile'),
 ]
 
-def _logo(label, fn):
-    # 統一容器：自帶色底的 logo 會填滿，透明底的 logo 也因此有可見邊界
+def _logo(label, fn, kind):
+    # tile 的圓角比外框更圓，加白底會從四個角露出來；乾脆不給底也不給框。
+    # 非正方的檔案（Ps 132x128、Ae/Pr 240x234）用 cover 吃滿，裁掉的不到 3%。
+    _frame = ('' if kind == 'tile'
+              else 'background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16);')
+    _fit = 'cover' if kind == 'tile' else 'contain'
     return (f'<span title="{label}" style="display:block;aspect-ratio:1;border-radius:11px;'
-            f'overflow:hidden;background:#FFFFFF;border:1.5px solid rgba(20,17,15,.16)">'
+            f'overflow:hidden;{_frame}">'
             f'<img src="./assets/logos/opt/{fn}" alt="{label}" '
             f'loading="lazy" decoding="async" '
-            f'style="width:100%;height:100%;object-fit:contain;display:block" /></span>')
+            f'style="width:100%;height:100%;object-fit:{_fit};display:block" /></span>')
 
 _skills_block = (
     '<div style="min-width:0;margin-top:18px">'
     '<p style="margin:0 0 12px;font-family:\'IBM Plex Mono\',monospace;font-size:11px;'
     'letter-spacing:.18em;color:#6B635B">SKILLS</p>'
     '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:9px;max-width:250px">'
-    + ''.join(_logo(l, f) for l, f in _SKILLS) +
+    + ''.join(_logo(*x) for x in _SKILLS) +
     '</div></div>')
 
 body = body.replace(
