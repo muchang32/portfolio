@@ -240,6 +240,7 @@ for i, a in enumerate(ARTS):
 # 三個案例各自回答一個問題，順序與首頁一致
 CASES = [('aicast-case-study.md', 'case/aicast.html', 'Aicast'),
          ('auto-image-case-study.md', 'case/auto-image.html', '自動配圖'),
+         ('livelingo-case-study.md', 'case/livelingo.html', 'LiveLingo'),
          ('anfu-case-study.md', 'case/anfu.html', '安否通')]
 for i, (src, dst, name) in enumerate(CASES):
     nxt = CASES[(i + 1) % len(CASES)]

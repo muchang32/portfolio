@@ -34,7 +34,9 @@ C = [
   ('沒有連結的專案不留死按鈕', has('data-href-bind="labHref" data-if="labHasLink"')
                            and "labHasLink: !!(state.lab" in h),
   ('五篇專欄內頁連結', len(re.findall(r'href="\./writing/\d', h)) == 5),
-  ('兩則案例內頁連結', len(re.findall(r'href="\./case/\w+\.html"', h)) == 2),
+  ('四則案例內頁都有連結',
+   {'aicast', 'auto-image', 'livelingo', 'anfu'}
+   == set(re.findall(r'href="\./case/([\w-]+)\.html"', h))),
   ('履歷 PDF', has('assets/resume.pdf', 2)),
   ('轉職鏈 UI / UX → Behance', has('behance.net/changmu')),
   ('轉職鏈 平面設計 → Cake', has('cakeresume.com')),
@@ -100,9 +102,9 @@ C = [
   # --- 版面結構 ---
   ('Credentials 三欄', has('[data-grid="creds"]')),
   ('精選案例只有整張卡有 hover（另加兩顆手機用的箭頭）',
-   (lambda seg: re.findall(r'data-hv="(h\d+)"', seg) == ['h21', 'h8', 'h8', 'h10', 'h27'])
+   (lambda seg: re.findall(r'data-hv="(h\d+)"', seg) == ['h21', 'h8', 'h8', 'h8', 'h10', 'h27'])
    (h[h.index('id="case"'):h.index('id="ai-lab"')])),
-  ('案例按鈕與內文留有間距', h.count('margin-top:22px;display:inline-block;') == 3),
+  ('案例按鈕與內文留有間距', h.count('margin-top:22px;display:inline-block;') == 4),
   ('沒有重複的 style 屬性', not re.search(r'<[a-z]+[^>]*\sstyle="[^"]*"[^>]*\sstyle="', h)),
   ('What I Do 用結構選擇器', has('#skills div[style*="border:2px solid #14110F"]:hover')),
   ('無 hidden 殘留在 SVG', not re.search(r'<svg[^>]*\shidden[^>]*>', h)),
@@ -165,9 +167,9 @@ for desc, ok in C[-7:]:
 
 # ---- 精選案例卡片的「問題 → 判斷 → 結果」 ----
 _pdo_n = h.count('<dl data-pdo ')
-C.append(('三張案例卡都有問題／判斷／結果', _pdo_n == 3))
+C.append(('四張案例卡都有問題／判斷／結果', _pdo_n == 4))
 C.append(('每組三行齊全',
-          all(h.count(f'>{lab}</dt>') == 3 for lab in ('問題', '判斷', '結果'))))
+          all(h.count(f'>{lab}</dt>') == 4 for lab in ('問題', '判斷', '結果'))))
 C.append(('卡片不再重複講結果',
           '通過文件初審並進入' not in h and '並主導申請 <strong>2025 iF' not in h))
 
@@ -195,7 +197,7 @@ C.append(('自動配圖的成效數字三處一致',
           h.count('搜尋後實際匯入稿單的比例從 3% 提升到 42%') == 2   # 首頁：案例卡 ＋ 現職
           and '匯入稿單的比例只有 3%' in _auto and '提升到 42%' in _auto
           and '這裡我沒有可以拿出來的數字' not in _auto))
-C.append(('三張卡都有一句話摘要', h.count('<p data-case-sum ') == 3))
+C.append(('四張卡都有一句話摘要', h.count('<p data-case-sum ') == 4))
 C.append(('首頁案例卡不再有規格列與定位標籤',
           'data-case-tags' not in h
           and 'AI SaaS ・ 專案經理' not in h
@@ -242,6 +244,26 @@ C.append(('案例與專欄的卡片在手機吃滿寬度',
 C.append(('桌機看不到案例區的箭頭',
           '@media (min-width:641px){#case [data-carousel] > button{display:none !important}}' in h))
 for desc, ok in C[-10:]:
+    (fails if not ok else warns).append(desc) if not ok else None
+
+# ---- 第四個案例：LiveLingo ----
+_ll = pathlib.Path('case/livelingo.html').read_text(encoding='utf-8')
+C.append(('四張案例卡的順序正確',
+          (lambda seg: [m for m in re.findall(r'<h3[^>]*>([^<]+)</h3>', seg)] == [
+              'Aicast 有聲內容製作平台', '自動配圖　從編輯的回饋到產品優化',
+              'LiveLingo 即時字幕翻譯', '安否通　弱勢機構災情即時回報平台'])
+           (h[h.index('<div data-ref="casesRef"'):h.index('id="ai-lab"')])))
+C.append(('LiveLingo 案例頁用自己的素材',
+          'case/livelingo/demo.mp4' in _ll
+          and pathlib.Path('assets/case/livelingo/demo.mp4').exists()
+          and pathlib.Path('assets/case/livelingo/cover.jpg').exists()
+          and 'ai-lab/02-livelingo' not in _ll))
+C.append(('示範影片仍標明非活動現場', '黃仁勳主題演講公開直播的實測畫面' in _ll))
+C.append(('現職的 LiveLingo 連到案例頁', './case/livelingo.html' in h))
+C.append(('站上不出現「報系」', '報系' not in h and '報系' not in _ll))
+C.append(('∞ 的對話框靠右，不撐出橫向捲動',
+          '.tip:not(.tip-link) .tip-bubble{left:auto;right:0' in h))
+for desc, ok in C[-6:]:
     (fails if not ok else warns).append(desc) if not ok else None
 
 print(f'檢查 {len(C)} 項')

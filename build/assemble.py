@@ -755,8 +755,45 @@ def _summary(text):
 _AUTO_CARD = _AUTO_CARD.replace(
     '__AUTO_SUMMARY__', _summary('讓編輯的真實回饋，成為產品優化的依據。'))
 
+# D3c-2. 第四張案例卡：LiveLingo。唯一一個「自己從零做到真的被用」的產品歷程，
+#        放在安否通之前，讓兩個 0→1 的故事相鄰（一個上線、一個停在提案）
+_LL_CARD_CASE = (
+    '<article style="position:relative;background:#fff;border:2.5px solid #14110F;'
+    'border-radius:24px;box-shadow:7px 7px 0 #14110F;padding:clamp(20px,2.6vw,32px);'
+    'display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));'
+    'gap:clamp(20px,2.6vw,36px);align-items:center;'
+    'transition:transform .16s ease,box-shadow .16s ease" data-hv="h8">'
+    '<div style="min-width:0">'
+    '<img src="./assets/case/livelingo/cover.jpg" '
+    'alt="LiveLingo 在演講現場投影即時中文字幕" loading="lazy" decoding="async" '
+    'style="aspect-ratio:16/10;width:100%;max-width:100%;min-width:0;object-fit:cover;'
+    'border-radius:16px;display:block" />'
+    '</div>'
+    '<div style="min-width:0">'
+    '<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px">'
+    '<span style="background:#FFE6E1;border-radius:999px;padding:5px 13px;font-size:12px;'
+    'font-weight:700">精選案例</span>'
+    '<span style="font-size:11.5px;color:#3B342E">Chrome 擴充功能　活動現場導入</span></div>'
+    '<h3 style="margin:0 0 8px;font-size:clamp(21px,2.6vw,30px);font-weight:900;'
+    'line-height:1.45">LiveLingo 即時字幕翻譯</h3>'
+    '__LL_SUMMARY__'
+    + _pdo([
+        ('問題', '商用方案的顯示彈性不夠、免費方案只收得到簡報麥克風，另兩套無法試用'),
+        ('判斷', '自己做換到預算可控與完全客製，而且我自己就是現場操作的那個人'),
+        ('結果', '兩場活動實際使用，獲總經理頒發獎金，規劃上架 Chrome 商店'),
+    ], '#FFE6E1') +
+    '<p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">'
+    '我負責需求定義、開發、現場測試與調整，以及命名與識別設計。</p>'
+    '<a href="./case/livelingo.html" style="margin-top:22px;display:inline-block;'
+    'background:#14110F;color:#FAF7F0;border:2px solid #14110F;border-radius:999px;'
+    'padding:14px 26px;font-weight:700;font-size:15px;box-shadow:4px 4px 0 #FFE6E1;'
+    'transition:transform .15s ease,box-shadow .15s ease">閱讀完整案例 →</a>'
+    '</div></article>')
+_LL_CARD_CASE = _LL_CARD_CASE.replace(
+    '__LL_SUMMARY__', _summary('把一次性的活動需求，做成可以重複使用的工具。'))
+
 _anfu_art = body.rindex('<article ', 0, body.index('安否通　弱勢機構災情即時回報平台'))
-body = body[:_anfu_art] + _AUTO_CARD + body[_anfu_art:]
+body = body[:_anfu_art] + _AUTO_CARD + _LL_CARD_CASE + body[_anfu_art:]
 
 _META = ('<p style="margin:0 0 18px;font-family:\'IBM Plex Mono\',monospace;'
          'font-size:13px;color:#3B342E">%s</p>')
@@ -882,7 +919,9 @@ body = body.replace(_VAGUE,
     # LiveLingo：寫成常態能力而不是單一場次，後續其他國際講者的場子也會用到
     '<li><strong>自製工具落地</strong>：獨立開發 LiveLingo Chrome 擴充功能，'
     '串接語音辨識與翻譯 API 提供即時字幕，供公司邀請國際講者來台時使用，'
-    '涵蓋內部工作坊與對外公開演講</li>'
+    '兩場活動實際導入'
+    '　<a href="./case/livelingo.html" style="color:#6D4AFF;font-weight:700;'
+    'white-space:nowrap">完整案例 →</a></li>'
     # 測試介面那段是重點：讓使用者自己調提示詞，不必每次回來找我改流程
     '<li><strong>AI 工作流自動化</strong>：以 n8n 串接 Claude API（MCP），'
     '為新聞自動摘要建立內容檢核流程，並另做一個測試介面，'
@@ -1216,7 +1255,7 @@ _cas = body[_si0:_si1]
 _wrap = '<div style="display:flex;flex-direction:column;gap:clamp(24px,3vw,40px)">'
 assert _cas.count(_wrap) == 1, '找不到精選案例的卡片容器'
 _cas = _cas.replace(_wrap, _wrap.replace('<div ', '<div data-cases ', 1), 1)
-assert _cas.count('<dl data-pdo ') == 3, '問題／判斷／結果三行應該有三組'
+assert _cas.count('<dl data-pdo ') == 4, '問題／判斷／結果三行應該有四組'
 
 # 手機版的左右箭頭：沿用專欄那組的樣式，只是換成捲案例的 slider
 _cas = _cas.replace('<div data-cases ', '<div data-ref="casesRef" data-cases ', 1)
@@ -1593,16 +1632,16 @@ doc = f"""<!DOCTYPE html>
 .tip-link .tip-bubble{{left:50%;transform:translate(-50%,4px);max-width:min(300px,calc(100vw - 32px))}}
 .tip-link:hover .tip-bubble,.tip-link:focus .tip-bubble{{transform:translate(-50%,0)}}
 .tip-link .tip-bubble::after,.tip-link .tip-bubble::before{{left:50%;margin-left:-9px}}
+/* ∞ 永遠是數據列的最後一格，對話框靠左會凸出畫面（隱藏時仍算進 scrollWidth）*/
+.tip:not(.tip-link) .tip-bubble{{left:auto;right:0;max-width:min(300px,calc(100vw - 32px))}}
+.tip:not(.tip-link) .tip-bubble::after,
+.tip:not(.tip-link) .tip-bubble::before{{left:auto;right:22px}}
 /* 觸控裝置沒有 hover，且窄螢幕放不下對話框；留給輔助技術讀、不佔版面 */
 @media (max-width:640px){{
  /* 轉職鏈的兩顆膠囊：觸控沒有 hover，留給輔助技術讀、不佔版面 */
  .tip-link .tip-bubble{{width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);
   border:0;box-shadow:none;opacity:1;visibility:visible;transform:none}}
  .tip-link .tip-bubble::after,.tip-link .tip-bubble::before{{display:none}}
- /* ∞ 在六格的最後一格，對話框靠左會衝出畫面，改成貼右邊 */
- .tip:not(.tip-link) .tip-bubble{{left:auto;right:0;max-width:calc(100vw - 32px)}}
- .tip:not(.tip-link) .tip-bubble::after,
- .tip:not(.tip-link) .tip-bubble::before{{left:auto;right:22px}}
  .tip:not(.tip-link).open .tip-bubble{{opacity:1;visibility:visible;transform:translateY(0)}}
 }}
 
