@@ -923,8 +923,8 @@ body = body.replace(_VAGUE,
     '　<a href="./case/livelingo.html" style="color:#6D4AFF;font-weight:700;'
     'white-space:nowrap">完整案例 →</a></li>'
     # 測試介面那段是重點：讓使用者自己調提示詞，不必每次回來找我改流程
-    '<li><strong>AI 工作流自動化</strong>：以 n8n 串接 Claude API（MCP），'
-    '為新聞自動摘要建立內容檢核流程，並另做一個測試介面，'
+    '<li><strong>AI 工作流自動化</strong>：以 n8n 串接 Claude API（MCP）、'
+    '解析 JSON 回應串接後段流程，為新聞自動摘要建立內容檢核；另做一個測試介面，'
     '讓編輯不必改動流程或資料就能自行調整 Prompt、比較效果；'
     '另與組內以 Open WebUI 搭公開資料試驗 RAG 查詢</li>', 1)
 
