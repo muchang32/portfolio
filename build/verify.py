@@ -21,7 +21,7 @@ C = [
   ('現職不綁單一場次', 'Mario García' not in h[h.index('id="career"'):h.index('id="case"')]),
   ('現職的 LiveLingo 寫成常態能力，不綁單一場次',
    has('獨立開發 LiveLingo Chrome 擴充功能')
-   and has('供報系邀請國際講者來台時使用')
+   and has('供公司邀請國際講者來台時使用')
    and 'García' not in h[h.index('資訊管理師'):h.index('</section>', h.index('資訊管理師'))]),
   ('現職沒有留下空泛的那條',
    absent('導入 AI 工具至實際工作流程並優化 Prompt 設計')),

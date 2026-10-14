@@ -881,10 +881,10 @@ body = body.replace(_VAGUE,
     '並將合規納入規格，保存生成紀錄與 Prompt 以利著作權與來源溯源</li>'
     # LiveLingo：寫成常態能力而不是單一場次，後續其他國際講者的場子也會用到
     '<li><strong>自製工具落地</strong>：獨立開發 LiveLingo Chrome 擴充功能，'
-    '提供即時字幕翻譯，供報系邀請國際講者來台時使用，'
+    '串接語音辨識與翻譯 API 提供即時字幕，供公司邀請國際講者來台時使用，'
     '涵蓋內部工作坊與對外公開演講</li>'
     # 測試介面那段是重點：讓使用者自己調提示詞，不必每次回來找我改流程
-    '<li><strong>AI 工作流自動化</strong>：以 n8n 串接 Claude，'
+    '<li><strong>AI 工作流自動化</strong>：以 n8n 串接 Claude API（MCP），'
     '為新聞自動摘要建立內容檢核流程，並另做一個測試介面，'
     '讓編輯不必改動流程或資料就能自行調整 Prompt、比較效果；'
     '另與組內以 Open WebUI 搭公開資料試驗 RAG 查詢</li>', 1)
@@ -899,10 +899,10 @@ body = body.replace(_TRAIN,
 _LL_OLD = ('Chrome MV3 擴充功能，AudioWorklet 將分頁音訊降為 16kHz PCM16，'
            '串接 Deepgram 逐字稿與 DeepL 翻譯。')
 assert body.count(_LL_OLD) == 2, 'LiveLingo 文案應該出現在卡片與彈窗各一次'
-_LL_MODAL = ('聯合報系 2026 年 9 月邀請新聞設計顧問 Mario García 博士來台，'
+_LL_MODAL = ('公司 2026 年 9 月邀請新聞設計顧問 Mario García 博士來台，'
              '進行內部工作坊與台北漢來大飯店的對外公開演講，現場的即時中文字幕由這套工具產出。'
-             'Chrome 擴充功能，串接語音辨識與翻譯服務。')
-_LL_CARD = ('2026 年 9 月聯合報系邀請 Mario García 博士來台授課，'
+             'Chrome 擴充功能，串接語音辨識與翻譯 API。')
+_LL_CARD = ('2026 年 9 月公司邀請 Mario García 博士來台授課，'
             '內部工作坊與台北漢來大飯店的對外演講，即時中文字幕都由這套工具產出。')
 body = body.replace(f'data-desc="{_LL_OLD}', f'data-desc="{_LL_MODAL}', 1)
 body = body.replace(_LL_OLD, _LL_CARD, 1)
