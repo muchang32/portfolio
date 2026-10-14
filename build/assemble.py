@@ -877,7 +877,8 @@ body = body.replace(_VAGUE,
     # 文生圖：訪綱整理出五項洞察、需求分三層、流程從讀稿到入稿，是完整的需求規劃
     '<li><strong>產品需求規劃</strong>：主導 CMS「AI 文生圖」功能規劃，'
     '訪談記者與編輯收斂出五項關鍵洞察，將需求分成 P0／P1／P2 三層，'
-    '並定義從稿件讀取、提示詞優化到選圖與入稿的完整流程與工程規格</li>'
+    '定義從稿件讀取、Prompt 優化到選圖與入稿的完整流程與工程規格；'
+    '並將合規納入規格，保存生成紀錄與 Prompt 以利著作權與來源溯源</li>'
     # LiveLingo：寫成常態能力而不是單一場次，後續其他國際講者的場子也會用到
     '<li><strong>自製工具落地</strong>：獨立開發 LiveLingo Chrome 擴充功能，'
     '提供即時字幕翻譯，供報系邀請國際講者來台時使用，'
@@ -885,7 +886,7 @@ body = body.replace(_VAGUE,
     # 測試介面那段是重點：讓使用者自己調提示詞，不必每次回來找我改流程
     '<li><strong>AI 工作流自動化</strong>：以 n8n 串接 Claude，'
     '為新聞自動摘要建立內容檢核流程，並另做一個測試介面，'
-    '讓編輯不必改動流程或資料就能自行調整提示詞、比較效果；'
+    '讓編輯不必改動流程或資料就能自行調整 Prompt、比較效果；'
     '另與組內以 Open WebUI 搭公開資料試驗 RAG 查詢</li>', 1)
 
 _TRAIN = '<li>推動 AI coding 與 AI 工具的內部分享與實作培訓，降低使用門檻</li>'
@@ -1152,6 +1153,9 @@ _wi = _sk.index(_wrap)
 _sk = _sk[:_wi] + '<div data-skills-wrap style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">' + _sk[_wi + len(_wrap):]
 body = body[:_ki0] + _sk + body[_ki1:]
 
+# 專欄卡片的摘要也統一用 Prompt（專欄內文保持原樣，那是已發表的稿）
+body = body.replace('完整心得，含提示詞寫法。', '完整心得，含 Prompt 寫法。', 1)
+
 # ---- What I Do 01–03：三張卡都改成「能帶走的能力」而不是「做過的事」----
 # 01 只換第一條（使用者指定的寫法）
 body = body.replace('<li>定義問題、撰寫需求文件</li>',
@@ -1190,7 +1194,7 @@ _UL04 = ('<li>導入 AI 工具至實際工作流程，並設計與優化 Prompt<
 assert body.count(_UL04) == 1, '找不到 04 的三條'
 body = body.replace(_UL04,
     '<li>評估 AI 適用的環節與邊界，並設計與優化 Prompt</li>'
-    '<li>將 AI 功能轉化為可執行的產品規格，涵蓋提示詞優化、生成流程與排序邏輯</li>'
+    '<li>將 AI 功能轉化為可執行的產品規格，涵蓋 Prompt 優化、生成流程與排序邏輯</li>'
     '<li>運用 AI Coding 將想法直接做成可互動的網頁與 PWA 原型，用於快速驗證</li>', 1)
 
 # 04 排在 01 前面，編號就跟閱讀順序打架了。這張卡本來就不是序列裡的一項，
