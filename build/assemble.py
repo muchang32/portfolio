@@ -1198,40 +1198,32 @@ body = body.replace('完整心得，含提示詞寫法。', '完整心得，含 
 
 # ---- What I Do 四張卡：改成「能力 + 英文職能名 + 關鍵字」----
 # 中文標題下面加一行英文職能名：求職者看中文，ATS 與外商 recruiter 看英文。
-# 標籤本來被 collapse_tags 全站收起來（職涯歷程與案例卡的標籤太吵），
-# 但這四張卡的標籤就是關鍵字本身，要留著給人搜。
+# 設計母檔每張卡最後有一排關鍵字標籤，四張加起來二十個，首頁太雜，整排拿掉。
 _WHAT = {
     '04': dict(
         zh='AI 應用與原型開發', en='AI Application &amp; Prototyping',
         lead='判斷 AI 該用在哪，然後把想法做出來。',
         li=['評估 AI 的適用情境與限制，設計及優化 Prompt 與生成流程',
             '將 AI 應用需求轉化為功能規格、處理邏輯與可執行方案',
-            '運用 AI Coding 建立互動式 Web／PWA 原型，加速想法驗證與流程改善'],
-        tags=['AI Application', 'Prompt Engineering', 'Workflow Automation',
-              'Prototyping', 'AI Product Development']),
+            '運用 AI Coding 建立互動式 Web／PWA 原型，加速想法驗證與流程改善']),
     '01': dict(
         zh='產品規劃與需求定義', en='Product Thinking &amp; Planning',
         lead='把模糊的需求，收斂成可驗證的產品方案。',
         li=['透過使用者訪談與回饋分析，釐清痛點及真正需求',
             '將問題拆解為功能需求、使用流程與產品規格',
-            '依據使用情境、影響程度與資源限制，排定功能優先順序'],
-        tags=['User Research', 'Requirement Definition', 'PRD',
-              'User Flow', 'Prioritization']),
+            '依據使用情境、影響程度與資源限制，排定功能優先順序']),
     '02': dict(
         zh='專案推進與跨部門協作', en='Project Execution',
         lead='讓需求不只停在文件，而是推進到交付。',
         li=['拆解工作範圍、交付節點與驗收條件，持續對齊需求與進度',
             '協調設計、工程及外部合作夥伴，確保資訊同步與交付品質',
-            '在時程與資源限制下管理優先順序、處理問題並推進成果'],
-        tags=['Cross-functional Collaboration', 'Scope &amp; Timeline',
-              'Risk Management', 'Delivery', 'Acceptance Criteria']),
+            '在時程與資源限制下管理優先順序、處理問題並推進成果']),
     '03': dict(
         zh='UX 設計與體驗驗證', en='UX Design &amp; Validation',
         lead='用設計讓產品更容易理解、操作與驗證。',
         li=['規劃資訊架構、使用者流程、Wireframe 與互動原型',
             '將複雜需求轉化為清楚易懂的介面與操作體驗',
-            '透過視覺一致性、細節檢查與使用者回饋，持續改善產品體驗'],
-        tags=['UX', 'Wireframe', 'Prototype', 'Usability', 'User Experience']),
+            '透過視覺一致性、細節檢查與使用者回饋，持續改善產品體驗']),
 }
 
 def _skill_en(text, big):
@@ -1240,13 +1232,6 @@ def _skill_en(text, big):
     return (f'<p data-skill-en style="margin:{"-7px" if big else "-5px"} 0 0;'
             f"font-family:'Space Grotesk',sans-serif;font-size:{size};font-weight:700;"
             f'letter-spacing:.04em;color:rgba(20,17,15,.66)">{text}</p>')
-
-def _skill_tags(tags, big):
-    alpha = '.62' if big else '.6'
-    pos = '' if big else 'margin-top:auto;padding-top:14px;'
-    pills = ''.join(f'<span style="background:rgba(255,255,255,{alpha});border-radius:999px;'
-                    f'padding:4px 11px;font-size:11.5px;color:#3B342E">{t}</span>' for t in tags)
-    return f'<div data-skill-tags style="{pos}display:flex;flex-wrap:wrap;gap:6px">{pills}</div>'
 
 for _no, _c in _WHAT.items():
     _big = _no == '04'
@@ -1267,10 +1252,12 @@ for _no, _c in _WHAT.items():
     _ut = _card.index('>', _u0) + 1
     _card = _card[:_ut] + ''.join(f'<li>{x}</li>' for x in _c['li']) + _card[_u1:]
 
+    # 設計母檔在每張卡最後留了一排關鍵字標籤，但首頁已經夠滿了，整排拿掉；
+    # 一併拿掉它的 min-height，否則卡片底部會留一段空的
     _t0 = _card.rindex('<div ')
     _t1 = _card.index('</div>', _t0) + len('</div>')
     assert 'flex-wrap:wrap' in _card[_t0:_t1], f'{_no} 的標籤容器比對不到'
-    _card = _card[:_t0] + _skill_tags(_c['tags'], _big) + _card[_t1:]
+    _card = _card[:_t0] + _card[_t1:]
 
     body = body[:_b] + _card + body[_e:]
 
