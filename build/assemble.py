@@ -1592,12 +1592,14 @@ doc = f"""<!DOCTYPE html>
 [data-grid="creds"]{{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr) 260px;align-items:start}}
 @media (max-width:900px){{[data-grid="creds"]{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}
 @media (max-width:560px){{[data-grid="creds"]{{grid-template-columns:1fr}}}}
-/* 證照膠囊與工具 logo：hover 微放大，給個可以互動的手感 */
+/* 證照膠囊與工具 logo：hover 沿用專欄卡片那組「往左上浮起 + 黑色硬陰影」。
+   縮放會疊到旁邊的格子上，浮起 + 陰影是往右下長，9px 的格距塞得下。 */
 [data-cred="cert"] [style*="border-radius:999px"],
-[data-cred="skill"] span[title]{{transition:transform .16s ease}}
+[data-cred="skill"] span[title]{{transition:transform .16s ease,box-shadow .16s ease}}
 @media (hover:hover){{
- [data-cred="cert"] [style*="border-radius:999px"]:hover{{transform:scale(1.06)}}
- [data-cred="skill"] span[title]:hover{{transform:scale(1.12)}}
+ [data-cred="cert"] [style*="border-radius:999px"]:hover,
+ [data-cred="skill"] span[title]:hover{{transform:translate(-2px,-2px);
+  box-shadow:4px 4px 0 #14110F}}
 }}
 /* 信箱 hover：逐字由上往下重新落位 */
 .mailfx span{{display:inline-block;will-change:transform}}
