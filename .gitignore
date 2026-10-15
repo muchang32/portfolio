@@ -18,6 +18,9 @@ avatar
 作品集參考.webp
 b73440137b940fe38b4ab4729b98597c.jpg
 
+# 求職文件（履歷草稿，repo 是公開的，不要跟著部署上去）
+resume/
+
 # 規劃文件（含公司內部資訊，不公開）
 website-spec.md
 design-brief.md
