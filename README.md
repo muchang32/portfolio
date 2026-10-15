@@ -5,20 +5,26 @@
 ## 結構
 
 ```
-index.html              首頁（單檔，無外部 runtime）
-writing/                五篇《聯8達》專欄內頁（.md 為來源，.html 為產出）
-case/                   兩則精選案例內頁
+index.html              首頁（單檔，無外部 runtime，CSS 與 JS 全部內嵌）
+case/                   四則精選案例內頁（.md 為來源，.html 為產出）
+writing/                五篇《聯8達》專欄內頁（同上）
 assets/
+├── avatar.png          Hero 去背半身照
+├── og-cover.jpg        分享縮圖
+├── resume.pdf          履歷（由 build/resume_pdf.py 產生，見下）
+├── case/               四則案例的封面與內頁素材
 ├── writing/            專欄封面與插圖
-├── case/aicast/        Aicast 產品畫面與 iF 獎章
-└── design/graphic/_selected/   平面作品 19 張（thumb 網格用、full 燈箱用）
+├── ai-lab/             AI Lab 八個專案的截圖與示範影片
+├── logos/opt/          SKILLS 的工具 logo（opt 是壓過的，站上用這組）
+└── design/graphic/_selected/   平面作品（thumb 網格用、full 燈箱用）
 build/                  建置腳本
-張詩沂個人網站首頁/        Claude Design 設計母檔（.dc.html）
+張詩沂個人網站首頁/        Claude Design 設計母檔（.dc.html）── 首頁的視覺來源，不要刪
+design-handoff/         手機版改版時給設計的交付包（歷史資料，站上不引用）
 ```
 
-## 改設計之後如何重建
+## 建置
 
-首頁的視覺母檔是 Claude Design 輸出的 `.dc.html`。改完設計後重跑：
+首頁的視覺母檔是 Claude Design 輸出的 `.dc.html`，改完設計後重跑：
 
 ```bash
 python3 build/convert.py "張詩沂個人網站首頁/張詩沂個人網站.dc.html" build/_parts.txt
@@ -34,10 +40,22 @@ python3 build/assemble.py
 python3 build/pages.py
 ```
 
-## 待補素材
+履歷 PDF 由網站同一套視覺排版後，用 Chrome headless 列印：
 
-- Hero 去背半身照
-- AI Lab 八個專案截圖、Travel Spot 與 LiveLingo 的示範錄影
-- UI/UX 代表圖（Design Background 左欄）
-- `assets/resume.pdf`（導覽列「履歷下載」目前指向此路徑）
-- OG 分享縮圖（`og:image` 暫時移除，待去背照到位後補）
+```bash
+python3 build/resume_pdf.py --pdf
+```
+
+最後一定要跑驗證。`assemble.py` 有 60+ 處字串取代，任何一處比對不到都會無聲失敗，
+這支讓它出聲（目前 123 項，失敗會回非零）：
+
+```bash
+python3 build/verify.py
+```
+
+## 注意
+
+- **repo 是公開的**，GitHub Pages 直接從 `main` 部署。放進版控的東西等於上線，
+  求職文件（`resume/`）、規劃文件與大型素材都在 `.gitignore` 裡。
+- 履歷 PDF 與網站共用十餘句文案（成效數字、案例結果、能力卡、語言程度），
+  `verify.py` 會逐字比對兩邊。改了網站就要重跑 `resume_pdf.py --pdf`，否則驗證不會過。
