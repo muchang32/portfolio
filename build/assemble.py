@@ -1196,46 +1196,83 @@ body = body[:_ki0] + _sk + body[_ki1:]
 # 專欄卡片的摘要也統一用 Prompt（專欄內文保持原樣，那是已發表的稿）
 body = body.replace('完整心得，含提示詞寫法。', '完整心得，含 Prompt 寫法。', 1)
 
-# ---- What I Do 01–03：三張卡都改成「能帶走的能力」而不是「做過的事」----
-# 01 只換第一條（使用者指定的寫法）
-body = body.replace('<li>定義問題、撰寫需求文件</li>',
-                    '<li>釐清需求，並整合流程及資源</li>', 1)
+# ---- What I Do 四張卡：改成「能力 + 英文職能名 + 關鍵字」----
+# 中文標題下面加一行英文職能名：求職者看中文，ATS 與外商 recruiter 看英文。
+# 標籤本來被 collapse_tags 全站收起來（職涯歷程與案例卡的標籤太吵），
+# 但這四張卡的標籤就是關鍵字本身，要留著給人搜。
+_WHAT = {
+    '04': dict(
+        zh='AI 應用與原型開發', en='AI Application &amp; Prototyping',
+        lead='判斷 AI 該用在哪，然後把想法做出來。',
+        li=['評估 AI 的適用情境與限制，設計及優化 Prompt 與生成流程',
+            '將 AI 應用需求轉化為功能規格、處理邏輯與可執行方案',
+            '運用 AI Coding 建立互動式 Web／PWA 原型，加速想法驗證與流程改善'],
+        tags=['AI Application', 'Prompt Engineering', 'Workflow Automation',
+              'Prototyping', 'AI Product Development']),
+    '01': dict(
+        zh='產品規劃與需求定義', en='Product Thinking &amp; Planning',
+        lead='把模糊的需求，收斂成可驗證的產品方案。',
+        li=['透過使用者訪談與回饋分析，釐清痛點及真正需求',
+            '將問題拆解為功能需求、使用流程與產品規格',
+            '依據使用情境、影響程度與資源限制，排定功能優先順序'],
+        tags=['User Research', 'Requirement Definition', 'PRD',
+              'User Flow', 'Prioritization']),
+    '02': dict(
+        zh='專案推進與跨部門協作', en='Project Execution',
+        lead='讓需求不只停在文件，而是推進到交付。',
+        li=['拆解工作範圍、交付節點與驗收條件，持續對齊需求與進度',
+            '協調設計、工程及外部合作夥伴，確保資訊同步與交付品質',
+            '在時程與資源限制下管理優先順序、處理問題並推進成果'],
+        tags=['Cross-functional Collaboration', 'Scope &amp; Timeline',
+              'Risk Management', 'Delivery', 'Acceptance Criteria']),
+    '03': dict(
+        zh='UX 設計與體驗驗證', en='UX Design &amp; Validation',
+        lead='用設計讓產品更容易理解、操作與驗證。',
+        li=['規劃資訊架構、使用者流程、Wireframe 與互動原型',
+            '將複雜需求轉化為清楚易懂的介面與操作體驗',
+            '透過視覺一致性、細節檢查與使用者回饋，持續改善產品體驗'],
+        tags=['UX', 'Wireframe', 'Prototype', 'Usability', 'User Experience']),
+}
 
-# 02 原本三條都是具體的過去事實（11 位夥伴、每週兩次、那一套流程），
-# 這些職涯歷程裡都已經寫了；這張卡要講的是方法，不是紀錄。
-_UL02 = ('<li>同時管理翻譯、設計與工讀生共 11 位外部夥伴</li>'
-         '<li>主持每週兩次產品開發會議</li>'
-         '<li>建立需求 → Wireframe → 開發 → 驗收流程</li>')
-assert body.count(_UL02) == 1, '找不到專案執行的三條'
-body = body.replace(_UL02,
-    '<li>建立從需求到驗收的交付節點，定期與團隊對齊資訊</li>'
-    '<li>管理跨職能與外包協作，確保產出與交付的品質</li>'
-    '<li>以團隊實際做得完的量切分範圍與期程，避免過度承諾</li>', 1)
+def _skill_en(text, big):
+    # 跟中文標題貼緊（負 margin 吃掉 flex 的 gap），再由下一行的一句話拉開距離
+    size = '14px' if big else '12.5px'
+    return (f'<p data-skill-en style="margin:{"-7px" if big else "-5px"} 0 0;'
+            f"font-family:'Space Grotesk',sans-serif;font-size:{size};font-weight:700;"
+            f'letter-spacing:.04em;color:rgba(20,17,15,.66)">{text}</p>')
 
-# 03 第一條（十年累積）Hero 數據與 About 都講過了，換成實際的判準
-_UL03 = ('<li>十年視覺與 UI/UX 累積</li>'
-         '<li>介面、行銷素材與品牌視覺均可獨立產出</li>')
-assert body.count(_UL03) == 1, '找不到設計能力的兩條'
-body = body.replace(_UL03,
-    '<li>介面、行銷素材與品牌視覺均可獨立產出</li>'
-    '<li>對畫面的美感與細節要求高，介面一致性不妥協</li>'
-    '<li>也同樣在意使用者能否順利完成任務，不讓好看凌駕好用</li>', 1)
+def _skill_tags(tags, big):
+    alpha = '.62' if big else '.6'
+    pos = '' if big else 'margin-top:auto;padding-top:14px;'
+    pills = ''.join(f'<span style="background:rgba(255,255,255,{alpha});border-radius:999px;'
+                    f'padding:4px 11px;font-size:11.5px;color:#3B342E">{t}</span>' for t in tags)
+    return f'<div data-skill-tags style="{pos}display:flex;flex-wrap:wrap;gap:6px">{pills}</div>'
 
-# ---- What I Do 04：從「幫公司導入 AI」改成「判斷 → 規格 → 實作」----
-# 原本三條裡有兩條加上副標都在講企業導入，但那件事職涯歷程已經有獨立一條；
-# 這張卡要講的是能帶去下一份工作的能力。
-_S04 = '把 AI 從「聽說很好用」，變成同事每天在用'
-assert body.count(_S04) == 1, '找不到 04 的副標'
-body = body.replace(_S04, '判斷 AI 該用在哪，然後自己把它做出來', 1)
+for _no, _c in _WHAT.items():
+    _big = _no == '04'
+    _b = body.index(f'<div data-skill="{_no}" ')
+    _e = _close_of(body, _b)
+    _card = body[_b:_e]
 
-_UL04 = ('<li>導入 AI 工具至實際工作流程，並設計與優化 Prompt</li>'
-         '<li>推動 AI coding 內部分享與實作培訓，降低非工程人員的門檻</li>'
-         '<li>運用 AI Coding 將想法直接做成可互動的網頁與 PWA 原型</li>')
-assert body.count(_UL04) == 1, '找不到 04 的三條'
-body = body.replace(_UL04,
-    '<li>評估 AI 適用的環節與邊界，並設計與優化 Prompt</li>'
-    '<li>將 AI 功能轉化為可執行的產品規格，涵蓋 Prompt 優化、生成流程與排序邏輯</li>'
-    '<li>運用 AI Coding 將想法直接做成可互動的網頁與 PWA 原型，用於快速驗證</li>', 1)
+    _h0 = _card.index('<h3 '); _h1 = _card.index('</h3>', _h0)
+    _ht = _card.index('>', _h0) + 1
+    _card = _card[:_ht] + _c['zh'] + '</h3>' + _skill_en(_c['en'], _big) + _card[_h1 + 5:]
+
+    _p0 = _card.index('<p style="margin:0;font-size:')
+    _p1 = _card.index('</p>', _p0)
+    _pt = _card.index('>', _p0) + 1
+    _card = _card[:_pt] + _c['lead'] + _card[_p1:]
+
+    _u0 = _card.index('<ul '); _u1 = _card.index('</ul>', _u0)
+    _ut = _card.index('>', _u0) + 1
+    _card = _card[:_ut] + ''.join(f'<li>{x}</li>' for x in _c['li']) + _card[_u1:]
+
+    _t0 = _card.rindex('<div ')
+    _t1 = _card.index('</div>', _t0) + len('</div>')
+    assert 'flex-wrap:wrap' in _card[_t0:_t1], f'{_no} 的標籤容器比對不到'
+    _card = _card[:_t0] + _skill_tags(_c['tags'], _big) + _card[_t1:]
+
+    body = body[:_b] + _card + body[_e:]
 
 # 04 排在 01 前面，編號就跟閱讀順序打架了。這張卡本來就不是序列裡的一項，
 # 改成直接標「亮點」，下面三張維持 01／02／03
