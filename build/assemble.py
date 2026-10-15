@@ -138,7 +138,7 @@ body = body.replace(
 # ---- 職涯歷程容器寬度對齊其他區塊 ----
 body = body.replace('max-width:940px', 'max-width:1240px')
 
-# 第四格原本是「30+ 位 AI 配音員徵選與訓練」——那是執行力，不是產品力。
+# 第四格原本是「30+ 位 AI 配音員徵選與訓練」 - 那是執行力，不是產品力。
 # 換成跨職能協作的人數（翻譯 5、工讀 3、平面 3，見 Aicast 案例）
 _OLD_STAT = ('<span data-bind="nVoice"></span>'
              '<span style="font-size:.55em;margin-left:3px">+ 位</span>')
@@ -395,7 +395,7 @@ body = body.replace(
     '<span class="tip" tabindex="0" role="button" aria-describedby="tip-inf">已解決的問題'
     '<span class="tip-bubble" id="tip-inf" role="tooltip">'
     '每個產品、每項功能、每個決策，背後的使用者、商業目標與技術限制都不一樣。'
-    '沒有一套能完美複製的 SOP——所以問題永遠解不完，這也是這份工作最有意思的地方。'
+    '沒有一套能完美複製的 SOP - 所以問題永遠解不完，這也是這份工作最有意思的地方。'
     '</span></span></div>', 1)
 
 # ===== 本輪調整 =====
@@ -432,7 +432,7 @@ body = body.replace('<span data-bind="copyLabel"></span>',
 # 3. 對話框：白底黑框、換內容
 body = body.replace(
     '每個產品、每項功能、每個決策，背後的使用者、商業目標與技術限制都不一樣。'
-    '沒有一套能完美複製的 SOP——所以問題永遠解不完，這也是這份工作最有意思的地方。',
+    '沒有一套能完美複製的 SOP - 所以問題永遠解不完，這也是這份工作最有意思的地方。',
     '累積解決 200+ 的問題，持續增加中⋯', 1)
 
 # 4. 職涯歷程副標：點點前後不留空格
@@ -642,7 +642,7 @@ body = body.replace(
 # D2. Aicast 摘要：拿掉反思，改以成果吸引點擊
 body = body.replace(
     '製作一本多角色有聲書，需要配音員、錄音室與大量協調成本。Aicast 用三項 AI 技術把這件事自動化'
-    '——但真正讓我學到最多的，是它最終在商業上並不成功。',
+    ' - 但真正讓我學到最多的，是它最終在商業上並不成功。',
     '製作一本多角色有聲書，需要配音員、錄音室與大量協調成本。Aicast 用三項 AI 技術把這件事自動化：'
     '初期以 8 位 AI 配音員演繹 42 種聲音，多人配音有聲書的製作時間最多減少 90%。', 1)
 body = re.sub(
@@ -659,7 +659,7 @@ body = re.sub(
     '我負責問題定義、流程設計、介面設計與 P0 範圍切分。</p>', body, count=1, flags=re.S)
 
 # D3b. 精選案例卡片：把「問題 → 判斷 → 結果」從敘述段落攤開成可掃讀的三行
-#      判斷這一行是卡片原本完全沒有的——也是 PM 最需要被看見的部分
+#      判斷這一行是卡片原本完全沒有的 - 也是 PM 最需要被看見的部分
 def _pdo(rows, accent):
     """rows = [(標籤, 內容), ...]；最後一行視為「結果」，用卡片主色強調"""
     out = ['<dl data-pdo style="margin:0 0 16px;display:flex;flex-direction:column;'
@@ -687,18 +687,18 @@ _AICAST_LONG = ('<p style="margin:0 0 14px;font-size:clamp(14px,1.2vw,16px);line
 assert body.count(_AICAST_LONG) == 1, '找不到 Aicast 的情境段落'
 body = body.replace(_AICAST_LONG, _pdo([
     ('問題', '多角色有聲書的配音與錄音成本過高，多數作品只能由單人朗讀完成'),
-    ('判斷', '先把核心的角色辨識與配音修穩，再擴充功能——這一層不可信，周邊做再多都留不住人'),
+    ('判斷', '先把核心的角色辨識與配音修穩，再擴充功能 - 這一層不可信，周邊做再多都留不住人'),
     ('結果', '修復 200+ 個問題並建立測試機制，獲 2025 iF 設計獎'),
 ], '#FFD34E'), 1)
 
 _ANFU_LONG = ('<p style="margin:0 0 14px;font-size:clamp(14px,1.2vw,16px);line-height:1.85;'
               'color:#2C2620">震災後，市府得一間一間打電話確認弱勢機構的狀況，全數清查要數小時，'
               '應變人力全卡在撥號上。我們把清查方向反轉：系統先點名、機構一鍵回報，'
-              '市府只處理未回報的那幾家——工作量從機構總數變成異常數。</p>')
+              '市府只處理未回報的那幾家 - 工作量從機構總數變成異常數。</p>')
 assert body.count(_ANFU_LONG) == 1, '找不到安否通的情境段落'
 body = body.replace(_ANFU_LONG, _pdo([
     ('問題', '震災後市府逐一撥號清查全部機構，全數確認預估要數小時'),
-    ('判斷', '把清查方向反轉——系統點名、機構一鍵回報，市府只處理未回報的那幾家'),
+    ('判斷', '把清查方向反轉 - 系統點名、機構一鍵回報，市府只處理未回報的那幾家'),
     ('結果', '通過文件初審，進入數位發展部徵案決選'),
 ], '#CDBCFF'), 1)
 
@@ -712,7 +712,7 @@ body = body.replace(
     '我負責問題定義、流程設計、介面設計與 P0 範圍切分。',
     '兩人團隊提案，我負責問題定義、流程設計、介面設計與 P0 範圍切分。', 1)
 
-# D3c. 第三張案例卡：自動配圖。三個案例各自回答一個不同的問題——
+# D3c. 第三張案例卡：自動配圖。三個案例各自回答一個不同的問題 - 
 #      Aicast 怎麼規劃並推進 AI 產品、自動配圖 怎麼從回饋找到問題、安否通 怎麼從需求長出方案
 _AUTO_CARD = (
     '<article style="position:relative;background:#fff;border:2.5px solid #14110F;'
@@ -736,7 +736,7 @@ _AUTO_CARD = (
     '__AUTO_SUMMARY__'
     + _pdo([
         ('問題', '自動配圖上線後使用率不如預期，但使用者說的「不好用」不是同一件事'),
-        ('判斷', '先訪談再動手——把回饋歸納成四類，先修產品可信度，再處理曝光與習慣'),
+        ('判斷', '先訪談再動手 - 把回饋歸納成四類，先修產品可信度，再處理曝光與習慣'),
         ('結果', '排序邏輯重新定義為「相關度＋時效性＋可用性」，搜尋後實際匯入稿單的比例從 3% 提升到 42%'),
     ], '#DDEEFF') +
     '<p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">'
@@ -778,9 +778,9 @@ _LL_CARD_CASE = (
     'line-height:1.45">LiveLingo 即時字幕翻譯</h3>'
     '__LL_SUMMARY__'
     + _pdo([
-        ('問題', '商用方案的顯示彈性不夠、免費方案只收得到簡報麥克風，另兩套無法試用'),
-        ('判斷', '自己做換到預算可控與完全客製；而我不在現場，所有調整都得做進介面裡'),
-        ('結果', '兩場活動實際使用，獲總經理頒發獎金，規劃上架 Chrome 商店'),
+        ('問題', '測試了幾款商業工具發現一些限制，因此考慮自行開發'),
+        ('判斷', '自己做換到預算可控與完全客製'),
+        ('結果', '兩場活動實際使用，獲公司頒發獎金，規劃上架 Chrome 商店'),
     ], '#FFE6E1') +
     '<p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">'
     '我負責需求定義、開發、現場測試與調整，以及命名與識別設計。</p>'
@@ -1181,11 +1181,12 @@ assert '>04</span>' in _card4 and _card4.count('<div data-skill=') == 1, '04 卡
 _sk = _sk[:_c4b] + _sk[_c4e:]
 # 原本靠 margin-top 與上方網格隔開，移到最前面之後不再需要
 _card4 = _card4.replace('margin-top:clamp(26px,3vw,38px);', '', 1)
-_SUB = ('<p data-skills-sub style="margin:clamp(30px,3.4vw,44px) 0 clamp(20px,2.2vw,26px);'
-        "font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;"
-        'color:#6B635B">支撐這件事的三項基本功</p>')
+# 04 與 01–03 之間原本隔著一行小標，拿掉之後間距要自己補回來
+_GRID = '<div data-skills style="display:grid;'
+assert _sk.count(_GRID) == 1, '找不到 01–03 的網格'
+_sk = _sk.replace(_GRID, '<div data-skills style="margin-top:clamp(30px,3.4vw,44px);display:grid;', 1)
 _gi = _sk.index('<div data-skills ')
-_sk = _sk[:_gi] + _card4 + _SUB + _sk[_gi:]
+_sk = _sk[:_gi] + _card4 + _sk[_gi:]
 
 _wrap = '<div style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)">'
 _wi = _sk.index(_wrap)
@@ -1237,12 +1238,12 @@ body = body.replace(_UL04,
     '<li>運用 AI Coding 將想法直接做成可互動的網頁與 PWA 原型，用於快速驗證</li>', 1)
 
 # 04 排在 01 前面，編號就跟閱讀順序打架了。這張卡本來就不是序列裡的一項，
-# 改成直接標「核心」，下面三張維持 01／02／03，跟「支撐這件事的三項基本功」對上
+# 改成直接標「亮點」，下面三張維持 01／02／03
 _B04 = "'Space Grotesk',sans-serif;font-size:17px;font-weight:700\">04</span>"
 assert body.count(_B04) == 1, '找不到 04 的編號圓章'
 body = body.replace(_B04,
     "'Noto Sans TC',sans-serif;font-size:13.5px;font-weight:900;"
-    "letter-spacing:.02em\">核心</span>", 1)
+    "letter-spacing:.02em\">亮點</span>", 1)
 
 # 專欄的輪播容器原本沒有識別屬性，手機版要把箭頭排到標題旁邊，先補上
 _WR = '<div style="display:flex;align-items:center;gap:clamp(10px,1.6vw,20px)">'
@@ -1499,7 +1500,6 @@ mobile_css = """
   [data-skills]{display:flex!important;flex-direction:column;gap:26px!important}
   [data-skills-wrap] > [data-skill="04"]{order:-1;margin:0 0 18px!important}
   [data-skills-wrap] > div[data-chapter]{order:-2}
-  [data-skills-sub]{margin:16px 0 20px!important;font-size:11px!important}
   [data-skill-head]{display:flex!important;flex-direction:column;justify-content:center;
     position:relative;padding-right:52px;min-height:44px;cursor:pointer;gap:6px}
   [data-skill-head]::after{content:"+";position:absolute;right:0;top:50%;
@@ -1592,6 +1592,13 @@ doc = f"""<!DOCTYPE html>
 [data-grid="creds"]{{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr) 260px;align-items:start}}
 @media (max-width:900px){{[data-grid="creds"]{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}
 @media (max-width:560px){{[data-grid="creds"]{{grid-template-columns:1fr}}}}
+/* 證照膠囊與工具 logo：hover 微放大，給個可以互動的手感 */
+[data-cred="cert"] [style*="border-radius:999px"],
+[data-cred="skill"] span[title]{{transition:transform .16s ease}}
+@media (hover:hover){{
+ [data-cred="cert"] [style*="border-radius:999px"]:hover{{transform:scale(1.06)}}
+ [data-cred="skill"] span[title]:hover{{transform:scale(1.12)}}
+}}
 /* 信箱 hover：逐字由上往下重新落位 */
 .mailfx span{{display:inline-block;will-change:transform}}
 .mailfx:hover span{{animation:mailDrop .52s cubic-bezier(.22,.68,.3,1) both;

@@ -176,8 +176,8 @@ C.append(('卡片不再重複講結果',
 # ---- What I Do：04 是核心，桌機也要排在 01 之前 ----
 C.append(('04 排在 01 之前',
           h.index('data-skill="04"') < h.index('data-skill="01"')))
-C.append(('01–03 有「支撐」的說明',
-          h.count('<p data-skills-sub ') == 1 and h.count('[data-skills-sub]{') == 1))
+C.append(('不再有「支撐這件事的三項基本功」那行小標',
+          'data-skills-sub' not in h and '支撐這件事的三項基本功' not in h))
 C.append(('04 沒留下舊的 margin-top',
           'data-skill="04" style="position:relative;margin-top:' not in h))
 for desc, ok in C[-6:]:
