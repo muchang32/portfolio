@@ -266,6 +266,39 @@ C.append(('∞ 的對話框靠右，不撐出橫向捲動',
 for desc, ok in C[-6:]:
     (fails if not ok else warns).append(desc) if not ok else None
 
+# ---- 履歷 PDF：內容必須跟網站同步 ----
+# resume_pdf.py 有自己一份文案（版面需求不同），所以這裡逐字比對共用的那些句子，
+# 網站改了而 PDF 沒跟上就會在這裡被擋下來。
+_rp = pathlib.Path('build/resume_pdf.py').read_text(encoding='utf-8')
+_pdf = pathlib.Path('assets/resume.pdf')
+_SHARED = [
+    '搜尋後實際匯入稿單的比例從 3% 提升到 42%',
+    '修復 200+ 個問題並建立測試機制，獲 2025 iF 設計獎',
+    '兩場活動實際使用，獲公司頒發獎金，規劃上架 Chrome 商店',
+    '通過文件初審，進入數位發展部徵案決選',
+    '把清查方向反轉 - 系統點名、機構一鍵回報，市府只處理未回報的那幾家',
+    '判斷 AI 該用在哪，然後把想法做出來。',
+    '把模糊的需求，收斂成可驗證的產品方案。',
+    '讓需求不只停在文件，而是推進到交付。',
+    '用設計讓產品更容易理解、操作與驗證。',
+    '獨立開發 LiveLingo Chrome 擴充功能',
+    '統籌多語系翻譯人員（德、法、日）與平面設計師等外包資源',
+    'iPAS AI 應用規劃師（初級）',
+]
+C.append(('履歷 PDF 已產生且是 PDF',
+          _pdf.exists() and _pdf.read_bytes()[:5] == b'%PDF-'))
+C.append(('履歷 PDF 不是舊的 104 匯出檔',
+          '張詩沂' in _rp and _pdf.stat().st_mtime >
+          pathlib.Path('build/resume_pdf.py').stat().st_mtime - 86400))
+C.append(('履歷 PDF 的文案與網站同步',
+          all(t in _rp and t in h for t in _SHARED)))
+C.append(('履歷 PDF 的語言程度與網站一致',
+          "('日文', 4, '中上')" in _rp and "('英文', 3, '中等')" in _rp
+          and '>日文</span>' in h and '中上' in h))
+C.append(('履歷 PDF 沒有把備取寫成錄取', '備取' not in _rp and '正取' not in _rp))
+for desc, ok in C[-5:]:
+    (fails if not ok else warns).append(desc) if not ok else None
+
 print(f'檢查 {len(C)} 項')
 if fails:
     print(f'\n✗ 失敗 {len(fails)} 項：')

@@ -14,6 +14,7 @@ ai lab/
 *.pdf
 !assets/resume.pdf
 履歷2026大頭照.png
+大頭照.png
 avatar
 作品集參考.webp
 b73440137b940fe38b4ab4729b98597c.jpg
@@ -34,6 +35,8 @@ CLAUDE.md
 
 # 建置中間檔
 build/_parts.txt
+build/_pdf/resume.html
+build/_pdf/check-*.png
 張詩沂個人網站首頁/.thumbnail
 
 # 設計原始檔（體積大、非網站必要）
