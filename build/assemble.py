@@ -1196,52 +1196,43 @@ body = body[:_ki0] + _sk + body[_ki1:]
 # 專欄卡片的摘要也統一用 Prompt（專欄內文保持原樣，那是已發表的稿）
 body = body.replace('完整心得，含提示詞寫法。', '完整心得，含 Prompt 寫法。', 1)
 
-# ---- What I Do 四張卡：改成「能力 + 英文職能名 + 關鍵字」----
-# 中文標題下面加一行英文職能名：求職者看中文，ATS 與外商 recruiter 看英文。
+# ---- What I Do 四張卡：標題、一句話與三條內容 ----
 # 設計母檔每張卡最後有一排關鍵字標籤，四張加起來二十個，首頁太雜，整排拿掉。
 _WHAT = {
     '04': dict(
-        zh='AI 應用與原型開發', en='AI Application &amp; Prototyping',
+        zh='AI 應用與原型開發',
         lead='判斷 AI 該用在哪，然後把想法做出來。',
         li=['評估 AI 的適用情境與限制，設計及優化 Prompt 與生成流程',
             '將 AI 應用需求轉化為功能規格、處理邏輯與可執行方案',
             '運用 AI Coding 建立互動式 Web／PWA 原型，加速想法驗證與流程改善']),
     '01': dict(
-        zh='產品規劃與需求定義', en='Product Thinking &amp; Planning',
+        zh='產品規劃與需求定義',
         lead='把模糊的需求，收斂成可驗證的產品方案。',
         li=['透過使用者訪談與回饋分析，釐清痛點及真正需求',
             '將問題拆解為功能需求、使用流程與產品規格',
             '依據使用情境、影響程度與資源限制，排定功能優先順序']),
     '02': dict(
-        zh='專案推進與跨部門協作', en='Project Execution',
+        zh='專案推進與跨部門協作',
         lead='讓需求不只停在文件，而是推進到交付。',
         li=['拆解工作範圍、交付節點與驗收條件，持續對齊需求與進度',
             '協調設計、工程及外部合作夥伴，確保資訊同步與交付品質',
             '在時程與資源限制下管理優先順序、處理問題並推進成果']),
     '03': dict(
-        zh='UX 設計與體驗驗證', en='UX Design &amp; Validation',
+        zh='UX 設計與體驗驗證',
         lead='用設計讓產品更容易理解、操作與驗證。',
         li=['規劃資訊架構、使用者流程、Wireframe 與互動原型',
             '將複雜需求轉化為清楚易懂的介面與操作體驗',
             '透過視覺一致性、細節檢查與使用者回饋，持續改善產品體驗']),
 }
 
-def _skill_en(text, big):
-    # 跟中文標題貼緊（負 margin 吃掉 flex 的 gap），再由下一行的一句話拉開距離
-    size = '14px' if big else '12.5px'
-    return (f'<p data-skill-en style="margin:{"-7px" if big else "-5px"} 0 0;'
-            f"font-family:'Space Grotesk',sans-serif;font-size:{size};font-weight:700;"
-            f'letter-spacing:.04em;color:rgba(20,17,15,.66)">{text}</p>')
-
 for _no, _c in _WHAT.items():
-    _big = _no == '04'
     _b = body.index(f'<div data-skill="{_no}" ')
     _e = _close_of(body, _b)
     _card = body[_b:_e]
 
     _h0 = _card.index('<h3 '); _h1 = _card.index('</h3>', _h0)
     _ht = _card.index('>', _h0) + 1
-    _card = _card[:_ht] + _c['zh'] + '</h3>' + _skill_en(_c['en'], _big) + _card[_h1 + 5:]
+    _card = _card[:_ht] + _c['zh'] + _card[_h1:]
 
     _p0 = _card.index('<p style="margin:0;font-size:')
     _p1 = _card.index('</p>', _p0)
