@@ -27,7 +27,7 @@ NAME_ZH, NAME_EN = '張詩沂', 'Chang Shi-Yi'
 ROLE = '產品經理　Product Manager'
 EYEBROW = 'PRODUCT MANAGEMENT · AI APPLICATION · DESIGN'
 TAGLINE = '設計出身的 AI 產品人'
-SUMMARY = ('10 年設計積累 × 產品規劃到落地 × AI 工具應用，從需求分析到原型實作，都能自己動手。'
+SUMMARY = ('10 年設計累積 × 產品規劃到落地 × AI 工具應用，從需求分析到原型實作，都能自己動手。'
            '我習慣從使用者需求出發，結合產品規劃、跨部門協作與 AI 工具，'
            '把想法轉化成可測試的原型，再透過回饋持續改善，讓解法真正融入工作流程。')
 

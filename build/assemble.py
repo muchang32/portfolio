@@ -928,7 +928,7 @@ for _old, _new in [
      'PRODUCT&nbsp;MANAGEMENT&nbsp;· AI&nbsp;APPLICATION&nbsp;· DESIGN'),
     # 三格各自不斷行：欄位變窄時在「×」後面換行，不會把「應用，」的尾巴單獨甩到下一行
     ('10 年設計積累 × PM 實戰 × AI 工具應用，',
-     '<span style="white-space:nowrap">10 年設計積累 ×</span> '
+     '<span style="white-space:nowrap">10 年設計累積 ×</span> '
      '<span style="white-space:nowrap">產品規劃到落地 ×</span> '
      '<span style="white-space:nowrap">AI 工具應用，</span>'),
 ]:
@@ -1609,12 +1609,12 @@ mobile_css = """
 
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
-<meta name="description" content="10 年設計積累 × 產品規劃到落地 × AI 工具應用。2025 iF 設計獎、iPAS AI 應用規劃師。從需求分析到原型實作，都能自己動手。" />
+<meta name="description" content="10 年設計累積 × 產品規劃到落地 × AI 工具應用。2025 iF 設計獎、iPAS AI 應用規劃師。從需求分析到原型實作，都能自己動手。" />
 <meta name="author" content="張詩沂 Shi-Yi Chang" />
 <link rel="canonical" href="https://muchang32.github.io/portfolio/" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人" />
-<meta property="og:description" content="10 年設計積累 × 產品規劃到落地 × AI 工具應用。從需求分析到原型實作，都能自己動手。" />
+<meta property="og:description" content="10 年設計累積 × 產品規劃到落地 × AI 工具應用。從需求分析到原型實作，都能自己動手。" />
 <meta property="og:locale" content="zh_TW" />
 <meta property="og:url" content="https://muchang32.github.io/portfolio/" />
 <meta property="og:image" content="https://muchang32.github.io/portfolio/assets/og-cover.jpg" />
