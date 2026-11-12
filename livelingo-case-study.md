@@ -99,7 +99,7 @@ Deepgram 與 DeepL 都有相當大的免費額度，辦幾場演講都還在範�
 
 現場負責導播系統的廠商主動給了回饋：他們辦過各種大型活動、看過許多即時翻譯工具，這套的翻譯速度與準確度在他們看過的裡面算好的。
 
-公司為此特別頒發獎金。目前也在規劃把它上架到 Chrome 擴充功能商店。
+公司為此特別頒發獎金。目前已上架 [Chrome 擴充功能商店](https://chromewebstore.google.com/detail/livelingo-%E5%8D%B3%E6%99%82%E5%AD%97%E5%B9%95%E7%BF%BB%E8%AD%AF/jmpdniibnhdlilkcaojkjeppafnjfamp)。
 
 ---
 

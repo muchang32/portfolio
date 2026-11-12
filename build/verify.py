@@ -14,9 +14,12 @@ def absent(s):        return s not in h
 
 C = [
   # --- 連結與素材 ---
-  ('八個 AI Lab 專案網址', len(re.findall(r'data-href="https://', h)) == 7),
-  ('LiveLingo 保持未上架', h.count('data-href="#"') == 1),
-  ('按鈕文字與連結相符', len(re.findall(r'data-link="示範影片 →"', h)) == 1),
+  ('八個 AI Lab 專案網址', len(re.findall(r'data-href="https://', h)) == 8),
+  ('LiveLingo 的 Lab 卡片連到 Chrome 商店，且仍帶示範影片',
+   'chromewebstore.google.com/detail/livelingo' in h and h.count('data-href="#"') == 0
+   and 'data-video="./assets/ai-lab/02-livelingo-demo.mp4"' in h),
+  ('按鈕文字與連結相符', 'data-link="示範影片 →"' not in h
+   and h.count('data-link="前往 Chrome 商店 →"') == 1),
   ('LiveLingo 寫出實際導入的場合', has('Mario García') and has('漢來大飯店')),
   ('現職不綁單一場次', 'Mario García' not in h[h.index('id="career"'):h.index('id="case"')]),
   ('現職的 LiveLingo 寫成常態能力，不綁單一場次',
@@ -74,8 +77,8 @@ C = [
   ('安否通 主圖', has('case/anfu/cover.jpg')),
   ('iF 獎章', has('if-award-2025.png')),
   ('SKILLS 十個 logo', len(re.findall(r'assets/logos/opt/', h)) == 10),
-  ('Hero 去背照', has('./assets/avatar.png') and has('fetchpriority="high"')
-                and pathlib.Path('assets/avatar.png').exists()),
+  ('Hero 去背照', has('./assets/avatar.webp') and has('fetchpriority="high"')
+                and pathlib.Path('assets/avatar.webp').exists()),
   ('手機版樣式區塊存在', has('===================== 手機版重新設計')),
   ('九段章節編號', len(re.findall(r'data-chapter="\d\d / 09"', h)) == 8),
   ('Hero 重排用的屬性都在',
@@ -226,7 +229,7 @@ for desc, ok in C[-4:]:
 
 # ---- 手機版的 11 項調整 ----
 C.append(('章節編號已移除', 'content:attr(data-chapter)' not in h))
-C.append(('Hero 標題在手機吃滿寬度', '[data-hero-title]{order:2;margin-bottom:0!important;font-size:70px' in h))
+C.append(('Hero 標題在手機吃滿寬度', 'font-size:min(70px,calc((100vw - 32px) / 4.9))!important' in h))
 C.append(('副標不強制斷行', '[data-hero-sub] br{display:none}' in h))
 C.append(('人像膠囊收進畫面', '[data-hero-pill="exp"]{left:2%!important}' in h
           and '[data-hero-pill="cert"]{right:2%!important}' in h))
@@ -275,7 +278,7 @@ _pdf = pathlib.Path('assets/resume.pdf')
 _SHARED = [
     '搜尋後實際匯入稿單的比例從 3% 提升到 42%',
     '修復 200+ 個問題並建立測試機制，獲 2025 iF 設計獎',
-    '兩場活動實際使用，獲公司頒發獎金，規劃上架 Chrome 商店',
+    '兩場活動實際使用，獲公司頒發獎金，已上架 Chrome 商店',
     '通過文件初審，進入數位發展部徵案決選',
     '把清查方向反轉 - 系統點名、機構一鍵回報，市府只處理未回報的那幾家',
     '判斷 AI 該用在哪，然後把想法做出來。',

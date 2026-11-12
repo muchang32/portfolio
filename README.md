@@ -9,7 +9,7 @@ index.html              首頁（單檔，無外部 runtime，CSS 與 JS 全部�
 case/                   四則精選案例內頁（.md 為來源，.html 為產出）
 writing/                五篇《聯8達》專欄內頁（同上）
 assets/
-├── avatar.png          Hero 去背半身照
+├── avatar.webp         Hero 去背半身照
 ├── og-cover.jpg        分享縮圖
 ├── resume.pdf          履歷（由 build/resume_pdf.py 產生，見下）
 ├── case/               四則案例的封面與內頁素材

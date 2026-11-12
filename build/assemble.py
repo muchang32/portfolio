@@ -75,12 +75,12 @@ for _label, _href, _id, _desc in _ARC:
 
 # ---- About 改寫：從職涯自傳改成三段「來源 → 工作方式 → 差異化」----
 _ABOUT_SECTIONS = [
-    ('01', '從設計走向產品', [
+    ('01', '從介面問題推到產品決策', [
         '我從平面設計開始，最早學會的不是怎麼把畫面做得漂亮，而是先釐清需求：'
         '對方想傳達什麼？使用者真正需要什麼？',
         '轉向 UI/UX 後，我逐漸發現，很多體驗問題並不在介面本身，而是更前面的產品決策：'
         '為什麼做、為誰做，以及怎麼判斷這件事有沒有真正解決問題？'
-        '這也讓我開始從設計走向產品與專案管理。',
+        '於是我的工作往前移到產品決策與專案管理。',
     ]),
     ('02', '不只定義問題，也動手驗證', [
         '現在，我會從問題釐清、需求整理與跨部門協作開始，推進產品開發，'
@@ -296,7 +296,7 @@ body = body.replace(
     '<span style="position:absolute;left:-6px;right:-6px;bottom:.1em;height:.34em;'
     'background:#FFD34E;border-radius:4px;z-index:0"></span>'
     '<span style="position:relative;z-index:1;font-family:\'Space Grotesk\',sans-serif;'
-    'font-style:italic;font-weight:700">Say hello with me ☺</span></span>', 1)
+    'font-style:italic;font-weight:700">Say hello to me ☺</span></span>', 1)
 
 # 2. 區塊改名
 body = body.replace('>Learning</h2>', '>Credentials</h2>')
@@ -405,9 +405,9 @@ body = body.replace(
     '<span style="position:absolute;left:-6px;right:-6px;bottom:.1em;height:.34em;'
     'background:#FFD34E;border-radius:4px;z-index:0"></span>'
     '<span style="position:relative;z-index:1;font-family:\'Space Grotesk\',sans-serif;'
-    'font-style:italic;font-weight:700">Say hello with me ☺</span></span>',
+    'font-style:italic;font-weight:700">Say hello to me ☺</span></span>',
     '<span style="font-family:\'Space Grotesk\',sans-serif;font-weight:700;color:#FFC400">'
-    'Say hello with me ☺</span>', 1)
+    'Say hello to me ☺</span>', 1)
 
 # 2. 複製 Email → 圖示（保留無障礙名稱）
 _copy_icon = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
@@ -633,10 +633,10 @@ body = body[:_lgblk] + _seg + body[_seg_end:]
 # D1. Say hello 套用與信箱相同的逐字動畫
 body = body.replace(
     '<span style="font-family:\'Space Grotesk\',sans-serif;font-weight:700;color:#FFC400">'
-    'Say hello with me ☺</span>',
+    'Say hello to me ☺</span>',
     '<span class="mailfx" style="font-family:\'Space Grotesk\',sans-serif;font-weight:700;color:#FFC400">'
     + ''.join(f'<span style="--i:{i}">{c}</span>' if c != ' ' else '<span style="--i:%d">&nbsp;</span>' % i
-              for i, c in enumerate('Say hello with me ☺'))
+              for i, c in enumerate('Say hello to me ☺'))
     + '</span>', 1)
 
 # D2. Aicast 摘要：拿掉反思，改以成果吸引點擊
@@ -644,7 +644,7 @@ body = body.replace(
     '製作一本多角色有聲書，需要配音員、錄音室與大量協調成本。Aicast 用三項 AI 技術把這件事自動化'
     ' - 但真正讓我學到最多的，是它最終在商業上並不成功。',
     '製作一本多角色有聲書，需要配音員、錄音室與大量協調成本。Aicast 用三項 AI 技術把這件事自動化：'
-    '初期以 8 位 AI 配音員演繹 42 種聲音，多人配音有聲書的製作時間最多減少 90%。', 1)
+    '初期以 8 位 AI 配音員演繹 42 種聲音；試用客戶回饋，多人配音有聲書的製作時間最多可減少 90%。', 1)
 body = re.sub(
     r'<p[^>]*>這個案例包含我如何在資源有限的團隊中做取捨.*?是兩件事。</strong></p>',
     '<p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">'
@@ -682,8 +682,8 @@ def _pdo(rows, accent):
 
 _AICAST_LONG = ('<p style="margin:0 0 14px;font-size:clamp(14px,1.2vw,16px);line-height:1.85;'
                 'color:#2C2620">製作一本多角色有聲書，需要配音員、錄音室與大量協調成本。'
-                'Aicast 用三項 AI 技術把這件事自動化：初期以 8 位 AI 配音員演繹 42 種聲音，'
-                '多人配音有聲書的製作時間最多減少 90%。</p>')
+                'Aicast 用三項 AI 技術把這件事自動化：初期以 8 位 AI 配音員演繹 42 種聲音；'
+                '試用客戶回饋，多人配音有聲書的製作時間最多可減少 90%。</p>')
 assert body.count(_AICAST_LONG) == 1, '找不到 Aicast 的情境段落'
 body = body.replace(_AICAST_LONG, _pdo([
     ('問題', '多角色有聲書的配音與錄音成本過高，多數作品只能由單人朗讀完成'),
@@ -778,9 +778,9 @@ _LL_CARD_CASE = (
     'line-height:1.45">LiveLingo 即時字幕翻譯</h3>'
     '__LL_SUMMARY__'
     + _pdo([
-        ('問題', '測試了幾款商業工具發現一些限制，因此考慮自行開發'),
-        ('判斷', '自己做換到預算可控與完全客製'),
-        ('結果', '兩場活動實際使用，獲公司頒發獎金，規劃上架 Chrome 商店'),
+        ('問題', '國際講者演講需要即時中文字幕，商用方案樣式彈性低、收不到現場音訊，收費也偏高'),
+        ('判斷', '現場操作的人不是我，把每個意見抽象成可調選項，而不是照著改'),
+        ('結果', '兩場活動實際使用，獲公司頒發獎金，已上架 Chrome 商店'),
     ], '#FFE6E1') +
     '<p style="margin:0;font-size:14.5px;color:#3B342E;line-height:1.85">'
     '我負責需求定義、開發、現場測試與調整，以及命名與識別設計。</p>'
@@ -819,7 +819,8 @@ _OLD_LI = ('<li>主導內部「自動配圖」功能改版：功能上線後使�
            '排定優化順序並重新定義圖片排序邏輯（新聞相關度＋時效性＋可用性），改版後使用率回升</li>')
 assert body.count(_OLD_LI) == 1, '找不到現職的自動配圖條目'
 body = body.replace(_OLD_LI,
-    '<li>主導內部「自動配圖」功能改版：訪談記者與編輯，把「不好用」歸納成四類問題，'
+    '<li><strong>內部產品優化</strong>：主導「自動配圖」功能改版，訪談記者與編輯，'
+    '把「不好用」歸納成四類問題，'
     '排定優化順序並重新定義圖片排序邏輯，搜尋後實際匯入稿單的比例從 3% 提升到 42%'
     '　<a href="./case/auto-image.html" style="color:#6D4AFF;font-weight:700;'
     'white-space:nowrap">完整案例 →</a></li>', 1)
@@ -905,6 +906,48 @@ body = body.replace(_LL_CARD_KEY,
     ' data-vposter="./assets/ai-lab/02-livelingo-demo-poster.jpg"'
     ' data-vcap="示範影片為黃仁勳主題演講公開直播的實測畫面，非上述活動現場。"', 1)
 
+# ---- LiveLingo 的 Lab 卡片：已上架 Chrome 商店，彈窗按鈕連過去 ----
+# 彈窗裡示範影片照播，下方原本因為沒有網址而隱藏的按鈕改成連到商店頁。
+_LL_OPEN = '<div data-href="#" data-title="LiveLingo 即時字幕翻譯"'
+assert body.count(_LL_OPEN) == 1, '找不到 LiveLingo 的 Lab 卡片'
+_ll0 = body.index(_LL_OPEN); _ll1 = body.index('>', _ll0)
+_ll_tag = body[_ll0:_ll1]
+assert _ll_tag.count('data-link="示範影片 →"') == 1, 'LiveLingo 卡片的按鈕文字不如預期'
+_ll_tag = (_ll_tag
+    .replace('data-href="#"', 'data-href="https://chromewebstore.google.com/detail/livelingo-%E5%8D%B3%E6%99%82%E5%AD%97%E5%B9%95%E7%BF%BB%E8%AD%AF/jmpdniibnhdlilkcaojkjeppafnjfamp"', 1)
+    .replace('data-link="示範影片 →"', 'data-link="前往 Chrome 商店 →"', 1))
+body = body[:_ll0] + _ll_tag + body[_ll1:]
+
+# ---- Hero：眉標改寫成職能，副標中間那格改講範圍 ----
+# 眉標原本是職稱（PRODUCT MANAGER），往下兩屏的正式職稱卻是「資訊管理師」，兩者互相否證；
+# 副標的「PM 實戰」沒有量詞，跟「10 年設計積累」並列會被讀成「PM 資歷很短」。
+for _old, _new in [
+    # &nbsp;：窄螢幕只准在分隔點後面換行，不拆開「AI APPLICATION」，「·」也不會跑到行首
+    ('PRODUCT MANAGER · AI PRACTITIONER · DESIGNER',
+     'PRODUCT&nbsp;MANAGEMENT&nbsp;· AI&nbsp;APPLICATION&nbsp;· DESIGN'),
+    # 三格各自不斷行：欄位變窄時在「×」後面換行，不會把「應用，」的尾巴單獨甩到下一行
+    ('10 年設計積累 × PM 實戰 × AI 工具應用，',
+     '<span style="white-space:nowrap">10 年設計積累 ×</span> '
+     '<span style="white-space:nowrap">產品規劃到落地 ×</span> '
+     '<span style="white-space:nowrap">AI 工具應用，</span>'),
+]:
+    assert body.count(_old) == 1, f'找不到 Hero 文案：{_old}'
+    body = body.replace(_old, _new, 1)
+
+# ---- 現職卡：職稱下方補一行職務範圍 ----
+# 「資訊管理師」是公司的正式職稱，不動；但職稱底下直接接條列，中間沒有一行說明
+# 這個職務實際負責什麼，招募方掃過去只看得到職稱本身。
+_JOB_TITLE = ('line-height:1.5">資訊管理師</h3>\n'
+              '            <p style="margin:0 0 18px;font-size:14.5px;color:#3B342E">'
+              '聯經數位股份有限公司</p>')
+assert body.count(_JOB_TITLE) == 1, '找不到現職卡的職稱與公司行'
+body = body.replace(_JOB_TITLE,
+    'line-height:1.5">資訊管理師</h3>\n'
+    '            <p style="margin:0 0 6px;font-size:14.5px;color:#3B342E">'
+    '聯經數位股份有限公司</p>'
+    '<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#2C2620;'
+    'font-weight:700">負責內部產品的需求規劃與 AI 應用落地</p>', 1)
+
 # ---- 現職條列重整 ----
 # 原本的「導入 AI 工具至實際工作流程並優化 Prompt」太空泛，而且下面的 n8n 與
 # 培訓兩條已經把它具體說完了，直接換掉。後面四條用粗體小標分類，寫法與 Aicast 一致。
@@ -923,7 +966,7 @@ body = body.replace(_VAGUE,
     '　<a href="./case/livelingo.html" style="color:#6D4AFF;font-weight:700;'
     'white-space:nowrap">完整案例 →</a></li>'
     # 測試介面那段是重點：讓使用者自己調提示詞，不必每次回來找我改流程
-    '<li><strong>AI 工作流自動化</strong>：以 n8n 串接 Claude API（MCP）、'
+    '<li><strong>AI 工作流自動化</strong>：以 n8n 透過 MCP 串接 Claude、'
     '解析 JSON 回應串接後段流程，為新聞自動摘要建立內容檢核；另做一個測試介面，'
     '讓編輯不必改動流程或資料就能自行調整 Prompt、比較效果；'
     '另與組內以 Open WebUI 搭公開資料試驗 RAG 查詢</li>', 1)
@@ -1002,7 +1045,7 @@ _ellipse_small = _ellipse.replace('inset:6% 4% 0 4%', 'inset:14% 12% 6% 12%')\
                          .replace('<div style=', '<div data-hero-ring style=')
 assert body.count(_ellipse) == 1, '找不到 Hero 的黃色橢圓'
 body = body.replace(_ellipse, _ellipse_small +
-    '<img src="./assets/avatar.png" alt="張詩沂" data-hero width="990" height="862" '
+    '<img src="./assets/avatar.webp" alt="張詩沂" data-hero width="990" height="862" '
     'fetchpriority="high" decoding="async" '
     'style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:115%;'
     'height:auto;max-width:none;display:block;'
@@ -1311,7 +1354,9 @@ _tl = ('<div style="position:relative;padding-left:clamp(20px,3vw,34px);'
 assert _car.count(_tl) == 1, '找不到職涯時間軸容器'
 _car = _car.replace(_tl, _tl.replace('<div ', '<div data-timeline ', 1), 1)
 
-_COMPANY = re.compile(r'<p style="margin:0 0 1[48]px;font-size:14(?:\.5)?px;color:#3B342E">[^<]*</p>')
+_COMPANY = re.compile(r'<p style="margin:0 0 \d+px;font-size:14(?:\.5)?px;color:#3B342E">[^<]*</p>')
+# 現職卡在公司行下面多一行職務範圍，它跟職稱同屬標題區，手機收合時要留在外面
+_ROLE = re.compile(r'<p style="margin:0 0 18px;font-size:15px;line-height:1\.7;color:#2C2620;font-weight:700">[^<]*</p>')
 _parts, _pos = [], [m.start() for m in re.finditer(r'<article', _car)]
 _pos.append(len(_car))
 _out, _done = _car[:_pos[0]], 0
@@ -1323,7 +1368,11 @@ for _n in range(len(_pos) - 1):
     _inner = _a[_open_end:_ce - len('</div>')]
     _m = _COMPANY.search(_inner)
     assert _m, f'第 {_n+1} 張卡找不到公司名稱那一行'
-    _head, _rest = _inner[:_m.end()], _inner[_m.end():]
+    _he = _m.end()
+    _r = _ROLE.match(_inner, _he)
+    if _r:
+        _he = _r.end()
+    _head, _rest = _inner[:_he], _inner[_he:]
     _a = (_a[:_pos and 0] + _a[:_open_end]
           + '<div data-job-head>' + _head + '</div>'
           + '<div data-job-body>' + _rest + '</div>'
@@ -1401,8 +1450,10 @@ mobile_css = """
     gap:0!important;align-items:stretch!important}
   [data-hero-copy]{display:contents}
   [data-hero-copy] > p:first-child{order:1;line-height:1.8!important;white-space:normal!important}
-  /* 標題放到吃滿整個寬度：「設計出身的」五個字剛好鋪滿 358px */
-  [data-hero-title]{order:2;margin-bottom:0!important;font-size:70px!important;
+  /* 標題放到吃滿整個寬度：「設計出身的」五個字在 375px 剛好鋪滿；
+     更窄的手機（360、320）跟著螢幕寬度縮，五個字不會被擠成兩行 */
+  [data-hero-title]{order:2;margin-bottom:0!important;
+    font-size:min(70px,calc((100vw - 32px) / 4.9))!important;
     line-height:1.1!important;letter-spacing:-.03em!important}
   /* 副標不要硬斷行，讓它自己排滿 */
   [data-hero-sub] br{display:none}
@@ -1557,12 +1608,12 @@ mobile_css = """
 
 head_extra = """
 <title>張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人</title>
-<meta name="description" content="10 年設計積累 × PM 實戰 × AI 工具應用。2025 iF 設計獎、iPAS AI 應用規劃師。從需求分析到原型實作，都能自己動手。" />
+<meta name="description" content="10 年設計積累 × 產品規劃到落地 × AI 工具應用。2025 iF 設計獎、iPAS AI 應用規劃師。從需求分析到原型實作，都能自己動手。" />
 <meta name="author" content="張詩沂 Shi-Yi Chang" />
 <link rel="canonical" href="https://muchang32.github.io/portfolio/" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="張詩沂 Shi-Yi Chang｜設計出身的 AI 產品人" />
-<meta property="og:description" content="10 年設計積累 × PM 實戰 × AI 工具應用。從需求分析到原型實作，都能自己動手。" />
+<meta property="og:description" content="10 年設計積累 × 產品規劃到落地 × AI 工具應用。從需求分析到原型實作，都能自己動手。" />
 <meta property="og:locale" content="zh_TW" />
 <meta property="og:url" content="https://muchang32.github.io/portfolio/" />
 <meta property="og:image" content="https://muchang32.github.io/portfolio/assets/og-cover.jpg" />
