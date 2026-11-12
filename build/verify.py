@@ -154,7 +154,8 @@ C.append(('案例頁的摘要與規格卡',
           and _anfu.index('blockquote class="summary"') < _anfu.index('<dl class="meta"')))
 C.append(('案例頁沒有星芒分隔線', '2726' not in _anfu))
 C.append(('安否通沒有自我評審那段', '自己的評審' not in _anfu and '86 分' not in _anfu))
-C.append(('正取公司名稱正確', '睿鍶科技' in _anfu and '睿鍇' not in _anfu))
+C.append(('安否通只寫到進入決選，沒有正取／備取',
+          not any(k in _anfu for k in ('備取', '正取', '錄取', '羊肉會飛', '睿鍶'))))
 _ai = pathlib.Path('case/aicast.html').read_text(encoding='utf-8')
 C.append(('Aicast 影片自架', 'case/aicast/if-video.mp4' in _ai
           and pathlib.Path('assets/case/aicast/if-video.mp4').exists()
