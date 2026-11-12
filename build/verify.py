@@ -320,7 +320,16 @@ _og_missing = [f for f in _PAGES[1:]
                    pathlib.Path(f).read_text(encoding='utf-8'),
                    'https://muchang32.github.io/portfolio/' + f)]
 C.append((f'九個內頁都有完整的連結預覽標記（缺：{_og_missing or "無"}）', not _og_missing))
-for desc, ok in C[-7:]:
+# ---- 分享縮圖：og-card.html 是另一份獨立的版型，首頁文案改了它不會自己跟上 ----
+_og = pathlib.Path('build/og-card.html').read_text(encoding='utf-8')
+C.append(('分享縮圖的文案與首頁同步，且放了去背照',
+          'PRODUCT MANAGEMENT · AI APPLICATION · DESIGN' in _og
+          and '10 年設計累積 × 產品規劃到落地 × AI 工具應用' in _og
+          and 'PM 實戰' not in _og and '積累' not in _og
+          and '../assets/avatar.webp' in _og
+          and pathlib.Path('assets/og-cover.jpg').stat().st_mtime
+              >= pathlib.Path('build/og-card.html').stat().st_mtime - 5))
+for desc, ok in C[-8:]:
     (fails if not ok else warns).append(desc) if not ok else None
 
 print(f'檢查 {len(C)} 項')
