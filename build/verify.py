@@ -300,7 +300,19 @@ C.append(('履歷 PDF 的語言程度與網站一致',
           "('日文', 4, '中上')" in _rp and "('英文', 3, '中等')" in _rp
           and '>日文</span>' in h and '中上' in h))
 C.append(('履歷 PDF 沒有把備取寫成錄取', '備取' not in _rp and '正取' not in _rp))
-for desc, ok in C[-5:]:
+# ---- 流量統計：十個頁面都要帶同一組評估 ID，而且本機預覽不送資料 ----
+from analytics import GA_MEASUREMENT_ID as _GA
+_PAGES = ['index.html'] + sorted(str(f) for d in ('case', 'writing')
+                                  for f in pathlib.Path(d).glob('*.html'))
+_ga_missing = [f for f in _PAGES
+               if (lambda t: t.count(f'gtag/js?id={_GA}') != 1
+                   or t.count(f"gtag('config', '{_GA}')") != 1
+                   or f"window['ga-disable-{_GA}'] = true" not in t
+                   or t.index('ga-disable-') > t.index('gtag/js?id='))(
+                   pathlib.Path(f).read_text(encoding='utf-8'))]
+C.append((f'十個頁面都有 GA 追蹤碼且本機不送資料（缺：{_ga_missing or "無"}）',
+          len(_PAGES) == 10 and not _ga_missing))
+for desc, ok in C[-6:]:
     (fails if not ok else warns).append(desc) if not ok else None
 
 print(f'檢查 {len(C)} 項')

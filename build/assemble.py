@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """組裝 index.html：helmet + hover CSS + 修正 + body + app.js"""
 import pathlib, re
+from analytics import GA_SNIPPET
 
 parts = pathlib.Path('build/_parts.txt').read_text(encoding='utf-8').split('\n<!--SPLIT-->\n')
 helmet, hover_css, body = parts
@@ -1645,6 +1646,7 @@ doc = f"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 {head_extra}
 {helmet}
+{GA_SNIPPET}
 <style>
 {hover_css}
 [hidden]{{display:none !important}}

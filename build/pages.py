@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """把 writing/*.md 與兩則案例 md 轉成與首頁同調性的內頁。"""
 import re, pathlib, html
+from analytics import GA_SNIPPET
 
 ROOT = pathlib.Path('.')
 PAL = dict(bg='#FAF7F0', ink='#14110F', card='#FFFFFF', accent='#FFD34E',
@@ -145,6 +146,7 @@ SHELL = """<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+{ga_snippet}
 <style>
 *{{box-sizing:border-box}}
 [hidden]{{display:none !important}}
@@ -224,7 +226,7 @@ def build(md_path, out_path, kicker, back_anchor, back_label, prev, nxt, depth,
                                 content=content, up='../' * depth, kicker=kicker,
                                 wrap=wrap,
                                 extra_css=extra_css, kicker_html=kicker_html,
-                                extra_js=extra_js,
+                                extra_js=extra_js, ga_snippet=GA_SNIPPET,
                                 back_anchor=back_anchor, back_label=back_label,
                                 prev_href=prev[0], prev_label=prev[1],
                                 next_href=nxt[0], next_label=nxt[1], **PAL), encoding='utf-8')
