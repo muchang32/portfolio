@@ -312,7 +312,15 @@ _ga_missing = [f for f in _PAGES
                    pathlib.Path(f).read_text(encoding='utf-8'))]
 C.append((f'十個頁面都有 GA 追蹤碼且本機不送資料（缺：{_ga_missing or "無"}）',
           len(_PAGES) == 10 and not _ga_missing))
-for desc, ok in C[-6:]:
+# ---- 連結預覽：內頁要有 og:url、og:description 與 canonical，否則 LinkedIn 抓不到預覽 ----
+_og_missing = [f for f in _PAGES[1:]
+               if (lambda t, u: f'<meta property="og:url" content="{u}" />' not in t
+                   or f'<link rel="canonical" href="{u}" />' not in t
+                   or '<meta property="og:description" content="' not in t)(
+                   pathlib.Path(f).read_text(encoding='utf-8'),
+                   'https://muchang32.github.io/portfolio/' + f)]
+C.append((f'九個內頁都有完整的連結預覽標記（缺：{_og_missing or "無"}）', not _og_missing))
+for desc, ok in C[-7:]:
     (fails if not ok else warns).append(desc) if not ok else None
 
 print(f'檢查 {len(C)} 項')

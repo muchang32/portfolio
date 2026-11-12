@@ -4,6 +4,7 @@ import re, pathlib, html
 from analytics import GA_SNIPPET
 
 ROOT = pathlib.Path('.')
+SITE_URL = 'https://muchang32.github.io/portfolio/'
 PAL = dict(bg='#FAF7F0', ink='#14110F', card='#FFFFFF', accent='#FFD34E',
            violet='#6D4AFF', soft='#FFF6D9', line='#14110F')
 
@@ -136,7 +137,11 @@ SHELL = """<!DOCTYPE html>
 <title>{title}｜張詩沂</title>
 <meta name="description" content="{desc}" />
 <meta property="og:title" content="{title}｜張詩沂" />
+<meta property="og:description" content="{desc}" />
+<meta property="og:url" content="{page_url}" />
 <meta property="og:type" content="article" />
+<meta property="og:locale" content="zh_TW" />
+<link rel="canonical" href="{page_url}" />
 <meta property="og:image" content="https://muchang32.github.io/portfolio/assets/og-cover.jpg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -227,6 +232,8 @@ def build(md_path, out_path, kicker, back_anchor, back_label, prev, nxt, depth,
                                 wrap=wrap,
                                 extra_css=extra_css, kicker_html=kicker_html,
                                 extra_js=extra_js, ga_snippet=GA_SNIPPET,
+                                # LinkedIn 等平台抓連結預覽時要有 og:url 與 og:description，缺了會顯示「無法載入預覽」
+                                page_url=SITE_URL + pathlib.Path(out_path).as_posix(),
                                 back_anchor=back_anchor, back_label=back_label,
                                 prev_href=prev[0], prev_label=prev[1],
                                 next_href=nxt[0], next_label=nxt[1], **PAL), encoding='utf-8')
