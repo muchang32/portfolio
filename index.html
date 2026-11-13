@@ -1060,10 +1060,19 @@ a.sr-only:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;margin:
   }
 
   function markActive() {
-    const secs = $$('section[id], div[id]').filter(s => ['about','career','case','ai-lab','writing','design','skills','learning','contact'].includes(s.id));
+    const secs = $$('section[id], div[id], footer[id]').filter(s => ['about','career','case','ai-lab','writing','design','skills','learning','contact'].includes(s.id));
     let cur = '';
     for (const s of secs) { if (s.getBoundingClientRect().top <= 120) cur = s.id; }
-    $$('[data-sec]').forEach(a => a.style.borderBottomColor = a.dataset.sec === cur ? 'currentColor' : 'transparent');
+    // 最後一塊（聯絡）比視窗矮，頂端永遠捲不到 120px 以內，所以捲到頁尾就直接算它
+    const atPageEnd = scrollY > 0 && innerHeight + scrollY >= document.documentElement.scrollHeight - 2;
+    if (atPageEnd && secs.length) cur = secs[secs.length - 1].id;
+    $$('[data-sec]').forEach(a => {
+      const isCurrent = a.dataset.sec === cur;
+      a.style.borderBottomColor = isCurrent ? 'currentColor' : 'transparent';
+      // 底線只有看得見的人知道，螢幕閱讀器要靠 aria-current 才聽得出目前在哪一段
+      if (isCurrent) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
   }
 
   function countUp() {
